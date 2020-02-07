@@ -1,2 +1,2 @@
-# Project-T22
-Project - T22
+# EasyRide
+CMPUT 301 Project
