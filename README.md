@@ -2,8 +2,7 @@
 
 [Go to the EasyRide Wiki](https://github.com/CMPUT301W20T22/EasyRide/wiki)
 
-## Team XX
-
+## Team 22
 | Name              | CCID     | Github ID    |
 | ------------------| -------- | ------------ |
 | Christian Arbelaez| carbelae | Arbelaezch   |
