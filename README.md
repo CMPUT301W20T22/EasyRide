@@ -1,6 +1,6 @@
 # CMPUT 301 Project - EasyRide
 
-[Go to the EasyRide Wiki](https://github.com/CMPUT301W20T22/EasyRide/wiki)
+[EasyRide Wiki](https://github.com/CMPUT301W20T22/EasyRide/wiki)
 
 ## Team 22
 | Name              | CCID     | Github ID    |
