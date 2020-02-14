@@ -1,5 +1,4 @@
-# EasyRide
-## CMPUT 301 Project
+# CMPUT 301 Project - EasyRide
 
 [Go to the EasyRide Wiki](https://github.com/CMPUT301W20T22/EasyRide/wiki)
 
@@ -18,4 +17,4 @@
 
 **TA**: [Naimur Rahman Jeem](mailto:rahmanje@ualberta.ca)
 
-**Email the Group**: [Click Here](mailto:carbelae@ualberta.ca,eahmadi@ualberta.ca,jaysinh@ualberta.ca,kfan1@ualberta.ca,sandipsa@ualberta.ca,sqle@ualberta.ca)
+**Email the Team**: [Click Here](mailto:carbelae@ualberta.ca,eahmadi@ualberta.ca,jaysinh@ualberta.ca,kfan1@ualberta.ca,sandipsa@ualberta.ca,sqle@ualberta.ca)
