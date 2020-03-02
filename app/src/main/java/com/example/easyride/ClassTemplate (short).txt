@@ -1,0 +1,37 @@
+package com.example.easyride; //path of the file
+
+import java.util.ArrayList;   //headers
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * This is a class that ...
+ * @author T22
+ * @version 1.0
+ * @see ClassC  //link to a class in the current package
+ */
+
+public class ClassTemplate extends ClassC implements interfaceA, interfaceB {
+  private Type filedA;
+  private Type fieldB;
+  /**
+  * Description of fieldC
+  */	
+  private Type fieldC;
+
+  ClassTemplate(Type, Type,...) {
+    code;
+  }
+
+  /**
+  * Description of the ClassTemplate
+  * @param argnameA Description of the argnameA
+  * @return description of the returned variable
+  * @throws ExceptionType Exception description/reason
+  * @see <a href="URL#value">label</a> //external URL
+  */
+  public Type ClassTemplate(Type argnameA ) {
+    code;
+    return varA;
+  }
+}
