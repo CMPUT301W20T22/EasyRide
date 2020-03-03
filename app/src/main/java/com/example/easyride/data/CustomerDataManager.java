@@ -3,7 +3,7 @@ package com.example.easyride.data;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.RideRequest;
 
-public class RiderDataManager  extends DataBaseManager{
+public class CustomerDataManager extends DataBaseManager{
 
     Boolean SignupUser(EasyRideUser user){
 

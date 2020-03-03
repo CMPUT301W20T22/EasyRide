@@ -9,12 +9,15 @@ package com.example.easyride.data.model;
 public abstract class EasyRideUser {
 
     private String userId;
+    private String password;
     private String displayName;
 
     public EasyRideUser(String userId, String displayName) {
         this.userId = userId;
         this.displayName = displayName;
     }
+
+    public String getPassword(){return password;}
 
     public String getUserId() {
         return userId;

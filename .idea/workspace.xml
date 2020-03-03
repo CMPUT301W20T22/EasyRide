@@ -6,10 +6,14 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da2f595c-c511-404e-82ce-00eb3936172e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/DriverDataManager.java" afterDir="false" />
+    <list default="true" id="da2f595c-c511-404e-82ce-00eb3936172e" name="Default Changelist" comment="added two classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/CustomerDataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/CustomerDataManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/DataBaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/DriverDataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/DriverDataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/model/EasyRideUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/model/EasyRideUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -147,6 +151,14 @@
       <option name="presentableId" value="Default" />
       <updated>1583034564559</updated>
     </task>
+    <task id="LOCAL-00001" summary="added two classes">
+      <created>1583274943726</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1583274943726</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -175,5 +187,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added two classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="added two classes" />
   </component>
 </project>
