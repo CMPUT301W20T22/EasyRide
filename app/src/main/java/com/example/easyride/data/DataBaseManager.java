@@ -13,5 +13,11 @@ import com.example.easyride.data.model.RideRequest;
  * @see Rider
  * @see RideRequest
  */
-public class DataBaseManager {
+public abstract class DataBaseManager {
+
+    abstract Boolean SignupUser(EasyRideUser user);
+    abstract Boolean AcceptRideRequest(RideRequest rideRequest);
+    abstract void RideRequest();
+    abstract void Update();
+    abstract Boolean VerifyUser();
 }
