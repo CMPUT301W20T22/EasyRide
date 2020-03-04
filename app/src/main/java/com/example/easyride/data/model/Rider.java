@@ -10,12 +10,13 @@ import java.util.ArrayList;
  * @version 1.0
  * @see EasyRideUser
  */
-public class Rider {
+public class Rider extends EasyRideUser{
   //private ArrayList<RideRequest> activeRequests;
   private EasyRideUser currentRiderInfo;
   private static Rider instance;
 
-  private Rider(String userId){
+  public Rider(String userId){
+    super(userId);
     //super(userId);
     DataManager database = new DataManager();
     boolean exists = database.isRider("hi");

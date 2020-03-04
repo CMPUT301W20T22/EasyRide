@@ -45,7 +45,7 @@ public class LoginRepository {
 
     public Result<EasyRideUser> login(String username, String password) {
         // handle login
-        Result<EasyRideUser> result = dataSource.login(username, password);
+        Result<EasyRideUser> result = dataSource.login(username, password, true);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<EasyRideUser>) result).getData());
         }

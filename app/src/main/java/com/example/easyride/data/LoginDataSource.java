@@ -10,13 +10,12 @@ import java.io.IOException;
  */
 public class LoginDataSource {
 
-    public Result<EasyRideUser> login(String username, String password) {
+    public Result<EasyRideUser> login(String username, String password, boolean isRider) {
 
         try {
             // TODO: handle loggedInUser authentication
             EasyRideUser fakeUser =
                     new Rider(
-                            java.util.UUID.randomUUID().toString(),
                             "Jane Doe");
             return new Result.Error(new Exception("Wrong password!"));
 //            return new Result.Success<>(fakeUser);
