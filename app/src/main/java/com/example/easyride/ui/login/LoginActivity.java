@@ -22,23 +22,33 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
-import com.example.easyride.ui.login.LoginViewModel;
-import com.example.easyride.ui.login.LoginViewModelFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
   private LoginViewModel loginViewModel;
+  private boolean isRider;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
+
+    Intent intent = getIntent();
+    final String mode = intent.getStringExtra(MainActivity.mode);
+    if(mode  == "rider") {
+      isRider = true;
+    }
+    else {
+      isRider = false;
+    }
+
     loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
         .get(LoginViewModel.class);
 
     final EditText usernameEditText = findViewById(R.id.username);
     final EditText passwordEditText = findViewById(R.id.password);
     final Button loginButton = findViewById(R.id.login);
+    final Button signupButton = findViewById(R.id.signup);
     final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
     loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -102,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
           loginViewModel.login(usernameEditText.getText().toString(),
-              passwordEditText.getText().toString());
+              passwordEditText.getText().toString(), isRider);
         }
         return false;
       }
@@ -113,9 +123,18 @@ public class LoginActivity extends AppCompatActivity {
       public void onClick(View v) {
         loadingProgressBar.setVisibility(View.VISIBLE);
         loginViewModel.login(usernameEditText.getText().toString(),
-            passwordEditText.getText().toString());
+                passwordEditText.getText().toString(), isRider);
       }
     });
+
+    signupButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent i = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivity(i);
+      }
+    });
+
   }
 
   private void updateUiWithUser(LoggedInUserView model) {

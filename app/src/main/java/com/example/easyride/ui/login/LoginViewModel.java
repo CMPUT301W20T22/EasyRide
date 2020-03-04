@@ -28,9 +28,9 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password, boolean isRider) {
         // can be launched in a separate asynchronous job
-        Result<EasyRideUser> result = loginRepository.login(username, password);
+        Result<EasyRideUser> result = loginRepository.login(username, password, isRider);
 
         if (result instanceof Result.Success) {
             EasyRideUser data = ((Result.Success<EasyRideUser>) result).getData();
