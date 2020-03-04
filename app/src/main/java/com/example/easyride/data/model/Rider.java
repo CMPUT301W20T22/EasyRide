@@ -34,4 +34,6 @@ public class Rider {
     return instance;
   }
 
+  public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
+
 }

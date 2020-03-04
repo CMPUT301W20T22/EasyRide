@@ -38,5 +38,6 @@ public class Driver {
     return instance;
   }
 
+  public EasyRideUser getCurrentDriverInfo(){return currentDriverInfo;}
 
 }

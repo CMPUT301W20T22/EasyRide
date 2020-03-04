@@ -22,11 +22,13 @@ public class DataManager {
 
     public EasyRideUser getDriver(String userID){
         //make the user class
+        driverRef.
         return null;
     }
 
     public void insertDriver(Driver driver){
-
+        EasyRideUser driverInfo = driver.getCurrentDriverInfo();
+        driverRef.document(driverInfo.getUserId()).set(driverInfo);
     }
 
     public boolean isRider(String userID){
@@ -39,7 +41,8 @@ public class DataManager {
     }
 
     public void insertRider(Rider driver){
-
+        EasyRideUser riderInfo = driver.getCurrentRiderInfo();
+        driverRef.document(riderInfo.getUserId()).set(riderInfo);
     }
 
 
