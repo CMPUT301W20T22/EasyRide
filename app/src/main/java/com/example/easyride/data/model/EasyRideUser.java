@@ -1,5 +1,7 @@
 package com.example.easyride.data.model;
 
+import androidx.annotation.Nullable;
+
 /**
  * EasyRideUser class that captures user information for logged in users retrieved from LoginRepository
  * Note that the user's password is not save in any field
@@ -12,9 +14,9 @@ public abstract class EasyRideUser {
     private String password;
     private String displayName;
 
-    public EasyRideUser(String userId, String displayName) {
+    public EasyRideUser(String userId) {
         this.userId = userId;
-        this.displayName = displayName;
+       // this.displayName = displayName;
     }
 
     public String getPassword(){return password;}
