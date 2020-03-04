@@ -3,11 +3,18 @@ package com.example.easyride.data;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * This class will handle the communication with database
  */
 public class DataManager {
+
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
+    CollectionReference driverRef = database.collection("driver");
+    CollectionReference riderRef = database.collection("rider");
+
 
     public boolean isDriver(String userID){
         return false;
