@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.ui.signup.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,14 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     setContentView(R.layout.activity_login);
 
     Intent intent = getIntent();
-    final String mode = intent.getStringExtra(MainActivity.mode);
-    if(mode  == "rider") {
-      isRider = true;
-    }
-    else {
-      isRider = false;
-    }
-
+    Bundle extras = intent.getExtras();
+    final boolean isRider = extras.getBoolean("isRider");
+    System.out.println(isRider);
     loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
         .get(LoginViewModel.class);
 
@@ -131,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), SignupActivity.class);
+        i.putExtra("isRider", isRider);
         startActivity(i);
       }
     });

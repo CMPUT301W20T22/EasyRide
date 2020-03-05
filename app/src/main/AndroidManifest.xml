@@ -9,12 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ui.login.SignupActivity"
-            android:parentActivityName=".ui.login.LoginActivity">
+        <activity android:name=".ui.signup.SignupActivity"
+            android:parentActivityName="com.example.easyride.ui.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.login.LoginActivity" />
+                android:value="com.example.easyride.ui.login.LoginActivity" />
         </activity>
 
         <activity android:name=".ui.login.LoginActivity"

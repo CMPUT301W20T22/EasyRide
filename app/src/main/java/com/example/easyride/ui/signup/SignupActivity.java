@@ -22,11 +22,12 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.ui.login.LoginActivity;
 import com.example.easyride.ui.signup.SignupViewModel;
 import com.example.easyride.ui.signup.SignupViewModelFactory;
 
 public class SignupActivity extends AppCompatActivity {
-
+  private boolean isRider;
   private SignupViewModel signupViewModel;
 
   @Override
@@ -38,8 +39,12 @@ public class SignupActivity extends AppCompatActivity {
 
     final EditText usernameEditText = findViewById(R.id.username);
     final EditText passwordEditText = findViewById(R.id.password);
+    final EditText nameEditText = findViewById(R.id.firs_tname);
     final Button signupButton = findViewById(R.id.signup);
     final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+    Intent intent = getIntent();
+    Bundle extras = intent.getExtras();
+    final boolean isRider = extras.getBoolean("isRider");
 
     signupViewModel.getSignupFormState().observe(this, new Observer<SignupFormState>() {
       @Override
@@ -102,7 +107,7 @@ public class SignupActivity extends AppCompatActivity {
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
           signupViewModel.signup(usernameEditText.getText().toString(),
-              passwordEditText.getText().toString());
+              passwordEditText.getText().toString(), nameEditText.getText().toString(), true);
         }
         return false;
       }
@@ -113,7 +118,7 @@ public class SignupActivity extends AppCompatActivity {
       public void onClick(View v) {
         loadingProgressBar.setVisibility(View.VISIBLE);
         signupViewModel.signup(usernameEditText.getText().toString(),
-            passwordEditText.getText().toString());
+            passwordEditText.getText().toString(), nameEditText.getText().toString(), true);
       }
     });
   }
@@ -122,7 +127,7 @@ public class SignupActivity extends AppCompatActivity {
     String welcome = getString(R.string.welcome) + model.getDisplayName();
     // TODO : initiate successful logged in experience
     Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
     startActivity(intent);
   }
 

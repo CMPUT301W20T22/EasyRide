@@ -28,15 +28,15 @@ public class SignupViewModel extends ViewModel {
         return signupResult;
     }
 
-    public void signup(String username, String password) {
+    public void signup(String username, String password, String name, boolean isRider) {
         // can be launched in a separate asynchronous job
-        Result<EasyRideUser> result = signupRepository.signup(username, password);
+        Result<EasyRideUser> result = signupRepository.signup(username, password, name, isRider);
 
         if (result instanceof Result.Success) {
             EasyRideUser data = ((Result.Success<EasyRideUser>) result).getData();
             signupResult.setValue(new SignupResult(new SignedUpUserView(data.getDisplayName())));
         } else {
-            signupResult.setValue(new SignupResult(R.string.signup_failed));
+            signupResult.setValue(new SignupResult(R.string.sign_up_failed));
         }
     }
 
