@@ -23,11 +23,10 @@ import android.widget.Toast;
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.ui.login.LoginActivity;
-import com.example.easyride.ui.signup.SignupViewModel;
-import com.example.easyride.ui.signup.SignupViewModelFactory;
 
 public class SignupActivity extends AppCompatActivity {
   private boolean isRider;
+  private String mode;
   private SignupViewModel signupViewModel;
 
   @Override
@@ -39,12 +38,18 @@ public class SignupActivity extends AppCompatActivity {
 
     final EditText usernameEditText = findViewById(R.id.username);
     final EditText passwordEditText = findViewById(R.id.password);
-    final EditText nameEditText = findViewById(R.id.firs_tname);
+    final EditText nameEditText = findViewById(R.id.fullname);
     final Button signupButton = findViewById(R.id.signup);
     final ProgressBar loadingProgressBar = findViewById(R.id.loading);
     Intent intent = getIntent();
-    Bundle extras = intent.getExtras();
-    final boolean isRider = extras.getBoolean("isRider");
+//    Bundle extras = intent.getExtras();
+//    final boolean isRider = extras.getBoolean("isRider");
+    mode = intent.getStringExtra(MainActivity.mode);
+    if(mode=="rider")
+      isRider=true;
+    else
+      isRider=false;
+    System.out.println(isRider);
 
     signupViewModel.getSignupFormState().observe(this, new Observer<SignupFormState>() {
       @Override

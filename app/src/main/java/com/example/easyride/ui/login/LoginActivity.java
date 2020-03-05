@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
   private LoginViewModel loginViewModel;
   private boolean isRider;
+  private String mode;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     setContentView(R.layout.activity_login);
 
     Intent intent = getIntent();
-    Bundle extras = intent.getExtras();
-    final boolean isRider = extras.getBoolean("isRider");
+//    Bundle extras = intent.getExtras();
+//    final boolean isRider = extras.getBoolean("isRider");
+    mode = intent.getStringExtra(MainActivity.mode);
+    if(mode=="rider")
+      isRider=true;
+    else
+      isRider=false;
+
     System.out.println(isRider);
     loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
         .get(LoginViewModel.class);
@@ -127,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-        i.putExtra("isRider", isRider);
         startActivity(i);
       }
     });

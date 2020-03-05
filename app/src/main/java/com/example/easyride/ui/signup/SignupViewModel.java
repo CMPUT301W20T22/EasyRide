@@ -35,8 +35,9 @@ public class SignupViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             EasyRideUser data = ((Result.Success<EasyRideUser>) result).getData();
             signupResult.setValue(new SignupResult(new SignedUpUserView(data.getDisplayName())));
-        } else {
-            signupResult.setValue(new SignupResult(R.string.sign_up_failed));
+        }
+        else {
+            signupResult.setValue(new SignupResult(R.string.signup_failed));
         }
     }
 
