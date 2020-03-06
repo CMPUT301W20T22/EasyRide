@@ -13,5 +13,16 @@ import com.example.easyride.data.model.RideRequest;
  * @see Rider
  * @see RideRequest
  */
-public class DataBaseManager {
+
+/* So we tried to extends the DataBaseManager Class to FirebaseFireStore but it didn't work
+   and we think that we don't need all this DbManager Classes in the Project. Whenever we need to access to
+   the Firebase, we just create an instance of it and fetch the data from the FireBase.
+ */
+public abstract class DataBaseManager {
+
+    abstract Boolean SignupUser(EasyRideUser user);
+    abstract Boolean AcceptRideRequest(RideRequest rideRequest);
+    abstract void RideRequest();
+    abstract void Update();
+    abstract Boolean VerifyUser();
 }
