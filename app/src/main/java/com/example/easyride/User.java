@@ -1,5 +1,7 @@
 package com.example.easyride;
 
+import android.util.Pair;
+
 public abstract class User {
 
     private String userName;
@@ -7,11 +9,13 @@ public abstract class User {
     private String name;
     private boolean onTheWay;
 
+
     public void User(final String username, final String password, final String name) {
         this.userName = username;
         this.password = password;
         this.name = name;
         this.onTheWay = false;
+
     }
 
     public String getUserName() {
