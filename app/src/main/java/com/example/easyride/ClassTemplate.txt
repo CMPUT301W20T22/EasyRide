@@ -1,0 +1,50 @@
+/**
+* Google's Java style
+* https://developers.google.com/style/code-samples
+* Don't use tabs to indent code; use spaces only.
+* Indent by 2 spaces per indentation level.
+* Wrap lines at 80 characters. ( If it is more than 80 chars 
+* continue your cod the next line)
+*/
+package com.example.easyride; //path of the file
+// 1 line space
+import java.util.ArrayList;   //headers
+import java.util.Collections;
+import java.util.List;
+// 1 line space
+/**
+ * This is a class that ...
+ * @author T22
+ * @version 1.0
+ * @see ClassC  //link to a class in the current package
+ * @see ClassA#fieldA
+ * @see ClassA#methodA(Type, Type,...)
+ * @see packageA  //link to other packge
+ * @see packageA.classB
+ * @see <a href="URL#value">label</a> //external URL
+ */
+// 1 line space
+public class ClassTemplate extends ClassC implements interfaceA, interfaceB {
+  private Type filedA;
+  private Type fieldB;
+  /**
+  * Description of fieldC
+  */	
+  private Type fieldC;
+  // 1 line space
+  ClassTemplate(Type, Type,...) {
+    code;
+  }
+  // 1 line space
+  /**
+  * Description of the ClassTemplate
+  * @param argnameA Description of the argnameA
+  * @return description of the returned variable
+  * @throws ExceptionType Exception description/reason
+  * @see <a href="URL#value">label</a> //external URL
+  */
+  public Type ClassTemplate(Type argnameA ) {
+    code;
+    return varA;
+  }
+}

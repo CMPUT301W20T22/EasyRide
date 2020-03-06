@@ -1,6 +1,7 @@
 package com.example.easyride.data;
 
-import com.example.easyride.data.model.LoggedInUser;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
 
 import java.io.IOException;
 
@@ -9,15 +10,16 @@ import java.io.IOException;
  */
 public class LoginDataSource {
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<EasyRideUser> login(String username, String password) {
 
         try {
             // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
-                    new LoggedInUser(
+            EasyRideUser fakeUser =
+                    new Rider(
                             java.util.UUID.randomUUID().toString(),
                             "Jane Doe");
-            return new Result.Success<>(fakeUser);
+            return new Result.Error(new Exception("Wrong password!"));
+//            return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
