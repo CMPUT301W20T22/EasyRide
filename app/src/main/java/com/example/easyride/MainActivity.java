@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        i.putExtra(mode, "driver");
+        i.putExtra(mode, "driver" );
         startActivity(i);
 
       }
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        i.putExtra(mode,"rider");
+        i.putExtra(mode, "rider" );
         startActivity(i);
 
       }

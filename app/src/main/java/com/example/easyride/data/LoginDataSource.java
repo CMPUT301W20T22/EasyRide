@@ -14,11 +14,26 @@ public class LoginDataSource {
 
         try {
             // TODO: handle loggedInUser authentication
-            EasyRideUser fakeUser =
-                    new Rider(
-                            "Jane Doe");
-            return new Result.Error(new Exception("Wrong password!"));
-//            return new Result.Success<>(fakeUser);
+            EasyRideUser user;
+            DataManager dataManager = new DataManager();
+            boolean userExists;
+            if (isRider){
+                userExists = dataManager.isRider(username);
+                if (userExists){
+                    user = dataManager.getRider(username);
+                }else {
+                    return new Result.Error(new Exception("Wrong Username!"));
+                }
+            }else{
+                userExists = dataManager.isDriver(username);
+                if (userExists){
+                     user = dataManager.getRider(username);
+                }else {
+                    return new Result.Error(new Exception("Wrong Username!"));
+                }
+            }
+
+            return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }

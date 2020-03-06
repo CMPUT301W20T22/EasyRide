@@ -11,9 +11,10 @@ public class LoginUnitTest {
 
     @Test
     public void testIsUser(){
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        //FirebaseFirestore database = FirebaseFirestore.getInstance();
         String driver = "jaysinh";
-        //DataManager database = new DataManager();
-        //assertTrue(database.isDriver(driver));
+        DataManager database = new DataManager();
+        assertTrue(database.isDriver(driver));
     }
+
 }

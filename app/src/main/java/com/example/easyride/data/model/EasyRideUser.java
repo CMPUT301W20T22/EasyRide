@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
  * @author T22
  * @version 1.0
  */
-public abstract class EasyRideUser {
+public class EasyRideUser {
 
     private String userId;
     private String password;
@@ -28,4 +28,10 @@ public abstract class EasyRideUser {
     public String getDisplayName() {
         return displayName;
     }
+
+    public void setPassword(String password){this.password = password;}
+
+    public void setDisplayName(String name){this.displayName = name;}
+
+
 }
