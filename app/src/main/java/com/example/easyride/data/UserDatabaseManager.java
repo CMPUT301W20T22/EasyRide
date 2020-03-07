@@ -25,7 +25,7 @@ import static android.content.ContentValues.TAG;
 /**
  * This class will handle the communication with database
  */
-public class DataManager {
+public class UserDatabaseManager {
 
     FirebaseFirestore database;
     FirebaseFirestore db;
@@ -36,7 +36,7 @@ public class DataManager {
     //DatabaseReference driverRef;
 
 
-    public DataManager(){
+    public UserDatabaseManager(){
         //FirebaseDatabase database = FirebaseDatabase.getInstance();
         //driverRef = database.getReference("driver");
         mAuth = FirebaseAuth.getInstance();
