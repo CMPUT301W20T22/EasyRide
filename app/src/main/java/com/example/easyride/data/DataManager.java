@@ -1,5 +1,6 @@
 package com.example.easyride.data;
 
+import android.app.admin.DelegatedAdminReceiver;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,10 @@ import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,14 +27,28 @@ import static android.content.ContentValues.TAG;
  */
 public class DataManager {
 
-    FirebaseFirestore database = FirebaseFirestore.getInstance();
-    CollectionReference driverRef = database.collection("driver");
-    CollectionReference riderRef = database.collection("rider");
+    FirebaseFirestore database;
+    FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
+    final CollectionReference driverRef;
+    final CollectionReference riderRef;
+    //DatabaseReference driverRef;
+
+
+    public DataManager(){
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //driverRef = database.getReference("driver");
+        mAuth = FirebaseAuth.getInstance();
+        //this.database = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
+        this.driverRef = db.collection("driver");
+        this.riderRef = db.collection("rider");
+    }
 
     public boolean isDriver(String userID){
         //https://stackoverflow.com/a/53335711
-        DocumentReference docIdRef = driverRef.document(userID);
+        DocumentReference docIdRef = this.driverRef.document(userID);
         final boolean[] result = new boolean[1];
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -58,19 +77,20 @@ public class DataManager {
         if(!isDriver(userID)){
             throw new IllegalArgumentException("Invalid username");
         }else{
-            DocumentSnapshot driverSnapshot = driverRef.document(userID).get().getResult();
+            DocumentSnapshot driverSnapshot = this.driverRef.document(userID).get().getResult();
             driver = driverSnapshot.toObject(EasyRideUser.class);
         }
         return driver;
     }
 
-    public void insertDriver(Driver driver){
-        EasyRideUser driverInfo = driver.getCurrentDriverInfo();
-        driverRef.document(driverInfo.getUserId()).set(driverInfo);
+    public void insertDriver(EasyRideUser driver){
+        //EasyRideUser driverInfo = driver.getCurrentDriverInfo();
+       // this.driverRef.document(driverInfo.getUserId()).set(driverInfo);
+        driverRef.document(driver.getUserId()).set(driver);
     }
 
     public boolean isRider(String userID){
-        DocumentReference docIdRef = riderRef.document(userID);
+        DocumentReference docIdRef = this.riderRef.document(userID);
         final boolean[] result = new boolean[1];
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -100,15 +120,16 @@ public class DataManager {
         if(!isRider(userID)){
             throw new IllegalArgumentException("Invalid username");
         }else{
-            DocumentSnapshot riderSnapshot = riderRef.document(userID).get().getResult();
+            DocumentSnapshot riderSnapshot = this.riderRef.document(userID).get().getResult();
             rider = riderSnapshot.toObject(EasyRideUser.class);
         }
         return rider;
     }
 
-    public void insertRider(Rider driver){
-        EasyRideUser riderInfo = driver.getCurrentRiderInfo();
-        driverRef.document(riderInfo.getUserId()).set(riderInfo);
+    public void insertRider(EasyRideUser rider){
+        //EasyRideUser riderInfo = rider.getCurrentRiderInfo();
+        //driverRef.document(riderInfo.getUserId()).set(riderInfo);
+        driverRef.document(rider.getUserId()).set(rider);
     }
 
 

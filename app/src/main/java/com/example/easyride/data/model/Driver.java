@@ -13,14 +13,14 @@ import java.util.ArrayList;
  *
  * get rid of extend
  */
-public class Driver {
+public class Driver extends EasyRideUser {
 
   private ArrayList<RideRequest> activeRequests;
   private EasyRideUser currentDriverInfo;
   private static Driver instance;
 
   private Driver(String userId){
-    //super(userId);
+    super(userId);
     DataManager database = new DataManager();
     boolean exists = database.isDriver("hi");
     if (!exists){ instance = null; }

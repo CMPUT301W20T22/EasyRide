@@ -14,11 +14,17 @@ public class SignupDataSource {
 
     try {
       // TODO: handle loggedInUser authentication
-      EasyRideUser fakeUser =
-          new Rider(
-              "Jane Doe");
-      return new Result.Error(new Exception("Wrong password!"));
-//            return new Result.Success<>(fakeUser);
+      EasyRideUser newUser = new EasyRideUser(username);
+      newUser.setDisplayName(name);
+      newUser.setPassword(password);
+      DataManager dataManager = new DataManager();
+
+      if (isRider){
+        dataManager.insertRider(newUser);
+      }else{
+        dataManager.insertDriver(newUser);
+      }
+      return new Result.Success<>(newUser);
     } catch (Exception e) {
       return new Result.Error(new IOException("Error logging in", e));
     }
