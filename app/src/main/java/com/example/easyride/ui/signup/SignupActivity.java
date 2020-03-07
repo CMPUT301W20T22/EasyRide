@@ -1,4 +1,4 @@
-package  com.example.easyride.ui.login;
+package  com.example.easyride.ui.signup;
 
 import android.app.Activity;
 import androidx.lifecycle.Observer;
@@ -22,19 +22,25 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
-import com.example.easyride.ui.signup.SignupActivity;
+import com.example.easyride.ui.login.LoginActivity;
 
-public class LoginActivity extends AppCompatActivity {
-
-  private LoginViewModel loginViewModel;
+public class SignupActivity extends AppCompatActivity {
   private boolean isRider;
   private String mode;
+  private SignupViewModel signupViewModel;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_login);
+    setContentView(R.layout.activity_signup);
+    signupViewModel = ViewModelProviders.of(this, new SignupViewModelFactory())
+        .get(SignupViewModel.class);
 
+    final EditText usernameEditText = findViewById(R.id.username);
+    final EditText passwordEditText = findViewById(R.id.password);
+    final EditText nameEditText = findViewById(R.id.fullname);
+    final Button signupButton = findViewById(R.id.signup);
+    final ProgressBar loadingProgressBar = findViewById(R.id.loading);
     Intent intent = getIntent();
 //    Bundle extras = intent.getExtras();
 //    final boolean isRider = extras.getBoolean("isRider");
@@ -43,49 +49,40 @@ public class LoginActivity extends AppCompatActivity {
       isRider=true;
     else
       isRider=false;
-
     System.out.println(isRider);
-    loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-        .get(LoginViewModel.class);
 
-    final EditText usernameEditText = findViewById(R.id.username);
-    final EditText passwordEditText = findViewById(R.id.password);
-    final Button loginButton = findViewById(R.id.login);
-    final Button signupButton = findViewById(R.id.signup);
-    final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
-    loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+    signupViewModel.getSignupFormState().observe(this, new Observer<SignupFormState>() {
       @Override
-      public void onChanged(@Nullable LoginFormState loginFormState) {
-        if (loginFormState == null) {
+      public void onChanged(@Nullable SignupFormState signupFormState) {
+        if (signupFormState == null) {
           return;
         }
-        loginButton.setEnabled(loginFormState.isDataValid());
-        if (loginFormState.getUsernameError() != null) {
-          usernameEditText.setError(getString(loginFormState.getUsernameError()));
+        signupButton.setEnabled(signupFormState.isDataValid());
+        if (signupFormState.getUsernameError() != null) {
+          usernameEditText.setError(getString(signupFormState.getUsernameError()));
         }
-        if (loginFormState.getPasswordError() != null) {
-          passwordEditText.setError(getString(loginFormState.getPasswordError()));
+        if (signupFormState.getPasswordError() != null) {
+          passwordEditText.setError(getString(signupFormState.getPasswordError()));
         }
       }
     });
 
-    loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+    signupViewModel.getSignupResult().observe(this, new Observer<SignupResult>() {
       @Override
-      public void onChanged(@Nullable LoginResult loginResult) {
-        if (loginResult == null) {
+      public void onChanged(@Nullable SignupResult signupResult) {
+        if (signupResult == null) {
           return;
         }
         loadingProgressBar.setVisibility(View.GONE);
-        if (loginResult.getError() != null) {
-          showLoginFailed(loginResult.getError());
+        if (signupResult.getError() != null) {
+          showSignupFailed(signupResult.getError());
         }
-        if (loginResult.getSuccess() != null) {
-          updateUiWithUser(loginResult.getSuccess());
+        if (signupResult.getSuccess() != null) {
+          updateUiWithUser(signupResult.getSuccess());
         }
         setResult(Activity.RESULT_OK);
 
-        //Complete and destroy login activity once successful
+        //Complete and destroy signup activity once successful
         finish();
       }
     });
@@ -103,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable s) {
-        loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+        signupViewModel.signupDataChanged(usernameEditText.getText().toString(),
             passwordEditText.getText().toString());
       }
     };
@@ -114,41 +111,32 @@ public class LoginActivity extends AppCompatActivity {
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-          loginViewModel.login(usernameEditText.getText().toString(),
-              passwordEditText.getText().toString(), isRider);
+          signupViewModel.signup(usernameEditText.getText().toString(),
+              passwordEditText.getText().toString(), nameEditText.getText().toString(), true);
         }
         return false;
-      }
-    });
-
-    loginButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        loadingProgressBar.setVisibility(View.VISIBLE);
-        loginViewModel.login(usernameEditText.getText().toString(),
-                passwordEditText.getText().toString(), isRider);
       }
     });
 
     signupButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivity(i);
+        loadingProgressBar.setVisibility(View.VISIBLE);
+        signupViewModel.signup(usernameEditText.getText().toString(),
+            passwordEditText.getText().toString(), nameEditText.getText().toString(), true);
       }
     });
-
   }
 
-  private void updateUiWithUser(LoggedInUserView model) {
+  private void updateUiWithUser(SignedUpUserView model) {
     String welcome = getString(R.string.welcome) + model.getDisplayName();
     // TODO : initiate successful logged in experience
     Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
     startActivity(intent);
   }
 
-  private void showLoginFailed(@StringRes Integer errorString) {
+  private void showSignupFailed(@StringRes Integer errorString) {
     Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
   }
 }

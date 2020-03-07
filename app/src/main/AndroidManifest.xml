@@ -15,6 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme" >
 
         <!--
@@ -37,6 +38,26 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name" >
+=======
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.signup.SignupActivity"
+            android:parentActivityName=".ui.login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.login.LoginActivity" />
+        </activity>
+
+        <activity android:name=".ui.login.LoginActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+>>>>>>> 479c1671534914d25024cc03d454db81b902476b
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
