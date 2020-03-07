@@ -27,8 +27,7 @@ import static android.content.ContentValues.TAG;
  */
 public class UserDatabaseManager {
 
-    FirebaseFirestore database;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
     final CollectionReference driverRef;
