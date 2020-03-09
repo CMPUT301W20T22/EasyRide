@@ -63,6 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.rider.rider_home" />
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.rider_home;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        i.putExtra(mode, "driver" );
+        //i.putExtra(mode, "driver" );
         startActivity(i);
 
       }
@@ -33,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     rider_mode_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        i.putExtra(mode, "rider" );
+        Intent i = new Intent(getApplicationContext(), rider_home.class);
+        //i.putExtra(mode, "rider" );
         startActivity(i);
 
       }
