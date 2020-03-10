@@ -4,15 +4,15 @@ public class Ride {
 
     private String from;
     private String to;
-    private String price;
+    private String cost;
     private String user;
 
 
     // CONSTRUCTOR
-    public Ride(String from, String to, String price, String user) {
+    public Ride(String from, String to, String cost, String user) {
         this.from = from;
         this.to = to;
-        this.price = price;
+        this.cost = cost;
         this.user = user;
     }
 
@@ -26,8 +26,8 @@ public class Ride {
         return to;
     }
 
-    public String getPrice() {
-        return price;
+    public String getCost() {
+        return cost;
     }
 
     public String getUser() {
@@ -40,8 +40,8 @@ public class Ride {
         this.user = user;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 
     public void setTo(String to) {
@@ -51,17 +51,6 @@ public class Ride {
     public void setFrom(String from) {
         this.from = from;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
