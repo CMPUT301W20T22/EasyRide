@@ -66,6 +66,7 @@
         <activity android:name=".ui.rider.rider_home" />
         <activity android:name=".ui.rider.add_ride" />
         <activity android:name=".ui.rider.edit_ride" />
+        <activity android:name=".ui.driver.driver_home" />
     </application>
 
 </manifest>
