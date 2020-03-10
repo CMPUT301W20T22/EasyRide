@@ -64,6 +64,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.rider.rider_home" />
+        <activity android:name=".ui.rider.add_ride" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.easyride.ui;
+package com.example.easyride.ui.rider;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.R;
-import com.example.easyride.ui.CustomList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,26 +32,30 @@ public class rider_home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_home);
 
-        /*
+
 
         LV = findViewById(R.id.ride_list);
 
+        DataList = new ArrayList<>();
         rideAdapter = new CustomList(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
 
         LV.setAdapter(rideAdapter);
 
-        */
+
 
         // ADD RIDE REQUEST BUTTON
-        Button add_ride_button = findViewById(R.id.add_ride_button);
+        FloatingActionButton add_ride_button = findViewById(R.id.add_ride_button);
         add_ride_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent add = new Intent(getApplicationContext(), add_ride.class);
-                startActivity(add);
+                Intent i = new Intent(v.getContext(), add_ride.class);
+                startActivity(i);
 
             }
         });
+
+
+
 
 
     }
