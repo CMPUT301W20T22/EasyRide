@@ -34,6 +34,8 @@ public class CustomList extends ArrayAdapter<Ride> {
     // getView() allows you to set the values for the views in your listView. Use autocomplete.
     // We want get to reference the TextViews in the content.xml layout file and fill them with
     // values (Date, Systolic, Diastolic, and Heart Rate).
+    @NonNull
+    @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // The convertView object is a way of recycling old views inside the ListView.
         // Increases performance.
