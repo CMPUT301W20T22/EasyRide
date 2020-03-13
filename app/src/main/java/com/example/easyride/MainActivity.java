@@ -7,7 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.QR_Pay;
+import com.example.easyride.ui.rider.rider_home;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,11 +23,12 @@ public class MainActivity extends AppCompatActivity {
     Button driver_mode_button = findViewById(R.id.driver_mode_button);
     Button rider_mode_button = findViewById(R.id.rider_mode_button);
 
+    // LoginActivity
     driver_mode_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.putExtra(mode, "driver" );
+        Intent i = new Intent(MainActivity.this, driver_home.class);
+        //i.putExtra(mode, "driver" );
         startActivity(i);
 
       }
@@ -33,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     rider_mode_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.putExtra(mode, "rider" );
+        Intent i = new Intent(MainActivity.this, rider_home.class);
+        //i.putExtra(mode, "rider" );
         startActivity(i);
 
       }
