@@ -53,6 +53,7 @@
         <activity android:name=".ui.rider.edit_ride" />
         <activity android:name=".ui.driver.driver_home" />
         <activity android:name=".ui.rider.QR_Pay" />
+        <activity android:name=".user_profile" />
     </application>
 
 </manifest>

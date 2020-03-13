@@ -8,8 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.login.LoginActivity;
-import com.example.easyride.ui.rider.QR_Pay;
 import com.example.easyride.ui.rider.rider_home;
 
 public class MainActivity extends AppCompatActivity {
