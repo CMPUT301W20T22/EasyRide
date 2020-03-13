@@ -17,11 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-/*
-    This class is used to handle the rider home screen to display and navigate
-    between active requests, as well as allowing users to add a new request.
-
- */
+// RIDER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A RIDER.
+// Handles the rider home screen to display and navigate between active requests, as well as
+// allowing users to add a new request.
 
 public class rider_home extends AppCompatActivity {
 
