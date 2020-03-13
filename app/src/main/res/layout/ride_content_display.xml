@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Creates a linear list where each item in the list has multiple text components.-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+
+
+    <!-- From -->
+    <TextView
+        android:id="@+id/from_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="3"
+        android:textSize="25sp"
+        android:text="From" />
+
+    <!-- To -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight=".25"
+        android:ems="1"
+        android:text="   to"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/to_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="3"
+        android:textSize="25sp"
+        android:text="To" />
+
+
+
+
+</LinearLayout>
