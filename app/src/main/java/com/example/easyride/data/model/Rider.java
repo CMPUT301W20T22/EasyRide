@@ -1,6 +1,6 @@
 package com.example.easyride.data.model;
 
-import com.example.easyride.data.DataManager;
+import com.example.easyride.data.UserDatabaseManager;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ import java.util.ArrayList;
  * @see EasyRideUser
  */
 public class Rider extends EasyRideUser{
-  //private ArrayList<RideRequest> activeRequests;
+  private ArrayList<RideRequest> activeRequests;
   private EasyRideUser currentRiderInfo;
   //private static Rider instance;
 
   public Rider(String userId){
     super(userId);
     //super(userId);
-    DataManager database = new DataManager();
+    UserDatabaseManager database = new UserDatabaseManager();
     boolean exists = database.isRider("hi");
     if (!exists){ currentRiderInfo = null; }
     else {

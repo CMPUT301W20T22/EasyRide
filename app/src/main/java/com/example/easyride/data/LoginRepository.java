@@ -21,6 +21,12 @@ public class LoginRepository {
         this.dataSource = dataSource;
     }
 
+    /**
+     *
+     * @param dataSource
+     * @return
+     */
+
     public static LoginRepository getInstance(LoginDataSource dataSource) {
         if(instance == null){
             instance = new LoginRepository(dataSource);

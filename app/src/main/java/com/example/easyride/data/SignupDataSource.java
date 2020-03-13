@@ -1,7 +1,6 @@
 package com.example.easyride.data;
 
 import com.example.easyride.data.model.EasyRideUser;
-import com.example.easyride.data.model.Rider;
 
 import java.io.IOException;
 
@@ -17,12 +16,12 @@ public class SignupDataSource {
       EasyRideUser newUser = new EasyRideUser(username);
       newUser.setDisplayName(name);
       newUser.setPassword(password);
-      DataManager dataManager = new DataManager();
+      UserDatabaseManager userDatabaseManager = new UserDatabaseManager();
 
       if (isRider){
-        dataManager.insertRider(newUser);
+        userDatabaseManager.insertRider(newUser);
       }else{
-        dataManager.insertDriver(newUser);
+        userDatabaseManager.insertDriver(newUser);
       }
       return new Result.Success<>(newUser);
     } catch (Exception e) {
