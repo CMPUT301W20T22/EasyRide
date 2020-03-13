@@ -1,159 +1,152 @@
-package  com.example.easyride.ui.login;
+package com.example.easyride.ui.login;
 
-import android.app.Activity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.data.DataBaseManager;
 import com.example.easyride.map.MapsActivity;
-import com.example.easyride.ui.signup.SignupActivity;
+import com.example.easyride.ui.signup.SignUpActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-  private LoginViewModel loginViewModel;
-  private boolean isRider;
-  private String mode;
+    EditText mEmail, mPassword;
+    Button signUpbtn, loginBtn;
+    String Mode;
+    FirebaseAuth fAuth;
+    boolean isUser;
+    FirebaseFirestore db;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_login);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-    Intent intent = getIntent();
-//    Bundle extras = intent.getExtras();
-//    final boolean isRider = extras.getBoolean("isRider");
-    mode = intent.getStringExtra(MainActivity.mode);
-    if(mode=="rider")
-      isRider=true;
-    else
-      isRider=false;
+        signUpbtn = findViewById(R.id.signup);
+        loginBtn = findViewById(R.id.login);
+        mEmail = findViewById(R.id.username);
+        mPassword = findViewById(R.id.password);
 
-    System.out.println(isRider);
-    loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-        .get(LoginViewModel.class);
+        Intent intent = getIntent();
+        Mode = intent.getStringExtra(MainActivity.mode);
 
-    final EditText usernameEditText = findViewById(R.id.username);
-    final EditText passwordEditText = findViewById(R.id.password);
-    final Button loginButton = findViewById(R.id.login);
-    final Button signupButton = findViewById(R.id.signup);
-    final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        // init database
+        fAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
-    loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-      @Override
-      public void onChanged(@Nullable LoginFormState loginFormState) {
-        if (loginFormState == null) {
-          return;
-        }
-        loginButton.setEnabled(loginFormState.isDataValid());
-        if (loginFormState.getUsernameError() != null) {
-          usernameEditText.setError(getString(loginFormState.getUsernameError()));
-        }
-        if (loginFormState.getPasswordError() != null) {
-          passwordEditText.setError(getString(loginFormState.getPasswordError()));
-        }
-      }
-    });
+        /**
+         * Sign Up Button OnClickListener
+         * @param View.OnClickListener
+         */
+        signUpbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                intent.putExtra("Mode", Mode);
+                startActivity(intent);
+            }
+        });
 
-    loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-      @Override
-      public void onChanged(@Nullable LoginResult loginResult) {
-        if (loginResult == null) {
-          return;
-        }
-        loadingProgressBar.setVisibility(View.GONE);
-        if (loginResult.getError() != null) {
-          showLoginFailed(loginResult.getError());
-        }
-        if (loginResult.getSuccess() != null) {
-          updateUiWithUser(loginResult.getSuccess());
-        }
-        setResult(Activity.RESULT_OK);
+        /**
+         * Log In Button OnClickListener
+         * @param View.OnClickListener
+         */
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        //Complete and destroy login activity once successful
-        finish();
-      }
-    });
+                final String email = mEmail.getText().toString().trim();
+                final String password = mPassword.getText().toString().trim();
 
-    TextWatcher afterTextChangedListener = new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // ignore
-      }
+                if (TextUtils.isEmpty(email) || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+                    mEmail.setError("Please enter the correct email format");
+                    return;
+                }
 
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // ignore
-      }
+                if (TextUtils.isEmpty(password)) {
+                    mPassword.setError("Password is Required");
+                    return;
+                }
 
-      @Override
-      public void afterTextChanged(Editable s) {
-        loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-            passwordEditText.getText().toString());
-      }
-    };
-    usernameEditText.addTextChangedListener(afterTextChangedListener);
-    passwordEditText.addTextChangedListener(afterTextChangedListener);
-    passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                if (password.length() < 5) {
+                    mPassword.setError("Password Must Be >= 5 Characters");
+                    return;
+                }
 
-      @Override
-      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-          loginViewModel.login(usernameEditText.getText().toString(),
-              passwordEditText.getText().toString(), isRider);
-        }
-        return false;
-      }
-    });
 
-    loginButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        loadingProgressBar.setVisibility(View.VISIBLE);
-        loginViewModel.login(usernameEditText.getText().toString(),
-                passwordEditText.getText().toString(), isRider);
+                // authenticate the user and log in the application
+                fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            String ID = user.getUid();
 
-        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-        startActivity(intent);
+                            db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            // Start new Activity
+                                            isUser = true;
+                                        }
+                                        else {
+                                            isUser = false;
+                                        }
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Failed with: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
 
-      }
-    });
-
-    signupButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivity(i);
-      }
-    });
-
-  }
-
-  private void updateUiWithUser(LoggedInUserView model) {
-    String welcome = getString(R.string.welcome) + model.getDisplayName();
-    // TODO : initiate successful logged in experience
-    Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-    startActivity(intent);
-  }
-
-  private void showLoginFailed(@StringRes Integer errorString) {
-    Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-  }
+                            // Start new Activity if the user is correct
+                            if (isUser) {
+                                Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                intent.putExtra("Mode", Mode);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "The username or password is incorrect", Toast.LENGTH_SHORT).show();
+                                mEmail.setText("");
+                                mPassword.setText("");
+                            }
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this,"Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+    }
 }

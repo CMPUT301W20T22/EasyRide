@@ -1,7 +1,6 @@
 package com.example.easyride.data;
 
 import com.example.easyride.data.model.EasyRideUser;
-import com.example.easyride.data.model.Rider;
 
 import java.io.IOException;
 
@@ -15,19 +14,19 @@ public class LoginDataSource {
         try {
             // TODO: handle loggedInUser authentication
             EasyRideUser user;
-            DataManager dataManager = new DataManager();
+            UserDatabaseManager userDatabaseManager = new UserDatabaseManager();
             boolean userExists;
             if (isRider){
-                userExists = dataManager.isRider(username);
+                userExists = userDatabaseManager.isRider(username);
                 if (userExists){
-                    user = dataManager.getRider(username);
+                    user = userDatabaseManager.getRider(username);
                 }else {
                     return new Result.Error(new Exception("Wrong Username!"));
                 }
             }else{
-                userExists = dataManager.isDriver(username);
+                userExists = userDatabaseManager.isDriver(username);
                 if (userExists){
-                     user = dataManager.getRider(username);
+                     user = userDatabaseManager.getRider(username);
                 }else {
                     return new Result.Error(new Exception("Wrong Username!"));
                 }

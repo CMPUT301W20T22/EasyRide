@@ -1,7 +1,6 @@
 package com.example.easyride.data.model;
 
-import com.example.easyride.data.DataBaseManager;
-import com.example.easyride.data.DataManager;
+import com.example.easyride.data.UserDatabaseManager;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class Driver extends EasyRideUser {
 
   private Driver(String userId){
     super(userId);
-    DataManager database = new DataManager();
+    UserDatabaseManager database = new UserDatabaseManager();
     boolean exists = database.isDriver("hi");
     if (!exists){ instance = null; }
     else {
