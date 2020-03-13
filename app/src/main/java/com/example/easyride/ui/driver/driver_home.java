@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class driver_home extends AppCompatActivity {
 
     private void showData() {
 
-        db.collection("RideRequest").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("RideRequest").orderBy("cost", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
@@ -79,7 +80,7 @@ public class driver_home extends AppCompatActivity {
                         RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
                                 doc.getDocument().getString("pickupPoint"),
                                 doc.getDocument().getString("targetPoint"),
-                                doc.getDocument().getString("cost"));
+                                doc.getDocument().getLong("cost").intValue());
 
                         rideRequestList.add(rideRequest);
                         rideRequestListAdapter.notifyDataSetChanged();

@@ -37,7 +37,7 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
         holder.riderName.setText(rideRequestsList.get(position).getRiderUserName());
         holder.pickupLocation.setText(rideRequestsList.get(position).getPickupPoint());
         holder.destination.setText(rideRequestsList.get(position).getTargetPoint());
-        holder.fee.setText(rideRequestsList.get(position).getCost());
+        holder.fee.setText(rideRequestsList.get(position).getCost().toString());
 
     }
 
