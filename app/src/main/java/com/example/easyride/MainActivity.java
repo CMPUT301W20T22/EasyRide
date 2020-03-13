@@ -7,7 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.rider_home;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     Button driver_mode_button = findViewById(R.id.driver_mode_button);
     Button rider_mode_button = findViewById(R.id.rider_mode_button);
 
+    // LoginActivity
+    // Use rider_home.class or driver_home.class to bypass sign-in/sign-up.
     driver_mode_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

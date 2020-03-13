@@ -17,11 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-/*
-    This class is used to handle the rider home screen to display and navigate
-    between active requests, as well as allowing users to add a new request.
-
- */
+// RIDER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A RIDER.
+// Handles the rider home screen to display and navigate between active requests, as well as
+// allowing users to add a new request.
 
 public class rider_home extends AppCompatActivity {
 
@@ -37,13 +35,16 @@ public class rider_home extends AppCompatActivity {
         setContentView(R.layout.activity_rider_home);
 
 
+
         LV = findViewById(R.id.ride_list);
 
         DataList = new ArrayList<>();
         DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
 
-        rideAdapter = new CustomList(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+        rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);
+
+
 
 
 
