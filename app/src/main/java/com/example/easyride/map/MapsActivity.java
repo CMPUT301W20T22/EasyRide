@@ -50,7 +50,7 @@ import java.util.Map;
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
-    PlaceAutocompleteFragment place_start, place_end;
+    Place startPlace, endPlace;
     String place_start_string, place_end_string;
     PlacesClient placesClient;
     private int request_code = 1001;
@@ -138,15 +138,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 location_edittext.setText(place.getName());
 //                Log.d("start_location", place.getLatLng().getClass().getName());
-//                if(location_edittext == start_location_edittext){
+                if(location_edittext == start_location_edittext){
 //                    start_location = place.getLatLng();
-//                    System.out.println("start_location"+start_location);
-//                }
-//                else if (location_edittext == end_location_edittext){
+                    startPlace = place;
+                    Log.d("location", "start");
+                }
+                else if (location_edittext == end_location_edittext){
 //                    end_location = place.getLatLng();
-//                    System.out.println("end_location"+ end_location);
-//                }
-
+                    endPlace = place;
+                    Log.d("location", "end");
+                    Log.d("location", place.toString());
+                    Geocoder geocoder = new Geocoder(MapsActivity.this);
+                }
 
                 if(place.toString()!=null && !place.toString().equals("")){
                     new MapsActivity.GeocoderTask().execute(place.toString());
@@ -179,10 +182,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Creating an instance of Geocoder class
             Geocoder geocoder = new Geocoder(MapsActivity.this);
             List<Address> addresses = null;
-
             try {
                 // Getting a maximum of 3 Address that matches the input text
-                addresses = geocoder.getFromLocationName(locationName[0], 3);
+                Log.d("wierd", locationName[0]);
+                addresses = geocoder.getFromLocationName(locationName[0], 1);
+                Log.d("wierd2", addresses.get(0).toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
