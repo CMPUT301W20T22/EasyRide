@@ -50,7 +50,8 @@ import java.util.Map;
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
-    PlaceAutocompleteFragment place_start, place_end;
+    MarkerHandler mh;
+    Place startPlace, endPlace;
     String place_start_string, place_end_string;
     PlacesClient placesClient;
     private int request_code = 1001;
@@ -72,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         Places.initialize(getApplicationContext(),getString(R.string.api_key));
-
+        mh = new MarkerHandler();
         start_location_edittext = findViewById(R.id.start_location_EditText);
         end_location_edittext = findViewById(R.id.end_location_EditText);
 
@@ -89,7 +90,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startAutocompleteActivity(end_location_edittext);
             }
         });
-
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        mh.showStartMarker(mMap);
+        mh.showEndMarker(mMap);
     }
 
     @Override
@@ -138,15 +144,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 location_edittext.setText(place.getName());
 //                Log.d("start_location", place.getLatLng().getClass().getName());
-//                if(location_edittext == start_location_edittext){
+                if(location_edittext == start_location_edittext){
 //                    start_location = place.getLatLng();
-//                    System.out.println("start_location"+start_location);
-//                }
-//                else if (location_edittext == end_location_edittext){
+                    startPlace = place;
+                    Log.d("location", "start");
+                }
+                else if (location_edittext == end_location_edittext){
 //                    end_location = place.getLatLng();
-//                    System.out.println("end_location"+ end_location);
-//                }
-
+                    endPlace = place;
+                    Log.d("location", "end");
+                    Log.d("location", place.toString());
+                    Geocoder geocoder = new Geocoder(MapsActivity.this);
+                }
 
                 if(place.toString()!=null && !place.toString().equals("")){
                     new MapsActivity.GeocoderTask().execute(place.toString());
@@ -179,10 +188,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Creating an instance of Geocoder class
             Geocoder geocoder = new Geocoder(MapsActivity.this);
             List<Address> addresses = null;
-
             try {
                 // Getting a maximum of 3 Address that matches the input text
-                addresses = geocoder.getFromLocationName(locationName[0], 3);
+                Log.d("wierd", locationName[0]);
+                addresses = geocoder.getFromLocationName(locationName[0], 1);
+                Log.d("wierd2", addresses.get(0).toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -207,15 +217,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Creating an instance of GeoPoint, to display in Google Map
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
-//                Marker start_marker = mMap.addMarker(new MarkerOptions()
-//                        .position(start_location)
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-//                        .title("Start here"));
-
-                markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title(address.getAddressLine(0));
-                mMap.addMarker(markerOptions);
+                Marker start_marker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .title("Start here"));
+                start_marker.remove();
+//                markerOptions = new MarkerOptions();
+//                markerOptions.position(latLng);
+//                markerOptions.title(address.getAddressLine(0));
+//                mMap.addMarker(markerOptions);
 
                 // Locate the first location
                 if(i==0)
