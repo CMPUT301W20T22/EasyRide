@@ -18,6 +18,7 @@ import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.DataBaseManager;
 import com.example.easyride.map.MapsActivity;
+import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Mode = intent.getStringExtra(MainActivity.mode);
+        isUser = false;
 
         // init database
         fAuth = FirebaseAuth.getInstance();
@@ -117,13 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            // Start new Activity
-                                            isUser = true;
-                                        }
-                                        else {
-                                            isUser = false;
-                                        }
+                                        // Start new Activity
+                                        isUser = document.exists();
                                     }
                                     else {
                                         Toast.makeText(LoginActivity.this,
@@ -133,20 +130,29 @@ public class LoginActivity extends AppCompatActivity {
                             });
 
                             // Start new Activity if the user is correct
-                            if (isUser) {
+                            if (isUser && Mode.equals("rider")) {
                                 Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                                 intent.putExtra("Mode", Mode);
                                 startActivity(intent);
                             }
-                            else {
-                                Toast.makeText(LoginActivity.this, "The username or password is incorrect", Toast.LENGTH_SHORT).show();
+
+                            else if (isUser && Mode.equals("driver")) {
+                                Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, driver_home.class);
+                                intent.putExtra("Mode", Mode);
+                                startActivity(intent);
+                            }
+                            else if (!isUser) {
+                                Toast.makeText(LoginActivity.this, "Username or password is incorrect", Toast.LENGTH_SHORT).show();
                                 mEmail.setText("");
                                 mPassword.setText("");
                             }
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            mEmail.setText("");
+                            mPassword.setText("");
                         }
                     }
                 });
