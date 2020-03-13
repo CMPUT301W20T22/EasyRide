@@ -22,11 +22,14 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.map.MapsActivity;
+import com.example.easyride.ui.signup.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
   private LoginViewModel loginViewModel;
   private boolean isRider;
+  private String mode;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -34,14 +37,15 @@ public class LoginActivity extends AppCompatActivity {
     setContentView(R.layout.activity_login);
 
     Intent intent = getIntent();
-    final String mode = intent.getStringExtra(MainActivity.mode);
-    if(mode  == "rider") {
-      isRider = true;
-    }
-    else {
-      isRider = false;
-    }
+//    Bundle extras = intent.getExtras();
+//    final boolean isRider = extras.getBoolean("isRider");
+    mode = intent.getStringExtra(MainActivity.mode);
+    if(mode=="rider")
+      isRider=true;
+    else
+      isRider=false;
 
+    System.out.println(isRider);
     loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
         .get(LoginViewModel.class);
 
@@ -124,6 +128,8 @@ public class LoginActivity extends AppCompatActivity {
         loadingProgressBar.setVisibility(View.VISIBLE);
         loginViewModel.login(usernameEditText.getText().toString(),
                 passwordEditText.getText().toString(), isRider);
+        Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(i);
       }
     });
 
