@@ -15,6 +15,8 @@
 =======
     <string name="login_failed">Login failed</string>
     <string name="signup_failed">Signup failed</string>
+    <string name="title_activity_maps">Map</string>
+
 
 >>>>>>> 479c1671534914d25024cc03d454db81b902476b
 </resources>
