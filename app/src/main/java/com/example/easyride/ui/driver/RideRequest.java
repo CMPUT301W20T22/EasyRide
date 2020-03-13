@@ -1,4 +1,4 @@
-package com.example.easyride.data.model;
+package com.example.easyride.ui.driver;
 
 import android.location.Address;
 import android.location.Location;
@@ -11,40 +11,43 @@ import android.location.Location;
  */
 public class RideRequest {
  // private String key;
-  private Address pickupPoint;
-  private Address targetPoint;
-  private boolean rideAccepted;
-  private boolean rideCompleted;
-  private int cost;
-  private int distance;
+  private String pickupPoint;
+  private String targetPoint;
+  private String rideAccepted;
+  private String rideCompleted;
+  private String cost;
+  // private int distance;
   private String riderUserName;
   private String driverUserName;
 
+  public RideRequest() {
 
-  public RideRequest(String riderUserName, Address pickupPoint, Address targetPoint, int distance) {
+  }
+
+
+  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, String cost) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;
     this.targetPoint = targetPoint;
-    this.distance = distance;
-    int cost = distance*2;
     this.cost = cost;
+
   }
 
-  public Address getPickupPoint() {
+  public String getPickupPoint() {
     return pickupPoint;
   }
 
-  public Address getTargetPoint() {
+  public String getTargetPoint() {
     return targetPoint;
   }
 
-  public int getCost() {
+  public String getCost() {
     return cost;
   }
 
-  public int getDistance() {
-    return distance;
-  }
+  //public int getDistance() {
+  //  return distance;
+  // }
 
   public String getDriverUserName() {
     return driverUserName;
@@ -54,27 +57,29 @@ public class RideRequest {
     return riderUserName;
   }
 
-  public void setCost(int cost) {
-    this.cost = cost;
-  }
+  public String isRideAccepted() { return rideAccepted; }
 
-  public void setDistance(int distance) {
-    this.distance = distance;
-  }
+  public String isRideCompleted() { return rideCompleted; }
+
+  public void setCost(String cost) { this.cost = cost; }
+
+//  public void setDistance(int distance) {
+//    this.distance = distance;
+//  }
 
   public void setDriverUserName(String driverUserName) {
     this.driverUserName = driverUserName;
   }
 
-  public void setPickupPoint(Address pickupPoint) {
+  public void setPickupPoint(String pickupPoint) {
     this.pickupPoint = pickupPoint;
   }
 
-  public void setRideAccepted(boolean rideAccepted) {
+  public void setRideAccepted(String rideAccepted) {
     this.rideAccepted = rideAccepted;
   }
 
-  public void setRideCompleted(boolean rideCompleted) {
+  public void setRideCompleted(String rideCompleted) {
     this.rideCompleted = rideCompleted;
   }
 
@@ -82,7 +87,7 @@ public class RideRequest {
     this.riderUserName = riderUserName;
   }
 
-  public void setTargetPoint(Address targetPoint) {
+  public void setTargetPoint(String targetPoint) {
     this.targetPoint = targetPoint;
   }
 

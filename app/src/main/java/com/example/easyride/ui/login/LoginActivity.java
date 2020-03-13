@@ -6,34 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
-import com.example.easyride.data.DataBaseManager;
 import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -110,17 +100,38 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = fAuth.getCurrentUser();
                             String ID = user.getUid();
 
-                            // Check if the user existed in the collection (Rider/Driver)
-                            // If it's not then deny the access to the application
-                            // https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection/53335711
+                            /*
+                             Check if the user existed in the collection (Rider/Driver)
+                             If it's not then deny the access to the application
+                             https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection/53335711
+                            */
 
                             db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
-                                        // Start new Activity
                                         isUser = document.exists();
+                                        if (!isUser) {
+                                            Toast.makeText(LoginActivity.this, "Username or password is incorrect", Toast.LENGTH_SHORT).show();
+                                            mEmail.setText("");
+                                            mPassword.setText("");
+                                        }
+
+                                        // Start new Activity if the user is correct
+                                        else if (isUser && Mode.equals("rider")) {
+                                            Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                            intent.putExtra("Mode", Mode);
+                                            startActivity(intent);
+                                        }
+
+                                        else if (isUser && Mode.equals("driver")) {
+                                            Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(LoginActivity.this, driver_home.class);
+                                            intent.putExtra("Mode", Mode);
+                                            startActivity(intent);
+                                        }
                                     }
                                     else {
                                         Toast.makeText(LoginActivity.this,
@@ -129,31 +140,16 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
 
-                            // Start new Activity if the user is correct
-                            if (isUser && Mode.equals("rider")) {
-                                Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                                intent.putExtra("Mode", Mode);
-                                startActivity(intent);
-                            }
 
-                            else if (isUser && Mode.equals("driver")) {
-                                Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, driver_home.class);
-                                intent.putExtra("Mode", Mode);
-                                startActivity(intent);
-                            }
-                            else if (!isUser) {
-                                Toast.makeText(LoginActivity.this, "Username or password is incorrect", Toast.LENGTH_SHORT).show();
-                                mEmail.setText("");
-                                mPassword.setText("");
-                            }
+
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             mEmail.setText("");
                             mPassword.setText("");
                         }
+
+
                     }
                 });
             }
