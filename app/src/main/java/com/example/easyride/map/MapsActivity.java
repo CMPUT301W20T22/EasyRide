@@ -137,7 +137,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 location_edittext.setText(place.getName());
-
+//                Log.d("start_location", place.getLatLng().getClass().getName());
 //                if(location_edittext == start_location_edittext){
 //                    start_location = place.getLatLng();
 //                    System.out.println("start_location"+start_location);
@@ -150,7 +150,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if(place.toString()!=null && !place.toString().equals("")){
                     new MapsActivity.GeocoderTask().execute(place.toString());
-                    Log.d("start_location", place.getLatLng().toString());
                 }
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
