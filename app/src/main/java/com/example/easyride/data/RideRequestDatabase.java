@@ -44,7 +44,7 @@ public class RideRequestDatabase {
     public ArrayList<RideRequest> getRequestByRiderID (String userID) {
 
         ArrayList<RideRequest> listOfRequest = new ArrayList<>();
-        Query query = requestsRef.whereEqualTo("riderUserName", userID);
+        Query w = requestsRef.whereEqualTo("riderUserName", userID);
         //requestsRef.get().where()
 
 
