@@ -48,9 +48,9 @@ public class RideRequestDatabase {
         //requestsRef.get().where()
 
 
-        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-            System.out.println(document.getId());
-        }
+//        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+  //          System.out.println(document.getId());
+    //    }
 
         return listOfRequest;
     }
