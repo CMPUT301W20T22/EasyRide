@@ -18,12 +18,17 @@ import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -31,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText mFullName, mEmail, mPassword;
     Button signUpBtn;
     FirebaseAuth fAuth;
+    FirebaseFirestore db;
     ProgressBar progressBar;
     String Mode;
 
@@ -47,16 +53,19 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Mode = intent.getStringExtra("Mode");
 
+        // init database
         fAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         progressBar = findViewById(R.id.loading);
 
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Email = mEmail.getText().toString().trim();
+                final String Email = mEmail.getText().toString().trim();
                 final String FullName = mFullName.getText().toString().trim();
-                String Password = mPassword.getText().toString().trim();
+                final String Password = mPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(Email) || !(Patterns.EMAIL_ADDRESS.matcher(Email).matches())) {
                     mEmail.setError("Please enter the correct format");
@@ -75,20 +84,38 @@ public class SignUpActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                // Register the user in firebase
+                /**
+                 * Create the user account
+                 * Add data to the database
+                 */
+
                 fAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            // Set the Display Name
+                            // Add the data to the database
                             FirebaseUser user = fAuth.getCurrentUser();
-                            if (user != null) {
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(FullName).build();
+                            String ID = user.getUid();
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("Email: ", Email);
+                            data.put("Password: ", Password);
+                            data.put("Name: ", FullName);
 
-                                user.updateProfile(profileUpdates);
-                            }
+                            db.collection(Mode).document(ID)
+                                    .set(data)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // ignore this
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("ERROR", e.getMessage());
+                                        }
+                                    });
+
                             Toast.makeText(SignUpActivity.this, "User Created", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             finish();
