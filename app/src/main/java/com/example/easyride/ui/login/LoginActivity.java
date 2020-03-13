@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.signup.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -127,6 +128,10 @@ public class LoginActivity extends AppCompatActivity {
         loadingProgressBar.setVisibility(View.VISIBLE);
         loginViewModel.login(usernameEditText.getText().toString(),
                 passwordEditText.getText().toString(), isRider);
+
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+
       }
     });
 
