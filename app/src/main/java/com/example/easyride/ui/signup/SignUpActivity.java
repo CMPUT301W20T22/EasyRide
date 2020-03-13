@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                // Register the user in firebase
+                // Register the user in firebase and save it to the database
                 fAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

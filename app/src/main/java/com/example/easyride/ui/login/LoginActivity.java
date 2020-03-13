@@ -57,7 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-
+        /**
+         * Sign Up Button OnClickListener
+         * @param View.OnClickListener
+         */
         signUpbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +70,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Log In Button OnClickListener
+         * @param View.OnClickListener
+         */
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
-                // authenticate the user
+                // authenticate the user and log in the application
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -107,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
+                                            // ignore this
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -117,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                                     });
 
                             // Start new Activity
-                            Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                             intent.putExtra("Mode", Mode);
                             startActivity(intent);
