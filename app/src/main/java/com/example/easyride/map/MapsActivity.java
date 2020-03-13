@@ -28,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -137,16 +138,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 location_edittext.setText(place.getName());
 
-                if(location_edittext == start_location_edittext){
-                    start_location = place.getLatLng();
-                }
-                else if (location_edittext == end_location_edittext){
-                    end_location = place.getLatLng();
-                }
+//                if(location_edittext == start_location_edittext){
+//                    start_location = place.getLatLng();
+//                    System.out.println("start_location"+start_location);
+//                }
+//                else if (location_edittext == end_location_edittext){
+//                    end_location = place.getLatLng();
+//                    System.out.println("end_location"+ end_location);
+//                }
 
 
                 if(place.toString()!=null && !place.toString().equals("")){
                     new MapsActivity.GeocoderTask().execute(place.toString());
+                    Log.d("start_location", place.getLatLng().toString());
                 }
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
@@ -203,6 +207,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // Creating an instance of GeoPoint, to display in Google Map
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+//                Marker start_marker = mMap.addMarker(new MarkerOptions()
+//                        .position(start_location)
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+//                        .title("Start here"));
 
                 markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
