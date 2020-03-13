@@ -25,8 +25,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Button signUpbtn, loginBtn;
     String Mode;
     FirebaseAuth fAuth;
+    boolean isUser;
     FirebaseFirestore db;
 
     @Override
@@ -102,33 +105,41 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Add the data to the database
-                            String user = fAuth.getCurrentUser().getDisplayName();
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("Email: ", email);
-                            data.put("Password: ", password);
-                            data.put("Name: ", user);
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            String ID = user.getUid();
 
-                            db.collection(Mode).document(user)
-                                    .set(data)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            // ignore this
+                            db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            // Start new Activity
+                                            isUser = true;
                                         }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("ERROR", e.getMessage());
+                                        else {
+                                            isUser = false;
                                         }
-                                    });
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Failed with: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
 
-                            // Start new Activity
-                            Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                            intent.putExtra("Mode", Mode);
-                            startActivity(intent);
+                            // Start new Activity if the user is correct
+                            if (isUser) {
+                                Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                intent.putExtra("Mode", Mode);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "The username or password is incorrect", Toast.LENGTH_SHORT).show();
+                                mEmail.setText("");
+                                mPassword.setText("");
+                            }
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
