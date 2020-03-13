@@ -93,7 +93,10 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Add the data to the database
+                            // Based on the Status (Rider/Driver)
+                            // The document of the collection will be stored based on the created account ID
                             FirebaseUser user = fAuth.getCurrentUser();
                             String ID = user.getUid();
                             Map<String, Object> data = new HashMap<>();
