@@ -128,8 +128,10 @@ public class LoginActivity extends AppCompatActivity {
         loadingProgressBar.setVisibility(View.VISIBLE);
         loginViewModel.login(usernameEditText.getText().toString(),
                 passwordEditText.getText().toString(), isRider);
-        Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-        startActivity(i);
+
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+
       }
     });
 
