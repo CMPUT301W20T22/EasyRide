@@ -100,13 +100,17 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
-                // authenticate the user and log in the application
+                // authenticate the user and log in the application based on the Status (Rider/Driver)
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             String ID = user.getUid();
+
+                            // Check if the user existed in the collection (Rider/Driver)
+                            // If it's not then deny the access to the application
+                            // https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection/53335711
 
                             db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
