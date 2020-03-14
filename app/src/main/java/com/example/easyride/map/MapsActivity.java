@@ -263,11 +263,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Float f=Float.valueOf(result_in_kms);
         return f;
     }
-    public DecimalFormat getFare() {
-        DecimalFormat returnFare = new DecimalFormat("0.00");
-        float fare = 0;
+    public DecimalFormat getFare(int distance) {
+        DecimalFormat returnFare = new DecimalFormat("###.##");
         float fareMultiplier = 2.5f;
-        fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
+        float fare = distance*fareMultiplier;
+//        fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
         returnFare.format(fare);
         return returnFare;
     }
