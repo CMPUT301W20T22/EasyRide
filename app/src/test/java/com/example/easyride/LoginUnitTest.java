@@ -1,7 +1,5 @@
 package com.example.easyride;
 
-import com.example.easyride.data.UserDatabaseManager;
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 

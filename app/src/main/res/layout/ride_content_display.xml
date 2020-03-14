@@ -1,43 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Creates a linear list where each item in the list has multiple text components.-->
 
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="horizontal">
+    app:contentPadding="5dp"
+    app:cardBackgroundColor="#ffff"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
 
-
-
-    <!-- From -->
-    <TextView
-        android:id="@+id/from_text"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="3"
-        android:textSize="25sp"
-        android:text="From" />
+        android:orientation="vertical">
 
-    <!-- To -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight=".25"
-        android:ems="1"
-        android:text="   to"
-        android:textSize="20sp" />
+        <!--show rider name-->
+        <TextView
+            android:id="@+id/riderName"
+            android:text="Rider Name"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/to_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="3"
-        android:textSize="25sp"
-        android:text="To" />
+        <!--show pickupPoint-->
+        <TextView
+            android:id="@+id/pickUp"
+            android:text="Pickup Location"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--show destination-->
+        <TextView
+            android:id="@+id/target"
+            android:text="Target Location"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--show fee-->
+        <TextView
+            android:id="@+id/cost"
+            android:text="Cost"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
 
 
 
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

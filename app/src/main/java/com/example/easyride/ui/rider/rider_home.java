@@ -35,13 +35,16 @@ public class rider_home extends AppCompatActivity {
         setContentView(R.layout.activity_rider_home);
 
 
+
         LV = findViewById(R.id.ride_list);
 
         DataList = new ArrayList<>();
         DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
 
-        rideAdapter = new CustomList(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+        rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);
+
+
 
 
 
