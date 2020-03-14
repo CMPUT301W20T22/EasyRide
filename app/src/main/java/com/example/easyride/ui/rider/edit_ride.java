@@ -30,7 +30,7 @@ public class edit_ride extends AppCompatActivity {
         Intent intent = getIntent();
         final int position = intent.getIntExtra("position", 0);
         DataList = new ArrayList<>();
-        final SingleRide instance = SingleRide.getInstance();
+        SingleRide instance = SingleRide.getInstance();
         DataList = instance.getRide();
         Ride rideReq = DataList.get(position);
 
@@ -76,8 +76,10 @@ public class edit_ride extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SingleRide instance = SingleRide.getInstance();
                 instance.removeAt(position);
                 Intent i = new Intent(getApplicationContext(), rider_home.class);
+                startActivity(i);
             }
         });
 
