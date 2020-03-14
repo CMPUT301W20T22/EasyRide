@@ -47,12 +47,6 @@ public class rider_home extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
         // EDIT ITEM FROM ARRAY LIST
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
