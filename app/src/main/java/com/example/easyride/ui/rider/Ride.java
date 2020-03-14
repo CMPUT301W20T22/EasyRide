@@ -9,6 +9,7 @@ public class Ride {
     private String user;
     private String distance;
 
+
     // CONSTRUCTOR
     public Ride(String from, String to, String cost, String user, String distance) {
         this.from = from;
@@ -16,7 +17,6 @@ public class Ride {
         this.cost = cost;
         this.user = user;
         this.distance = distance;
-
 
     }
 
@@ -38,9 +38,9 @@ public class Ride {
         return user;
     }
 
-    public String getDistance() {
-        return distance;
-    }
+
+    public String getDistance() { return distance; }
+
 
     // SETTERS
     public void setUser(String user) {
@@ -59,7 +59,7 @@ public class Ride {
         this.from = from;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
+
+    public void setDistance(String distance) { this.distance = distance; }
+
 }
