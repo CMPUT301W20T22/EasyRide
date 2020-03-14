@@ -1,6 +1,5 @@
 package com.example.easyride.map;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -230,51 +229,48 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .build();                   // Creates a CameraPosition from the builder
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
-        }
+        }}
 
-        private float getDistance(double lat1, double lon1, double lat2, double lon2) {
-            String result_in_kms = "";
-            String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
-            String tag[] = {"text"};
-            HttpResponse response = null;
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
-                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                Document doc = builder.parse(is);
-                if (doc != null) {
-                    NodeList nl;
-                    ArrayList args = new ArrayList();
-                    for (String s : tag) {
-                        nl = doc.getElementsByTagName(s);
-                        if (nl.getLength() > 0) {
-                            Node node = nl.item(nl.getLength() - 1);
-                            args.add(node.getTextContent());
-                        } else {
-                            args.add(" - ");
-                        }
+
+    private float getDistance(double lat1, double lon1, double lat2, double lon2) {
+        String result_in_kms = "";
+        String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
+        String tag[] = {"text"};
+        HttpResponse response = null;
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(is);
+            if (doc != null) {
+                NodeList nl;
+                ArrayList args = new ArrayList();
+                for (String s : tag) {
+                    nl = doc.getElementsByTagName(s);
+                    if (nl.getLength() > 0) {
+                        Node node = nl.item(nl.getLength() - 1);
+                        args.add(node.getTextContent());
+                    } else {
+                        args.add(" - ");
                     }
-                    result_in_kms =String.valueOf( args.get(0));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                result_in_kms =String.valueOf( args.get(0));
             }
-            Float f=Float.valueOf(result_in_kms);
-            return f;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        public DecimalFormat getFare() {
-            DecimalFormat returnFare = new DecimalFormat("0.00");
-            float fare = 0;
-            float fareMultiplier = 2.5f;
-            fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
-            returnFare.format(fare);
-            return returnFare;
-        }
-
-
+        Float f=Float.valueOf(result_in_kms);
+        return f;
     }
-
+    public DecimalFormat getFare() {
+        DecimalFormat returnFare = new DecimalFormat("0.00");
+        float fare = 0;
+        float fareMultiplier = 2.5f;
+        fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
+        returnFare.format(fare);
+        return returnFare;
+    }
 
 
 
@@ -313,5 +309,3 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 //    });
 }
-
-
