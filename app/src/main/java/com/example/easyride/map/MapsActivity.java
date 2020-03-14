@@ -1,6 +1,7 @@
 package com.example.easyride.map;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -13,9 +14,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.easyride.MainActivity;
+import com.google.android.libraries.places.api.model.LocationBias;
+import com.google.android.libraries.places.api.model.Place.Field;
 
 import com.example.easyride.R;
 import com.google.android.gms.common.api.Status;
@@ -49,19 +56,22 @@ import java.util.Map;
  * https://github.com/ManishAndroidIos/Master-Google-Place-API
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    GoogleMap mMap;
+//    GoogleMap mMap;
     MarkerHandler mh;
-    Place startPlace, endPlace;
-    String place_start_string, place_end_string;
-    PlacesClient placesClient;
-    private int request_code = 1001;
+//    Place startPlace, endPlace;
+//    String place_start_string, place_end_string;
+//    PlacesClient placesClient;
+    private int request_code_start = 1001;
+    private int request_code_end = 1002;
     TextInputEditText start_location_edittext;
     TextInputEditText end_location_edittext;
     TextInputEditText location_edittext;
-    MarkerOptions markerOptions;
-    LatLng latLng, start_location, end_location;
-    private MarkerOptions options = new MarkerOptions();
-    private ArrayList<LatLng> latlngs = new ArrayList<>();
+    Button button;
+//    MarkerOptions markerOptions;
+//    LatLng latLng, start_location, end_location;
+//    private MarkerOptions options = new MarkerOptions();
+//    private ArrayList<LatLng> latlngs = new ArrayList<>();
+    private boolean isMapLoaded = false;
 
 
     @Override
@@ -71,36 +81,63 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         Places.initialize(getApplicationContext(),getString(R.string.api_key));
-        mh = new MarkerHandler();
+//        mh = new MarkerHandler();
+
         start_location_edittext = findViewById(R.id.start_location_EditText);
         end_location_edittext = findViewById(R.id.end_location_EditText);
-
+//        button = findViewById(R.id.create_request_button);
         start_location_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAutocompleteActivity(start_location_edittext);
+//                autocompleteFragment(start_location_edittext);
+                List<Field> fields = Arrays.asList(Field.ID, Field.NAME, Field.LAT_LNG);
+                location_edittext = start_location_edittext;
+                // Start the autocomplete intent.
+
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .setInitialQuery("ETLC")
+                    .build(MapsActivity.this);
+//                intent.putExtra("isStart", "true");
+                startActivityForResult(intent, request_code_start);
             }
         });
 
         end_location_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAutocompleteActivity(end_location_edittext);
+//                autocompleteFragment(end_location_edittext);
+                location_edittext = end_location_edittext;
+//                autocompleteFragment(start_location_edittext);
+                List<Field> fields = Arrays.asList(Field.ID, Field.NAME, Field.LAT_LNG);
+//                fields.add(new Field())
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .setInitialQuery("HUB mall")
+                    .setCountry("CA")
+                    .build(MapsActivity.this);
+//                intent.putExtra("isStart", "false");
+//                Log.d("data1",intent.getExtras().toString());
+                startActivityForResult(intent, request_code_end);
             }
         });
+//        button.setOnClickListener();
     }
-    @Override
-    public void onResume(){
-        super.onResume();
-        mh.showStartMarker(mMap);
-        mh.showEndMarker(mMap);
-    }
+//    @Override
+//    public void onResume(){
+//
+//        super.onResume();
+//        mh.showStartMarker();
+//        mh.showEndMarker();
+//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+//        mMap = googleMap;
+        if (! isMapLoaded){
+            mh = new MarkerHandler(googleMap);
+        }
+        isMapLoaded = true;
+
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -121,47 +158,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             LatLng coordinate = new LatLng(latitude, longitude);
-            CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 15);
-            mMap.animateCamera(yourLocation);
+            mh.animateCamera(coordinate);
         }
 
     }
 
-    private void startAutocompleteActivity(TextInputEditText x) {
-        List<com.google.android.libraries.places.api.model.Place.Field> fields = Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
-                com.google.android.libraries.places.api.model.Place.Field.NAME);
-        location_edittext = x;
-        // Start the autocomplete intent.
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this);
-        startActivityForResult(intent, request_code);
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == request_code) {
+        if (requestCode == request_code_start | requestCode == request_code_end) {
             if (resultCode == RESULT_OK) {
+//                Log.d("data",data.getExtras().toString());
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
-                location_edittext.setText(place.getName());
-//                Log.d("start_location", place.getLatLng().getClass().getName());
-                if(location_edittext == start_location_edittext){
-//                    start_location = place.getLatLng();
-                    startPlace = place;
-                    Log.d("location", "start");
+                if (requestCode == request_code_start){
+                    start_location_edittext.setText(place.getName());
+                    if(place.toString()!=null && !place.toString().equals("")) {
+                        mh.setStartLatLang(place.getLatLng());
+                        mh.showMarkers();
+                    }
                 }
-                else if (location_edittext == end_location_edittext){
-//                    end_location = place.getLatLng();
-                    endPlace = place;
-                    Log.d("location", "end");
-                    Log.d("location", place.toString());
-                    Geocoder geocoder = new Geocoder(MapsActivity.this);
+                else if (requestCode == request_code_end){
+                    end_location_edittext.setText(place.getName());
+                    if( !place.toString().equals("")) {
+                        mh.setEndLatLang(place.getLatLng());
+                        mh.showMarkers();
+                    }
                 }
-
-                if(place.toString()!=null && !place.toString().equals("")){
-                    new MapsActivity.GeocoderTask().execute(place.toString());
-                }
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            }
+            else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent(data);
             } else if (resultCode == RESULT_CANCELED) {
@@ -169,114 +193,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
-
-//    public void place_marker(){
-//        mMap.clear();
-//        mMap.addMarker(new MarkerOptions().position(start_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title("Start here"));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(start_location,15));
-//        mMap.addMarker(new MarkerOptions().position(end_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).title("End here"));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(end_location, 15));
-//    }
-
-
-
-    // An AsyncTask class for accessing the GeoCoding Web Service
-    private class GeocoderTask extends AsyncTask<String, Void, List<Address>> {
-
-        @Override
-        protected List<Address> doInBackground(String... locationName) {
-            // Creating an instance of Geocoder class
-            Geocoder geocoder = new Geocoder(MapsActivity.this);
-            List<Address> addresses = null;
-            try {
-                // Getting a maximum of 3 Address that matches the input text
-                Log.d("wierd", locationName[0]);
-                addresses = geocoder.getFromLocationName(locationName[0], 1);
-                Log.d("wierd2", addresses.get(0).toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return addresses;
-        }
-
-        @Override
-        protected void onPostExecute(List<Address> addresses) {
-
-            if(addresses==null || addresses.size()==0){
-                Toast.makeText(MapsActivity.this, "No Location found", Toast.LENGTH_SHORT).show();
-            }
-
-            // Clears all the existing markers on the map
-            //mMap.clear();
-
-            // Adding Markers on Google Map for each matching address
-            for(int i=0;i<addresses.size();i++){
-
-                Address address = (Address) addresses.get(i);
-
-                // Creating an instance of GeoPoint, to display in Google Map
-                latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-                Marker start_marker = mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                        .title("Start here"));
-                start_marker.remove();
-//                markerOptions = new MarkerOptions();
-//                markerOptions.position(latLng);
-//                markerOptions.title(address.getAddressLine(0));
-//                mMap.addMarker(markerOptions);
-
-                // Locate the first location
-                if(i==0)
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(latLng)      // Sets the center of the map to Mountain View
-                        .zoom(17)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                        .build();                   // Creates a CameraPosition from the builder
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        }}
-
-
-
-//    place_start = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById(R.id.place_start);
-//    place_end = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById(R.id.place_end);
-//
-//        place_start.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//        @Override
-//        public void onPlaceSelected(Place place) {
-//            place_start_string = place.getAddress().toString();
-//            mMap.clear();
-//            mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker()).title("Pickup here"));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
-//
-//        }
-//
-//        @Override
-//        public void onError(Status status) {
-//
-//        }
-//    });
-//
-//        place_end.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//        @Override
-//        public void onPlaceSelected(Place place) {
-//            place_end_string = place.getAddress().toString();
-//            mMap.clear();
-//            mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).title("Drop here"));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
-//
-//        }
-//
-//        @Override
-//        public void onError(Status status) {
-//
-//        }
-//    });
-}
+  }
 
 
