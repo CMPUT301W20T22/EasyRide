@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.easyride">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -17,8 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.login.LoginActivity"></activity>
-        <activity android:name=".ui.signup.SignUpActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -34,22 +33,23 @@
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:name=".map.MapsActivity"
             android:parentActivityName=".ui.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.login.LoginActivity" />
         </activity>
         <activity
-            android:name=".ui.signup.SignupActivity"
-            android:parentActivityName=".ui.login.LoginActivity">
+            android:name=".ui.signup.SignUpActivity"
+            android:parentActivityName=".ui.login.LoginActivity"
+            tools:ignore="DuplicateActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.login.LoginActivity" />
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            tools:ignore="DuplicateActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
