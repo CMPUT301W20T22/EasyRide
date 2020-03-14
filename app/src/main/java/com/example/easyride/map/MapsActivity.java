@@ -1,6 +1,5 @@
 package com.example.easyride.map;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -310,5 +309,3 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 //    });
 }
-
-
