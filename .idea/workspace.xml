@@ -6,14 +6,13 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="04b60644-c8e0-498c-afc4-32d245250e85" name="Default Changelist" comment="">
+    <list default="true" id="da2f595c-c511-404e-82ce-00eb3936172e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/MainActivity.java" afterDir="false" />
-=======
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/map/MapsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/map/MapsActivity.java" afterDir="false" />
     <list default="true" id="9c8dbd5d-ccb5-4e25-85b5-8f15e71efe34" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/data/CustomerDataManager.java" beforeDir="false" />
@@ -34,7 +33,6 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_driver_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_driver_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/ride_content_display.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/ride_content_display.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/easyride/LoginUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/easyride/LoginUnitTest.java" afterDir="false" />
->>>>>>> master
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +43,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="96LAY0Y8UD" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="KBV7N19104001109" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -78,7 +76,7 @@
   <component name="ProjectId" id="1YVjH80z2zhDdm9jv9AHMd4R6e0" />
   <component name="PropertiesComponent">
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_3_XL_API_28" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-03-03T19:42:49.924Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-03-14T00:38:24.116Z" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
@@ -88,12 +86,11 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.example.easyride" />
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.example.easyride.map" />
     </key>
     <key name="android.template.packageName">
-      <recent name="com.example.easyride.ui.login" />
-      <recent name="com.example.easyride.ui.signup" />
+      <recent name="com.example.easyride.map" />
       <recent name="com.example.easyride" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
