@@ -73,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         Places.initialize(getApplicationContext(),getString(R.string.api_key));
-        mh = new MarkerHandler();
+
         start_location_edittext = findViewById(R.id.start_location_EditText);
         end_location_edittext = findViewById(R.id.end_location_EditText);
 
@@ -90,12 +90,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startAutocompleteActivity(end_location_edittext);
             }
         });
-    }
-    @Override
-    public void onResume(){
-        super.onResume();
-        mh.showStartMarker(mMap);
-        mh.showEndMarker(mMap);
     }
 
     @Override
@@ -153,8 +147,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    end_location = place.getLatLng();
                     endPlace = place;
                     Log.d("location", "end");
-                    Log.d("location", place.toString());
-                    Geocoder geocoder = new Geocoder(MapsActivity.this);
                 }
 
                 if(place.toString()!=null && !place.toString().equals("")){
@@ -170,15 +162,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-//    public void place_marker(){
-//        mMap.clear();
-//        mMap.addMarker(new MarkerOptions().position(start_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title("Start here"));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(start_location,15));
-//        mMap.addMarker(new MarkerOptions().position(end_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).title("End here"));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(end_location, 15));
-//    }
-
-
 
     // An AsyncTask class for accessing the GeoCoding Web Service
     private class GeocoderTask extends AsyncTask<String, Void, List<Address>> {
@@ -188,11 +171,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Creating an instance of Geocoder class
             Geocoder geocoder = new Geocoder(MapsActivity.this);
             List<Address> addresses = null;
+
             try {
                 // Getting a maximum of 3 Address that matches the input text
-                Log.d("wierd", locationName[0]);
-                addresses = geocoder.getFromLocationName(locationName[0], 1);
-                Log.d("wierd2", addresses.get(0).toString());
+                addresses = geocoder.getFromLocationName(locationName[0], 3);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -217,15 +199,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Creating an instance of GeoPoint, to display in Google Map
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
-                Marker start_marker = mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                        .title("Start here"));
-                start_marker.remove();
-//                markerOptions = new MarkerOptions();
-//                markerOptions.position(latLng);
-//                markerOptions.title(address.getAddressLine(0));
-//                mMap.addMarker(markerOptions);
+                markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title(address.getAddressLine(0));
+                mMap.addMarker(markerOptions);
 
                 // Locate the first location
                 if(i==0)
