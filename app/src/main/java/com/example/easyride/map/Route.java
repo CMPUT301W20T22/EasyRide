@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public  class  Route {
   private PolylineOptions polylineOptions;
+  private Polyline polyline;
   protected GoogleMap gMap;
   private double distance;
 
@@ -40,6 +42,11 @@ public  class  Route {
   }
 
   public void showOnMap(LatLng start, LatLng end){
+    if (polyline!=null){
+      distance = 0.0;
+      polyline.remove();
+      polylineOptions = null;
+    }
     String url = getDirectionsUrl(start,end);
     DownloadTask downloadTask = new DownloadTask();
     downloadTask.execute(url);
@@ -121,7 +128,8 @@ public  class  Route {
       distance = lengthOfPolyline(polylineOptions.getPoints());
 
 // Drawing polyline in the Google Map for the i-th route
-      gMap.addPolyline(lineOptions);
+      polyline = gMap.addPolyline(lineOptions);
+
       }
     }
 

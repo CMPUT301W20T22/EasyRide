@@ -44,6 +44,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextInputEditText start_location_edittext;
     TextInputEditText end_location_edittext;
     TextInputEditText location_edittext;
-    Button sendRequestButton;
+    FloatingActionButton sendRequestButton;
 //    MarkerOptions markerOptions;
 //    LatLng latLng, start_location, end_location;
 //    private MarkerOptions options = new MarkerOptions();
