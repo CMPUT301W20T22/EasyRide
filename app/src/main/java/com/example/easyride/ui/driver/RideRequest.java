@@ -15,7 +15,7 @@ public class RideRequest {
   private String targetPoint;
   private String rideAccepted;
   private String rideCompleted;
-  private String cost;
+  private Integer cost;
   // private int distance;
   private String riderUserName;
   private String driverUserName;
@@ -25,7 +25,7 @@ public class RideRequest {
   }
 
 
-  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, String cost) {
+  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, Integer cost) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;
     this.targetPoint = targetPoint;
@@ -41,7 +41,7 @@ public class RideRequest {
     return targetPoint;
   }
 
-  public String getCost() {
+  public Integer getCost() {
     return cost;
   }
 
@@ -61,7 +61,7 @@ public class RideRequest {
 
   public String isRideCompleted() { return rideCompleted; }
 
-  public void setCost(String cost) { this.cost = cost; }
+  public void setCost(int cost) { this.cost = cost; }
 
 //  public void setDistance(int distance) {
 //    this.distance = distance;
