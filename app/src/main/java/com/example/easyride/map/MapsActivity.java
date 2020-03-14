@@ -231,16 +231,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }}
 
+    /**
+     * https://stackoverflow.com/questions/22609087/how-to-find-distance-by-road-between-2-geo-points-in-android-application-witho
+     */
 
     private float getDistance(double lat1, double lon1, double lat2, double lon2) {
         String result_in_kms = "";
         String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
-        String tag[] = {"text"};
+        String tag[] = {"value"};
 
         try {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+            urlConnection.disconnect();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(is);
             if (doc != null) {
@@ -257,12 +261,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 result_in_kms =String.valueOf( args.get(0));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
+
+
         Float f=Float.valueOf(result_in_kms);
         return f;
     }
+
     public DecimalFormat getFare(int distance) {
         DecimalFormat returnFare = new DecimalFormat("###.##");
         float fareMultiplier = 2.5f;
