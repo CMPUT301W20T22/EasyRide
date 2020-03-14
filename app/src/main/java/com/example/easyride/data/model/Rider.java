@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class Rider extends EasyRideUser{
   private ArrayList<RideRequest> activeRequests;
   private EasyRideUser currentRiderInfo;
-  //private static Rider instance;
+  private static Rider instance;
 
-  public Rider(String userId){
-    super(userId);
+  public Rider(EasyRideUser user){
+    super(user.getUserId());
     //super(userId);
     // UserDatabaseManager database = new UserDatabaseManager();
     // boolean exists = database.isRider("hi");
@@ -26,14 +26,17 @@ public class Rider extends EasyRideUser{
 
       // activeRequests = new ArrayList<>();
     //}
+    currentRiderInfo = user;
+
+    //TODO: add activeRequests
   }
   //return old instance or create a new one
-  /*public static Rider getInstance(String userID){
+  public static Rider getInstance(EasyRideUser user){
     if(instance == null){
-      instance = new Rider(userID);
+      instance = new Rider(user);
     }
     return instance;
-  }*/
+  }
 
   public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
 

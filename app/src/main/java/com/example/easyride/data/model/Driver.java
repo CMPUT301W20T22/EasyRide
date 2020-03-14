@@ -18,8 +18,8 @@ public class Driver extends EasyRideUser {
   private EasyRideUser currentDriverInfo;
   private static Driver instance;
 
-  private Driver(String userId){
-    super(userId);
+  private Driver(EasyRideUser user){
+    super(user.getUserId());
     // UserDatabaseManager database = new UserDatabaseManager();
     // boolean exists = database.isDriver("hi");
     // if (!exists){ instance = null; }
@@ -28,11 +28,14 @@ public class Driver extends EasyRideUser {
 
      // activeRequests = new ArrayList<>();
     // }
+    currentDriverInfo = user;
+
+    //TODO: add activeRequests
   }
   //return old instance or create a new one
-  public static Driver getInstance(String userID){
+  public static Driver getInstance(EasyRideUser user){
     if(instance == null){
-      instance = new Driver(userID);
+      instance = new Driver(user);
     }
     return instance;
   }
