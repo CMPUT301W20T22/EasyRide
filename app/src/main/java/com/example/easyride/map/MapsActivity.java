@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.android.volley.toolbox.HttpResponse;
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
 import com.example.easyride.ui.login.LoginActivity;
 import com.example.easyride.ui.rider.Ride;
 import com.example.easyride.ui.rider.SingleRide;
@@ -126,7 +128,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void fabClicked(){
         SingleRide instance = SingleRide.getInstance();
-        Ride rideInsert = new Ride(from, to, "10", "me");
+        Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
+        Ride rideInsert = new Ride(from, to, "10", riderInstance.getDisplayName(), "11");
         instance.addRide(rideInsert);
         Intent i = new Intent(MapsActivity.this, rider_home.class);
         startActivity(i);
