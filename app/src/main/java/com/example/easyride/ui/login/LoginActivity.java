@@ -143,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
 
+
                                             Rider settingInstance = Rider.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
@@ -153,8 +154,10 @@ public class LoginActivity extends AppCompatActivity {
 
                                         else if (isUser && Mode.equals("driver")) {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
+
                                             Intent intent = new Intent(LoginActivity.this, driver_home.class);
                                             Driver settingInstance = Driver.getInstance(user);
+
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
