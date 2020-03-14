@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.easyride.MainActivity;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.model.LocationBias;
 import com.google.android.libraries.places.api.model.Place.Field;
 
@@ -66,7 +67,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextInputEditText start_location_edittext;
     TextInputEditText end_location_edittext;
     TextInputEditText location_edittext;
-    Button button;
+    Button sendRequestButton;
 //    MarkerOptions markerOptions;
 //    LatLng latLng, start_location, end_location;
 //    private MarkerOptions options = new MarkerOptions();
@@ -82,11 +83,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Places.initialize(getApplicationContext(),getString(R.string.api_key));
-//        mh = new MarkerHandler();
 
         start_location_edittext = findViewById(R.id.start_location_EditText);
         end_location_edittext = findViewById(R.id.end_location_EditText);
-//        button = findViewById(R.id.create_request_button);
+        sendRequestButton = findViewById(R.id.create_request_button);
         start_location_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +120,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivityForResult(intent, request_code_end);
             }
         });
-//        button.setOnClickListener();
+        sendRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double distance = mh.getRouteDistance();
+                LatLng startPoint = mh.getStartLatLang();
+                LatLng endPoint = mh.getEndLatLang();
+//                PolylineOptions polylineOptions= mh.getRoutePolyline();
+            }
+        });
     }
 //    @Override
 //    public void onResume(){

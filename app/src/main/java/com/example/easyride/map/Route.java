@@ -1,6 +1,7 @@
 package com.example.easyride.map;
 //https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -24,24 +25,25 @@ import java.util.List;
 public  class  Route {
   private PolylineOptions polylineOptions;
   protected GoogleMap gMap;
+  private double distance;
 
   public Route(GoogleMap gMap) {
     this.gMap = gMap;
   }
 
-
-//  public abstract void setMap();
-
-  public PolylineOptions makeRoute(LatLng start, LatLng end){
-    String url = getDirectionsUrl(start,end);
-    DownloadTask downloadTask = new DownloadTask();
-    downloadTask.execute(url);
+  public PolylineOptions getPolylineOptions() {
     return polylineOptions;
   }
+
+  public double getDistance() {
+    return distance;
+  }
+
   public void showOnMap(LatLng start, LatLng end){
     String url = getDirectionsUrl(start,end);
     DownloadTask downloadTask = new DownloadTask();
     downloadTask.execute(url);
+
   }
   private class DownloadTask extends AsyncTask<String, Integer, String> {
 
@@ -116,6 +118,8 @@ public  class  Route {
 
       }
       polylineOptions = lineOptions;
+      distance = lengthOfPolyline(polylineOptions.getPoints());
+
 // Drawing polyline in the Google Map for the i-th route
       gMap.addPolyline(lineOptions);
       }
@@ -179,5 +183,31 @@ public  class  Route {
       }
       return data;
     }
+
+    // Author https://stackoverflow.com/users/502162/david-george
+    // https://stackoverflow.com/a/16794680
+  public static double distance(LatLng latLng1, LatLng latLng2) {
+    final int R = 6371; // Radius of the earth
+    double latDistance = Math.toRadians(latLng2.latitude - latLng1.latitude);
+    double lonDistance = Math.toRadians(latLng2.longitude - latLng1.longitude);
+    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+        + Math.cos(Math.toRadians(latLng1.latitude)) * Math.cos(Math.toRadians(latLng2.latitude))
+        * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    double distance = R * c * 1000; // convert to meters
+
+    distance = Math.pow(distance, 2);
+
+    return Math.sqrt(distance);
+  }
+  public static double  lengthOfPolyline(List<LatLng> latLngs ){
+    Double routeLength = 0.0;
+    for (int i=0; i < latLngs.size();i++) {
+      if (i!=0){
+        routeLength += distance(latLngs.get(i), latLngs.get(i-1));
+      }
+    }
+    return  routeLength;
+  }
 }
 

@@ -68,7 +68,7 @@ public class MarkerHandler {
 //    LatLng latLng = new LatLng(startLatLang.getLatitude(), startLatLang.getLongitude());
     startMarker = mMap.addMarker(new MarkerOptions()
         .position(startLatLang)
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         .title("Start here"));
     return true; // returns true response if it works well
   }
@@ -81,7 +81,7 @@ public class MarkerHandler {
 //    LatLng latLng = new LatLng(endLatLang.getLatitude(), endLatLang.getLongitude());
     endMarker = mMap.addMarker(new MarkerOptions()
         .position(endLatLang)
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         .title("End here"));
     return true; // returns true response if it works well
   }
@@ -121,8 +121,12 @@ public class MarkerHandler {
     this.endLatLang = endLatLang;
   }
 
-  public LatLng getStartAddress() {
+  public LatLng getStartLatLang() {
     return startLatLang;
+  }
+
+  public LatLng getEndLatLang() {
+    return endLatLang;
   }
 
   public Marker getEndMarker() {
@@ -153,5 +157,11 @@ public class MarkerHandler {
   }
   public void showRoute(){
         route.showOnMap(startLatLang, endLatLang);
+  }
+  public double getRouteDistance(){
+    return route.getDistance();
+  }
+  public PolylineOptions getRoutePolyline(){
+    return route.getPolylineOptions();
   }
 }
