@@ -16,7 +16,6 @@ import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -149,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
                             mEmail.setText("");
                             mPassword.setText("");
                         }
-
 
                     }
                 });
