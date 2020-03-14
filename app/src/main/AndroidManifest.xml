@@ -29,6 +29,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key"/>
+        <!--<activity
+            android:name=".ui.rider.rider_home"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".map.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".map.MapsActivity" />
+        </activity>-->
 
         <activity
             android:name=".map.MapsActivity"
@@ -54,6 +62,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
