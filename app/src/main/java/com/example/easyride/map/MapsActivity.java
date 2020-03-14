@@ -236,7 +236,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String result_in_kms = "";
         String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
         String tag[] = {"text"};
-        HttpResponse response = null;
+
         try {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
