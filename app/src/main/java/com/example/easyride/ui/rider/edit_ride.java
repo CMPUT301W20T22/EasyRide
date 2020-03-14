@@ -33,6 +33,10 @@ public class edit_ride extends AppCompatActivity {
         SingleRide instance = SingleRide.getInstance();
         DataList = instance.getRide();
         Ride rideReq = DataList.get(position);
+        String ride_distance = rideReq.getDistance();
+        String ride_distance_short = ride_distance.substring(0, 5);
+        String ride_cost= rideReq.getCost();
+        String ride_cost_short = ride_cost.substring(0, 5);
 
         from = findViewById(R.id.from_text);
         to = findViewById(R.id.to_text);
@@ -41,8 +45,8 @@ public class edit_ride extends AppCompatActivity {
 
         from.setText(rideReq.getFrom());
         to.setText(rideReq.getTo());
-        cost.setText(rideReq.getCost());
-        distance.setText(rideReq.getDistance());
+        cost.setText(ride_cost_short);
+        distance.setText(ride_distance_short);
 
         Button payButton = findViewById(R.id.pay_button);
         payButton.setOnClickListener(new View.OnClickListener() {

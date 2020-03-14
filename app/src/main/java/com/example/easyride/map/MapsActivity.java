@@ -123,6 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void fabClicked(){
         distance = getDistance(start_location_latitude, start_location_longitude, end_location_latitude, end_location_longitude);
+        distance = distance/1000;
         String distance_string = Float.toString(distance);
         Log.e("DISTANCE : ", distance_string);
         cost = getFare(distance);
