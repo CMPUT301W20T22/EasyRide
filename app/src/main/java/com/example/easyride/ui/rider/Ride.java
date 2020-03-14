@@ -17,6 +17,7 @@ public class Ride {
         this.cost = cost;
         this.user = user;
         this.distance = distance;
+
     }
 
 
@@ -37,7 +38,9 @@ public class Ride {
         return user;
     }
 
+
     public String getDistance() { return distance; }
+
 
     // SETTERS
     public void setUser(String user) {
@@ -56,5 +59,7 @@ public class Ride {
         this.from = from;
     }
 
+
     public void setDistance(String distance) { this.distance = distance; }
+
 }
