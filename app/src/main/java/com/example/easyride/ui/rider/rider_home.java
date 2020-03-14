@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.map.MapsActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -39,16 +40,13 @@ public class rider_home extends AppCompatActivity {
         LV = findViewById(R.id.ride_list);
 
         DataList = new ArrayList<>();
-        DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
+        SingleRide instance = SingleRide.getInstance();
+        DataList = instance.getRide();
+        //TODO get the current list of ride requests by user
+        //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
 
         rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);
-
-
-
-
-
-
 
 
 
@@ -83,7 +81,7 @@ public class rider_home extends AppCompatActivity {
         add_ride_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), add_ride.class);
+                Intent i = new Intent(v.getContext(), MapsActivity.class);
                 startActivity(i);
 
             }
