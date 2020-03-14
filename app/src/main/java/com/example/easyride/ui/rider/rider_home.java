@@ -40,8 +40,10 @@ public class rider_home extends AppCompatActivity {
         LV = findViewById(R.id.ride_list);
 
         DataList = new ArrayList<>();
+        SingleRide instance = SingleRide.getInstance();
+        DataList = instance.getRide();
         //TODO get the current list of ride requests by user
-        DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
+        //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
 
         rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);

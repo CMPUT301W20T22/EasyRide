@@ -21,6 +21,8 @@ import com.android.volley.toolbox.HttpResponse;
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.ui.rider.SingleRide;
 import com.example.easyride.ui.rider.rider_home;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -81,6 +83,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MarkerOptions options = new MarkerOptions();
     private ArrayList<LatLng> latlngs = new ArrayList<>();
     private FloatingActionButton fab;
+    private String from;
+    private String to;
 
 
     @Override
@@ -121,6 +125,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void fabClicked(){
+        SingleRide instance = SingleRide.getInstance();
+        Ride rideInsert = new Ride(from, to, "10", "me");
+        instance.addRide(rideInsert);
         Intent i = new Intent(MapsActivity.this, rider_home.class);
         startActivity(i);
     }
@@ -230,6 +237,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Address address = (Address) addresses.get(i);
 
                 // Creating an instance of GeoPoint, to display in Google Map
+
+                if(location_edittext == start_location_edittext) {
+                    Log.e("From Adress : ", address.getAddressLine(0));
+                    from = address.getAddressLine(0);
+
+                }else if(location_edittext == end_location_edittext){
+                    Log.e("To Adress : ", address.getAddressLine(0));
+                    to = address.getAddressLine(0);
+                }
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
                 markerOptions = new MarkerOptions();
