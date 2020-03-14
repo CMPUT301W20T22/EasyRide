@@ -14,10 +14,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.HttpResponse;
+import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.ui.rider.SingleRide;
+import com.example.easyride.ui.rider.rider_home;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,6 +42,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.w3c.dom.Document;
@@ -75,6 +82,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng latLng, start_location, end_location;
     private MarkerOptions options = new MarkerOptions();
     private ArrayList<LatLng> latlngs = new ArrayList<>();
+    private FloatingActionButton fab;
+    private String from;
+    private String to;
 
 
     @Override
@@ -103,6 +113,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startAutocompleteActivity(end_location_edittext);
             }
         });
+
+        fab = findViewById(R.id.create_request_button);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabClicked();
+            }
+        });
+    }
+
+    private void fabClicked(){
+        SingleRide instance = SingleRide.getInstance();
+        Ride rideInsert = new Ride(from, to, "10", "me");
+        instance.addRide(rideInsert);
+        Intent i = new Intent(MapsActivity.this, rider_home.class);
+        startActivity(i);
     }
 
     @Override
@@ -210,6 +237,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Address address = (Address) addresses.get(i);
 
                 // Creating an instance of GeoPoint, to display in Google Map
+
+                if(location_edittext == start_location_edittext) {
+                    Log.e("From Adress : ", address.getAddressLine(0));
+                    from = address.getAddressLine(0);
+
+                }else if(location_edittext == end_location_edittext){
+                    Log.e("To Adress : ", address.getAddressLine(0));
+                    to = address.getAddressLine(0);
+                }
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
                 markerOptions = new MarkerOptions();
