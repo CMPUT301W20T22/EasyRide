@@ -104,7 +104,7 @@ public class driver_home extends AppCompatActivity {
 
     }
 
-    private void showData() {
+    private void showData() g{
 
 
         // Get the data by geoLocation
@@ -137,7 +137,10 @@ public class driver_home extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflating driver_menu
         getMenuInflater().inflate(R.menu.driver_menu, menu);
-        // SearchView
+        /*
+         SearchView and implement the search bar
+         https://stackoverflow.com/questions/47093176/android-searchview-casting-exception
+        */
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
