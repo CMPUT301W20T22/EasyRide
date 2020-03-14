@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.HttpResponse;
 import com.example.easyride.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -37,11 +38,24 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
@@ -216,7 +230,51 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .build();                   // Creates a CameraPosition from the builder
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
-        }}
+        }
+
+        private float getDistance(double lat1, double lon1, double lat2, double lon2) {
+            String result_in_kms = "";
+            String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
+            String tag[] = {"text"};
+            HttpResponse response = null;
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document doc = builder.parse(is);
+                if (doc != null) {
+                    NodeList nl;
+                    ArrayList args = new ArrayList();
+                    for (String s : tag) {
+                        nl = doc.getElementsByTagName(s);
+                        if (nl.getLength() > 0) {
+                            Node node = nl.item(nl.getLength() - 1);
+                            args.add(node.getTextContent());
+                        } else {
+                            args.add(" - ");
+                        }
+                    }
+                    result_in_kms =String.valueOf( args.get(0));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Float f=Float.valueOf(result_in_kms);
+            return f;
+        }
+        public DecimalFormat getFare() {
+            DecimalFormat returnFare = new DecimalFormat("0.00");
+            float fare = 0;
+            float fareMultiplier = 2.5f;
+            fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
+            returnFare.format(fare);
+            return returnFare;
+        }
+
+
+    }
+
 
 
 
