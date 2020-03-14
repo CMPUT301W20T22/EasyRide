@@ -41,4 +41,8 @@ public class SingleRide {
     public ArrayList<Ride> getRide() {
         return ride;
     }
+
+    public void removeAt(int position){
+        ride.remove(position);
+    }
 }
