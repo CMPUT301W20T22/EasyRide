@@ -14,9 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.easyride.R;
+import com.example.easyride.data.model.Driver;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -27,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class driver_home extends AppCompatActivity {
 
@@ -37,15 +43,40 @@ public class driver_home extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private String mode;
+    FirebaseAuth fAuth;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_home);
+        /*
+        Intent intent = getIntent();
+        String ID = intent.getStringExtra(LoginActivity.ID);
+        Log.d(TAG, "THe ID: " + ID);
+        db.collection("driver").document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String,Object> data = document.getData();
+                        Log.d(TAG, "DocumentSnapshot data: " + data);
 
-        // init database
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });*/
+
+                // init database
         db = FirebaseFirestore.getInstance();
+        Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
+        EasyRideUser user = driver.getCurrentDriverInfo();
+        Log.d("User: ", user.getDisplayName());
 
         // initial views
         mRequestList = findViewById(R.id.request_list);
