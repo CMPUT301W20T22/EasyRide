@@ -56,6 +56,7 @@ public class rider_home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(view.getContext(), edit_ride.class);
+                i.putExtra("position", position);
                 startActivity(i);
 
             }
@@ -68,7 +69,8 @@ public class rider_home extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 DataList.remove(position);
                 rideAdapter.notifyDataSetChanged();
-
+                SingleRide instance = SingleRide.getInstance();
+                instance.removeAt(position);
                 Toast.makeText(rider_home.this, "Item Deleted", Toast.LENGTH_LONG).show();
 
                 return true;
