@@ -20,6 +20,7 @@ import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
+import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -141,11 +142,11 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
 
                                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-
                                             Rider settingInstance = Rider.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
+
 
                                             startActivity(intent);
                                         }
@@ -154,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(LoginActivity.this, driver_home.class);
                                             Driver settingInstance = Driver.getInstance(user);
+
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);

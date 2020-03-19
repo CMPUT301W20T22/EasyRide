@@ -1,5 +1,6 @@
 package com.example.easyride.ui.rider;
 
+// Ride class that stores important information on each Ride Request.
 public class Ride {
 
     private String from;

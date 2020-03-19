@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.easyride.R;
 
+// This class is when a rider wants to add a new ride request.
+// Layout is activity_add_ride
 
 public class add_ride extends rider_home {
 

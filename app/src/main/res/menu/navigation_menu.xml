@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_account"
+        android:title="Account"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/action_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home_black_24dp"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/action_logout"
+        android:title="Sign Out"
+        android:icon="@drawable/ic_lock_black_24dp"
+        app:showAsAction="never">
+    </item>
+</menu>

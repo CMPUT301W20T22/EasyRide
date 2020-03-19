@@ -11,23 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.easyride.R;
-import com.example.easyride.ui.rider.Ride;
 
 import java.util.ArrayList;
 
-import io.opencensus.stats.Measurement;
+public class custom_list_for_rider extends ArrayAdapter<Ride> {
 
 
-// Displays the ride information of active ride requests to the Rider home page.
-public class CustomList extends ArrayAdapter<Ride> {
-
-
-    // Hold the ride attributes I want to display, and the activity context.
+    // Hold the Measurement attributes I want to display, and the activity context.
     private ArrayList<Ride> rides;
     private Context context;
 
     // Implementation of constructor from the parent class.
-    public CustomList(Context context, ArrayList<Ride> rides) {
+    public custom_list_for_rider (Context context, ArrayList<Ride> rides) {
         super(context,0,rides);
         this.rides = rides;
         this.context = context;
@@ -35,7 +30,7 @@ public class CustomList extends ArrayAdapter<Ride> {
 
     // getView() allows you to set the values for the views in your listView. Use autocomplete.
     // We want get to reference the TextViews in the content.xml layout file and fill them with
-    // values (From, To).
+    // values (Date, Systolic, Diastolic, and Heart Rate).
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -45,7 +40,7 @@ public class CustomList extends ArrayAdapter<Ride> {
 
         // If convertView holds nothing then we inflate the 'content.xml'.
         if (view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.ride_content_display,parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.ride_content_display_for_ride,parent,false);
         }
 
         // This next step extracts the information from the DataList and
@@ -64,3 +59,4 @@ public class CustomList extends ArrayAdapter<Ride> {
     }
 
 }
+

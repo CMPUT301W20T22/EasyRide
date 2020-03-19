@@ -36,6 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// DRIVER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A DRIVER.
+// Handles the driver home screen to display and navigate between active requests, as well as
+// allowing users to select and accept a new ride request.
+
+
+
 public class driver_home extends AppCompatActivity {
 
     private static final String TAG = "FireLog";
@@ -98,7 +104,7 @@ public class driver_home extends AppCompatActivity {
 
     }
 
-    private void showData() g{
+    private void showData() {
 
 
         // Get the data by geoLocation
