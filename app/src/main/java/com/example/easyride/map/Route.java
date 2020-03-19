@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.easyride.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,9 +29,11 @@ public  class  Route {
   private Polyline polyline;
   protected GoogleMap gMap;
   private double distance;
+  private String apiKey;
 
-  public Route(GoogleMap gMap) {
+  public Route(GoogleMap gMap, String apiKey) {
     this.gMap = gMap;
+    this.apiKey = apiKey;
   }
 
   public PolylineOptions getPolylineOptions() {
@@ -145,7 +148,7 @@ public  class  Route {
       // Sensor enabled
       String sensor = "sensor=false";
       String mode = "mode=driving";
-      String key = "key=AIzaSyAbWZnSh3B5IqASEwuQ7-5kLNbH__K681k";
+      String key = "key=" + apiKey;
       // Building the parameters to the web service
       String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + key;
 

@@ -47,9 +47,9 @@ public class MarkerHandler {
     mockLatLangs();
   }
 
-  public MarkerHandler(GoogleMap mMap) {
+  public MarkerHandler(GoogleMap mMap, String apiKey) {
     this.mMap = mMap;
-    route = new Route(mMap);
+    route = new Route(mMap, apiKey);
 //    route = new Route(){
 //      final gmap = mMap;
 //      @Override

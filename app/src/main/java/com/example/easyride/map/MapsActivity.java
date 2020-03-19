@@ -1,6 +1,5 @@
 package com.example.easyride.map;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -19,13 +18,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.example.easyride.MainActivity;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.model.LocationBias;
 import com.google.android.libraries.places.api.model.Place.Field;
-
+import com.android.volley.toolbox.HttpResponse;
+import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.ui.rider.SingleRide;
+import com.example.easyride.ui.rider.rider_home;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
@@ -46,11 +51,24 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
@@ -58,23 +76,13 @@ import java.util.Map;
  * https://github.com/ManishAndroidIos/Master-Google-Place-API
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-//    GoogleMap mMap;
     MarkerHandler mh;
-//    Place startPlace, endPlace;
-//    String place_start_string, place_end_string;
-//    PlacesClient placesClient;
     private int request_code_start = 1001;
     private int request_code_end = 1002;
-    TextInputEditText start_location_edittext;
-    TextInputEditText end_location_edittext;
-    TextInputEditText location_edittext;
-    FloatingActionButton sendRequestButton;
-//    MarkerOptions markerOptions;
-//    LatLng latLng, start_location, end_location;
-//    private MarkerOptions options = new MarkerOptions();
-//    private ArrayList<LatLng> latlngs = new ArrayList<>();
+    private TextInputEditText start_location_edittext, end_location_edittext, location_edittext;
+    private FloatingActionButton sendRequestButton;
     private boolean isMapLoaded = false;
-
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +99,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         start_location_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                autocompleteFragment(start_location_edittext);
                 List<Field> fields = Arrays.asList(Field.ID, Field.NAME, Field.LAT_LNG);
                 location_edittext = start_location_edittext;
-                // Start the autocomplete intent.
 
+                // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                     .setInitialQuery("ETLC")
                     .build(MapsActivity.this);
-//                intent.putExtra("isStart", "true");
                 startActivityForResult(intent, request_code_start);
             }
         });
@@ -107,17 +113,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         end_location_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                autocompleteFragment(end_location_edittext);
                 location_edittext = end_location_edittext;
-//                autocompleteFragment(start_location_edittext);
                 List<Field> fields = Arrays.asList(Field.ID, Field.NAME, Field.LAT_LNG);
-//                fields.add(new Field())
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                     .setInitialQuery("HUB mall")
                     .setCountry("CA")
                     .build(MapsActivity.this);
-//                intent.putExtra("isStart", "false");
-//                Log.d("data1",intent.getExtras().toString());
                 startActivityForResult(intent, request_code_end);
             }
         });
@@ -125,25 +126,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 double distance = mh.getRouteDistance();
+                Log.e("DISTANCE : ", Double.toString(distance));
                 LatLng startPoint = mh.getStartLatLang();
                 LatLng endPoint = mh.getEndLatLang();
+                Double cost = distance/1000+7;
+                String cost_string = Double.toString(cost);
+                String distance_string = Double.toString(distance);
+                Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
+                String start_location_string = "Dice!";
+                String end_location_string = "HUB";
+                Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
+                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
+                SingleRide instance = SingleRide.getInstance();
+                instance.addRide(rideInsert);
+                Intent i = new Intent(MapsActivity.this, rider_home.class);
+                startActivity(i);
             }
         });
     }
-//    @Override
-//    public void onResume(){
+
+//    private void fabClicked(){
+//        SingleRide instance = SingleRide.getInstance();
 //
-//        super.onResume();
-//        mh.showStartMarker();
-//        mh.showEndMarker();
+//        Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
+//        Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
+//
+//        instance.addRide(rideInsert);
+//
+//        Intent i = new Intent(MapsActivity.this, rider_home.class);
+//        startActivity(i);
 //    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 //        mMap = googleMap;
         if (! isMapLoaded){
-            mh = new MarkerHandler(googleMap);
+            mh = new MarkerHandler(googleMap, getString(R.string.api_key));
         }
         isMapLoaded = true;
 
@@ -195,13 +214,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
             else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent(data);
+                // TODO: Handle the error.
+//                Place place = Autocomplete.getPlaceFromIntent(data);
+//                location_edittext.setText(place.getName());
+//
+//                if(place.toString()!=null && !place.toString().equals("")){
+//                    new MapsActivity.GeocoderTask().execute(place.toString());
+                }
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
     }
-  }
-
-
+//  }
+//}
