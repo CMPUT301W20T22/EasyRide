@@ -14,10 +14,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.HttpResponse;
+import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.ui.rider.SingleRide;
+import com.example.easyride.ui.rider.rider_home;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,6 +44,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.w3c.dom.Document;
@@ -62,19 +71,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * https://github.com/ManishAndroidIos/Master-Google-Place-API
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    GoogleMap mMap;
-    MarkerHandler mh;
-    Place startPlace, endPlace;
-    String place_start_string, place_end_string;
-    PlacesClient placesClient;
+    private GoogleMap mMap;
+    private String start_location_string, end_location_string;
     private int request_code = 1001;
-    TextInputEditText start_location_edittext;
-    TextInputEditText end_location_edittext;
-    TextInputEditText location_edittext;
-    MarkerOptions markerOptions;
-    LatLng latLng, start_location, end_location;
-    private MarkerOptions options = new MarkerOptions();
-    private ArrayList<LatLng> latlngs = new ArrayList<>();
+    private TextInputEditText location_edittext, start_location_edittext,end_location_edittext;
+    private MarkerOptions markerOptions;
+    private LatLng latLng;
+    private FloatingActionButton fab;
+    private float distance, cost;
+    private double start_location_latitude, start_location_longitude;
+    private double end_location_latitude, end_location_longitude;
+
 
 
     @Override
@@ -103,6 +110,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startAutocompleteActivity(end_location_edittext);
             }
         });
+
+        fab = findViewById(R.id.create_request_button);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabClicked();
+            }
+        });
+    }
+
+    private void fabClicked(){
+        distance = getDistance(start_location_latitude, start_location_longitude, end_location_latitude, end_location_longitude);
+        distance = distance/1000;
+        String distance_string = Float.toString(distance);
+        Log.e("DISTANCE : ", distance_string);
+        cost = getFare(distance);
+        String cost_string = Float.toString(cost);
+        Log.e("COST : ", cost_string);
+
+        SingleRide instance = SingleRide.getInstance();
+
+        Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
+        Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
+
+        instance.addRide(rideInsert);
+
+        Intent i = new Intent(MapsActivity.this, rider_home.class);
+        startActivity(i);
     }
 
     /**
@@ -160,17 +196,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 location_edittext.setText(place.getName());
-//                Log.d("start_location", place.getLatLng().getClass().getName());
-                if(location_edittext == start_location_edittext){
-//                    start_location = place.getLatLng();
-                    startPlace = place;
-                    Log.d("location", "start");
-                }
-                else if (location_edittext == end_location_edittext){
-//                    end_location = place.getLatLng();
-                    endPlace = place;
-                    Log.d("location", "end");
-                }
 
                 if(place.toString()!=null && !place.toString().equals("")){
                     new MapsActivity.GeocoderTask().execute(place.toString());
@@ -220,6 +245,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Address address = (Address) addresses.get(i);
 
                 // Creating an instance of GeoPoint, to display in Google Map
+
+                if(location_edittext == start_location_edittext) {
+                    Log.e("From Adress : ", address.getAddressLine(0));
+                    start_location_string = address.getAddressLine(0);
+                    start_location_latitude = address.getLatitude();
+                    start_location_longitude = address.getLongitude();
+
+                }else if(location_edittext == end_location_edittext){
+                    Log.e("To Adress : ", address.getAddressLine(0));
+                    end_location_string = address.getAddressLine(0);
+                    end_location_latitude = address.getLatitude();
+                    end_location_longitude = address.getLongitude();
+                }
                 latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
                 markerOptions = new MarkerOptions();
@@ -243,79 +281,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private float getDistance(double lat1, double lon1, double lat2, double lon2) {
-        String result_in_kms = "";
-        String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
-        String tag[] = {"text"};
-        HttpResponse response = null;
-        try {
-            URL url = new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream is = new BufferedInputStream(urlConnection.getInputStream());
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(is);
-            if (doc != null) {
-                NodeList nl;
-                ArrayList args = new ArrayList();
-                for (String s : tag) {
-                    nl = doc.getElementsByTagName(s);
-                    if (nl.getLength() > 0) {
-                        Node node = nl.item(nl.getLength() - 1);
-                        args.add(node.getTextContent());
-                    } else {
-                        args.add(" - ");
-                    }
-                }
-                result_in_kms =String.valueOf( args.get(0));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Float f=Float.valueOf(result_in_kms);
-        return f;
+        Location A = new Location("Starting");
+        Location B = new Location("Ending");
+        A.setLatitude(lat1);
+        A.setLongitude(lon1);
+        B.setLatitude((lat2));
+        B.setLongitude(lon2);
+        return A.distanceTo(B);
     }
-    public DecimalFormat getFare() {
-        DecimalFormat returnFare = new DecimalFormat("0.00");
-        float fare = 0;
+//    /**
+//     * https://stackoverflow.com/questions/22609087/how-to-find-distance-by-road-between-2-geo-points-in-android-application-witho
+//     */
+//    private float getDistance(double lat1, double lon1, double lat2, double lon2) {
+//        String result_in_kms = "";
+//        String urlString = "http://maps.google.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&units=metric&key=AIzaSyAbWZnSh3B5IqASEwuQ7-5kLNbH__K681k";
+//        String tag[] = {"value"};
+//        try {
+//            URL url = new URL(urlString);
+//            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//            InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+//            //urlConnection.disconnect();
+//            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//            Document doc = builder.parse(is);
+//            if (doc != null) {
+//                NodeList nl;
+//                ArrayList args = new ArrayList();
+//                for (String s : tag) {
+//                    nl = doc.getElementsByTagName(s);
+//                    if (nl.getLength() > 0) {
+//                        Node node = nl.item(nl.getLength() - 1);
+//                        args.add(node.getTextContent());
+//                    } else {
+//                        args.add(" - ");
+//                    }
+//                }
+//                result_in_kms =String.valueOf( args.get(0));
+//            }
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        Float f=Float.valueOf(result_in_kms);
+//        return f;
+//    }
+
+    public float getFare(float distance) {
         float fareMultiplier = 2.5f;
-        fare = getDistance(start_location.latitude, start_location.longitude, end_location.latitude, end_location.longitude)*fareMultiplier;
-        returnFare.format(fare);
-        return returnFare;
+        float fare = distance*fareMultiplier;
+        return fare;
     }
 
 
-
-//    place_start = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById(R.id.place_start);
-//    place_end = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById(R.id.place_end);
-//
-//        place_start.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//        @Override
-//        public void onPlaceSelected(Place place) {
-//            place_start_string = place.getAddress().toString();
-//            mMap.clear();
-//            mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker()).title("Pickup here"));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
-//
-//        }
-//
-//        @Override
-//        public void onError(Status status) {
-//
-//        }
-//    });
-//
-//        place_end.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//        @Override
-//        public void onPlaceSelected(Place place) {
-//            place_end_string = place.getAddress().toString();
-//            mMap.clear();
-//            mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).title("Drop here"));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
-//
-//        }
-//
-//        @Override
-//        public void onError(Status status) {
-//
-//        }
-//    });
 }

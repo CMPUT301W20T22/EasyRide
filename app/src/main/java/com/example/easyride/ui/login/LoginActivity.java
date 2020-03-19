@@ -140,14 +140,12 @@ public class LoginActivity extends AppCompatActivity {
                                         // Start new Activity if the user is correct
                                         else if (isUser && Mode.equals("rider")) {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(LoginActivity.this, rider_home.class);
 
-                                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                                             Rider settingInstance = Rider.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
-
-
                                             startActivity(intent);
                                         }
 

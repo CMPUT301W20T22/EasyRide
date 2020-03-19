@@ -11,6 +11,7 @@
   </component>
   <component name="ChangeListManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <list default="true" id="9c8dbd5d-ccb5-4e25-85b5-8f15e71efe34" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/driver/driver_home.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/driver/driver_home.java" afterDir="false" />
@@ -41,6 +42,14 @@
     </list>
 
 >>>>>>> 9d622c005b078b2c3cc80ee22e4b0e98a1bc8d1d
+=======
+    <list default="true" id="9c8dbd5d-ccb5-4e25-85b5-8f15e71efe34" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/map/MapsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/map/MapsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/rider/Ride.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/rider/Ride.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/rider/edit_ride.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/easyride/ui/rider/edit_ride.java" afterDir="false" />
+    </list>
+>>>>>>> e49422a90e127c3eb18ec0f6fd0abe9d5933d3d4
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,10 +60,14 @@
     <option name="isMigrated" value="true" />
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_27" />
 =======
   <component name="ExecutionTargetManager" SELECTED_TARGET="KBV7N19104001109" />
 >>>>>>> 58aafdd92cb6db1387467ed7be38ba607a17ff9c
+=======
+  <component name="ExecutionTargetManager" SELECTED_TARGET="KBV7N19104001109" />
+>>>>>>> e49422a90e127c3eb18ec0f6fd0abe9d5933d3d4
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -66,6 +79,7 @@
         <projects_view>
           <tree_state>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -75,6 +89,9 @@
 =======
             <expand />
 >>>>>>> 58aafdd92cb6db1387467ed7be38ba607a17ff9c
+=======
+            <expand />
+>>>>>>> e49422a90e127c3eb18ec0f6fd0abe9d5933d3d4
             <select />
           </tree_state>
         </projects_view>
@@ -85,8 +102,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="layoutResourceFile" />
-        <option value="Class" />
         <option value="resourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
