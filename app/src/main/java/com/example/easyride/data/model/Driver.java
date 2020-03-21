@@ -14,9 +14,9 @@ import java.util.ArrayList;
  */
 public class Driver extends EasyRideUser {
 
-  private ArrayList<RideRequest> activeRequests;
   private EasyRideUser currentDriverInfo;
   private static Driver instance;
+
 
   private Driver(EasyRideUser user){
     super(user.getUserId());
@@ -40,6 +40,6 @@ public class Driver extends EasyRideUser {
     return instance;
   }
 
-  public EasyRideUser getCurrentDriverInfo(){return currentDriverInfo;}
+  public EasyRideUser getCurrentDriverInfo(){ return currentDriverInfo; }
 
 }

@@ -98,7 +98,15 @@ public class SignUpActivity extends AppCompatActivity {
                             // Based on the Status (Rider/Driver)
                             // The document of the collection will be stored based on the created account ID
                             FirebaseUser user = fAuth.getCurrentUser();
+
+                            // Update the DisplayName
+                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(FullName).build();
+                            user.updateProfile(profileChangeRequest);
+
+                            // get user ID
                             String ID = user.getUid();
+
                             Map<String, Object> data = new HashMap<>();
                             data.put("Email: ", Email);
                             data.put("Password: ", Password);
@@ -106,12 +114,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                             db.collection(Mode).document(ID)
                                     .set(data)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            // ignore this
-                                        }
-                                    })
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {

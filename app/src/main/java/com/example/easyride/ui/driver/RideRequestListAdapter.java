@@ -17,7 +17,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> implements Filterable {
+public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> {
 
     private List<RideRequest> rideRequestsList;
 
@@ -49,41 +49,6 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
         return rideRequestsList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    private Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<RideRequest> filteredList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0 ) {
-                filteredList.addAll(rideRequestsList);
-            }
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (RideRequest rideRequest : rideRequestsList) {
-                    if (rideRequest.getRiderUserName().toLowerCase().equals(filterPattern)) {
-                        filteredList.add(rideRequest);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            rideRequestsList.clear();
-            rideRequestsList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

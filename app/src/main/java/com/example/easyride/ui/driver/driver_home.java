@@ -66,9 +66,11 @@ public class driver_home extends AppCompatActivity {
 
                 // init database
         db = FirebaseFirestore.getInstance();
+        /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
         EasyRideUser user = driver.getCurrentDriverInfo();
         Log.d("User: ", user.getDisplayName());
+        */
 
         // initial views
         mRequestList = findViewById(R.id.request_list);
@@ -77,10 +79,6 @@ public class driver_home extends AppCompatActivity {
         mRequestList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         mRequestList.setLayoutManager(layoutManager);
-
-        // Set Adapter
-        rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
-        mRequestList.setAdapter(rideRequestListAdapter);
 
 
         // Set OnclickListener
@@ -103,33 +101,30 @@ public class driver_home extends AppCompatActivity {
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("isAccepted", true)
-                .orderBy("cost", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.d(TAG, "Error : " + e.getMessage());
-                }
-                else {
-                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-
-                        if (doc.getType() == DocumentChange.Type.ADDED) {
-
-                            RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
-                                    doc.getDocument().getString("pickupPoint"),
-                                    doc.getDocument().getString("targetPoint"),
-                                    doc.getDocument().getLong("cost").intValue(),
-                                    false,
-                                    false);
-
-                            rideRequestList.add(rideRequest);
-                            rideRequestListAdapter.notifyDataSetChanged();
-                        }
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot doc : task.getResult()) {
+                        RideRequest rideRequest = new RideRequest(doc.getString("riderUserName"),
+                                doc.getString("pickupPoint"),
+                                doc.getString("targetPoint"),
+                                doc.getDouble("cost"),
+                                false,
+                                false);
+                        rideRequestList.add(rideRequest);
                     }
+                    // Set Adapter
+                    rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
+                    mRequestList.setAdapter(rideRequestListAdapter);
                 }
+
+                else {
+                    Log.d(TAG, "Error getting documents: " + task.getException());
+                }
+
             }
         });
     }
-
-
 
 }
