@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.common.collect.Maps;
 
 import org.json.JSONObject;
@@ -40,6 +41,8 @@ public class MarkerHandler {
   private Marker endMarker = null;
   private LatLng startLatLang = null;
   private LatLng endLatLang = null;
+  private Place startPlace;
+  private Place endPlace;
   public GoogleMap mMap;
   private Route route;
 
@@ -113,12 +116,14 @@ public class MarkerHandler {
     return true;
   }
 
-  public void setStartLatLang(LatLng startLatLang) {
+  public void setStartLatLang(LatLng startLatLang, Place place) {
     this.startLatLang = startLatLang;
+    this.startPlace = place;
   }
 
-  public void setEndLatLang(LatLng endLatLang) {
+  public void setEndLatLang(LatLng endLatLang, Place place) {
     this.endLatLang = endLatLang;
+    this.endPlace = place;
   }
 
   public LatLng getStartLatLang() {
@@ -161,7 +166,16 @@ public class MarkerHandler {
   public double getRouteDistance(){
     return route.getDistance();
   }
+
   public PolylineOptions getRoutePolyline(){
     return route.getPolylineOptions();
+  }
+
+  public Place getStartPlace() {
+    return startPlace;
+  }
+
+  public Place getEndPlace() {
+    return endPlace;
   }
 }

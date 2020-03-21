@@ -3,6 +3,8 @@ package com.example.easyride.ui.rider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,11 +12,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.map.MapsActivity;
+import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.user_profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -27,6 +35,8 @@ public class rider_home extends AppCompatActivity {
     public static ListView LV;
     public static ArrayAdapter<Ride> rideAdapter;
     public static ArrayList<Ride> DataList;
+
+
 
 
 
@@ -94,4 +104,44 @@ public class rider_home extends AppCompatActivity {
 
 
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflating driver_menu
+        getMenuInflater().inflate(R.menu.navigation_menu, menu);
+
+
+
+
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_account: {
+                Intent i = new Intent(rider_home.this, user_profile.class);
+                startActivity(i);
+                break;
+            }
+            case R.id.action_home: {
+                Intent i = new Intent(rider_home.this, rider_home.class);
+                startActivity(i);
+                break;
+            }
+            case R.id.action_logout: {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(rider_home.this, LoginActivity.class);
+                startActivity(i);
+                break;
+            }
+
+        }
+        return true;
+    }
+
 }
