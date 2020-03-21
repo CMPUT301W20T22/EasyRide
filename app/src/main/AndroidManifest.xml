@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.driver.SearchRequestActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -76,9 +75,18 @@
         <activity android:name=".ui.rider.rider_home" />
         <activity android:name=".ui.rider.add_ride" />
         <activity android:name=".ui.rider.edit_ride" />
-        <activity android:name=".ui.driver.driver_home" />
+        <activity android:name=".ui.driver.driver_home"/>
         <activity android:name=".ui.rider.QR_Pay" />
         <activity android:name=".user_profile" />
+        <activity android:name=".ui.driver.SearchRequestActivity"
+            android:parentActivityName=".ui.driver.driver_home"
+            android:theme="@style/CustomTheme">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.easyride.ui.driver.driver_home" />
+        </activity>
+
     </application>
 
 </manifest>
