@@ -1,20 +1,24 @@
 package com.example.easyride.ui.driver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.view.View;
 import android.widget.Toast;
+
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 
 import com.example.easyride.R;
@@ -56,6 +60,7 @@ public class SearchRequestActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FirebaseFirestoreSettings settings;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,9 +80,19 @@ public class SearchRequestActivity extends AppCompatActivity {
         Log.d("User: ", user.getDisplayName());
         */
 
-        // Add back button
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar = findViewById(R.id.searchToolBar);
+        // Add Support ActionBar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Search Request");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SearchRequestActivity.this, driver_home.class));
+                finish();
+            }
+        });
 
         // initial views
         mRequestList = findViewById(R.id.searchList);
@@ -93,7 +108,12 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         // show data in Recycler View
         showData();
+    }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void showData() {
@@ -125,17 +145,6 @@ public class SearchRequestActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            this.finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class driver_home extends AppCompatActivity {
 
         searchBtn = findViewById(R.id.searchRequestBtn);
 
-                // init database
+        // init database
         db = FirebaseFirestore.getInstance();
         settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -97,6 +97,7 @@ public class driver_home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(driver_home.this, SearchRequestActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -111,30 +112,37 @@ public class driver_home extends AppCompatActivity {
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("isAccepted", true)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot doc : task.getResult()) {
-                        RideRequest rideRequest = new RideRequest(doc.getString("riderUserName"),
-                                doc.getString("pickupPoint"),
-                                doc.getString("targetPoint"),
-                                doc.getDouble("cost"),
-                                false,
-                                false);
-                        rideRequestList.add(rideRequest);
+                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen error", e);
+                            return;
+                        }
+
+                        for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
+                                        doc.getDocument().getString("pickupPoint"),
+                                        doc.getDocument().getString("targetPoint"),
+                                        doc.getDocument().getDouble("cost"),
+                                        true,
+                                        false);
+                                rideRequestList.add(rideRequest);
+                            }
+                                // Set Adapter
+                                rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
+                                mRequestList.setAdapter(rideRequestListAdapter);
+                        }
+
+                            String source = querySnapshot.getMetadata().isFromCache() ?
+                                    "local cache" : "server";
+                            Log.d(TAG, "Data fetched from " + source);
+
                     }
-                    // Set Adapter
-                    rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
-                    mRequestList.setAdapter(rideRequestListAdapter);
-                }
+                });
 
-                else {
-                    Log.d(TAG, "Error getting documents: " + task.getException());
-                }
-
-            }
-        });
     }
 
 
@@ -151,18 +159,22 @@ public class driver_home extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_account:
+            case R.id.action_account: {
                 break;
-            case R.id.action_logout:
+            }
+            case R.id.action_logout: {
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
-            case R.id.action_home:
+            }
+            case R.id.action_home: {
                 startActivity(new Intent(this, driver_home.class));
                 finish();
                 break;
+            }
         }
+
 
         return super.onOptionsItemSelected(item);
     }
