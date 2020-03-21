@@ -18,9 +18,8 @@ import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.map.MapsActivity;
-import com.example.easyride.ui.driver.SearchRequestActivity;
 import com.example.easyride.ui.driver.driver_home;
+import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -107,9 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             final String ID = user.getUid();
-                            final Intent driver_intent = new Intent(LoginActivity.this, driver_home.class);
-                            driver_intent.putExtra("Mode", Mode);
-                            driver_intent.putExtra("ID", ID);
                             /*
                              Check if the user existed in the collection (Rider/Driver)
                              If it's not then deny the access to the application
@@ -140,24 +136,18 @@ public class LoginActivity extends AppCompatActivity {
                                         // Start new Activity if the user is correct
                                         else if (isUser && Mode.equals("rider")) {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
-
                                             Intent intent = new Intent(LoginActivity.this, rider_home.class);
 
 
-                                            Rider settingInstance = Rider.getInstance(user);
-
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
-
                                             startActivity(intent);
                                             finish();
                                         }
 
                                         else if (isUser && Mode.equals("driver")) {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
-
                                             Intent intent = new Intent(LoginActivity.this, driver_home.class);
-                                            Driver settingInstance = Driver.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
@@ -171,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
 
 
                         }

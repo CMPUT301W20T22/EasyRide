@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,9 +53,6 @@ public class SearchRequestActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
-    private String mode;
-    FirebaseAuth fAuth;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,12 +61,18 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         // init database
         db = FirebaseFirestore.getInstance();
+        /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
         EasyRideUser user = driver.getCurrentDriverInfo();
         Log.d("User: ", user.getDisplayName());
+        */
+
+        // Add back button
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initial views
-        mRequestList = findViewById(R.id.request_list);
+        mRequestList = findViewById(R.id.searchList);
 
         // set recycler view properties
         mRequestList.setHasFixedSize(true);
@@ -78,7 +83,6 @@ public class SearchRequestActivity extends AppCompatActivity {
         searchRequestAdapter = new RideRequestListAdapter(rideRequestList);
         mRequestList.setAdapter(searchRequestAdapter);
 
-
         // show data in Recycler View
         showData();
 
@@ -86,37 +90,45 @@ public class SearchRequestActivity extends AppCompatActivity {
 
     private void showData() {
 
-
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("isAccepted", false)
-                .orderBy("cost", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.d(TAG, "Error : " + e.getMessage());
-                }
-                else {
-                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+                .orderBy("cost", Query.Direction.ASCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null)  {
+                            Log.d(TAG, "Error : " + e.getMessage());
+                        }
+                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
 
-                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                            RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
-                                    doc.getDocument().getString("pickupPoint"),
-                                    doc.getDocument().getString("targetPoint"),
-                                    doc.getDocument().getLong("cost").intValue(),
-                                    false,
-                                    false);
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
+                                        doc.getDocument().getString("pickupPoint"),
+                                        doc.getDocument().getString("targetPoint"),
+                                        doc.getDocument().getDouble("cost"),
+                                        doc.getDocument().getBoolean("isAccepted"),
+                                        doc.getDocument().getBoolean("isCompleted"));
 
-                            rideRequestList.add(rideRequest);
-                            searchRequestAdapter.notifyDataSetChanged();
+                                rideRequestList.add(rideRequest);
+                                searchRequestAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,6 +165,7 @@ public class SearchRequestActivity extends AppCompatActivity {
     private void searchData(String query) {
         // search data
         db.collection("RideRequest").whereEqualTo("riderUserName", query.toLowerCase())
+                .whereEqualTo("isAccepted", false)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -163,7 +176,7 @@ public class SearchRequestActivity extends AppCompatActivity {
                             RideRequest rideRequest = new RideRequest(doc.getString("riderUserName"),
                                     doc.getString("pickupPoint"),
                                     doc.getString("targetPoint"),
-                                    doc.getLong("cost").intValue(),
+                                    doc.getDouble("cost"),
                                     false,
                                     false);
                             rideRequestList.add(rideRequest);
@@ -184,5 +197,7 @@ public class SearchRequestActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
 }
