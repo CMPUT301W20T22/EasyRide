@@ -13,8 +13,8 @@ public class RideRequest {
  // private String key;
   private String pickupPoint;
   private String targetPoint;
-  private String rideAccepted;
-  private String rideCompleted;
+  private boolean rideAccepted;
+  private boolean rideCompleted;
   private Integer cost;
   // private int distance;
   private String riderUserName;
@@ -25,12 +25,13 @@ public class RideRequest {
   }
 
 
-  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, Integer cost) {
+  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, Integer cost, boolean rideAccepted, boolean rideCompleted) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;
     this.targetPoint = targetPoint;
     this.cost = cost;
-
+    this.rideAccepted = rideAccepted;
+    this.rideCompleted = rideCompleted;
   }
 
   public String getPickupPoint() {
@@ -57,9 +58,9 @@ public class RideRequest {
     return riderUserName;
   }
 
-  public String isRideAccepted() { return rideAccepted; }
+  public boolean isRideAccepted() { return rideAccepted; }
 
-  public String isRideCompleted() { return rideCompleted; }
+  public boolean isRideCompleted() { return rideCompleted; }
 
   public void setCost(int cost) { this.cost = cost; }
 
@@ -75,11 +76,11 @@ public class RideRequest {
     this.pickupPoint = pickupPoint;
   }
 
-  public void setRideAccepted(String rideAccepted) {
+  public void setRideAccepted(boolean rideAccepted) {
     this.rideAccepted = rideAccepted;
   }
 
-  public void setRideCompleted(String rideCompleted) {
+  public void setRideCompleted(boolean rideCompleted) {
     this.rideCompleted = rideCompleted;
   }
 

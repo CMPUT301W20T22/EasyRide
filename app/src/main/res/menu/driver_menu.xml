@@ -5,7 +5,7 @@
     <!--Search Item-->
     <item
         android:id="@+id/search"
-        android:title="Search Here"
+        android:title="Search By Distance/Cost"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />

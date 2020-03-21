@@ -1,8 +1,11 @@
 package com.example.easyride.ui.driver;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +17,12 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> {
+public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> implements Filterable {
 
-    driver_home DriverActivity;
-    public List<RideRequest> rideRequestsList;
+    private List<RideRequest> rideRequestsList;
 
-    public RideRequestListAdapter(driver_home driverActivity, List<RideRequest> rideRequestsList) {
-        this.DriverActivity = driverActivity;
+
+    public RideRequestListAdapter(List<RideRequest> rideRequestsList) {
         this.rideRequestsList = rideRequestsList;
     }
 
@@ -31,13 +33,14 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.riderName.setText(rideRequestsList.get(position).getRiderUserName());
-        holder.pickupLocation.setText(rideRequestsList.get(position).getPickupPoint());
-        holder.destination.setText(rideRequestsList.get(position).getTargetPoint());
-        holder.fee.setText(rideRequestsList.get(position).getCost().toString());
+        holder.riderName.setText("Rider: " + rideRequestsList.get(position).getRiderUserName());
+        holder.pickupLocation.setText("Pick Up Location: " + rideRequestsList.get(position).getPickupPoint());
+        holder.destination.setText("Destination: " + rideRequestsList.get(position).getTargetPoint());
+        holder.fee.setText("Fare: " + rideRequestsList.get(position).getCost().toString());
 
     }
 
@@ -45,6 +48,42 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
     public int getItemCount() {
         return rideRequestsList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<RideRequest> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0 ) {
+                filteredList.addAll(rideRequestsList);
+            }
+            else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (RideRequest rideRequest : rideRequestsList) {
+                    if (rideRequest.getRiderUserName().toLowerCase().equals(filterPattern)) {
+                        filteredList.add(rideRequest);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            rideRequestsList.clear();
+            rideRequestsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

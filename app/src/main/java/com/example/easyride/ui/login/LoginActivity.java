@@ -19,6 +19,7 @@ import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
+import com.example.easyride.ui.driver.SearchRequestActivity;
 import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.signup.SignUpActivity;
@@ -147,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
+                                            finish();
                                         }
 
                                         else if (isUser && Mode.equals("driver")) {
@@ -157,6 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
+                                            finish();
                                         }
                                     }
                                     else {
