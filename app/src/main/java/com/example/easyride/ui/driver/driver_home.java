@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 
 
+import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
@@ -135,4 +137,33 @@ public class driver_home extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.navigation_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_account:
+                break;
+            case R.id.action_logout:
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.action_home:
+                startActivity(new Intent(this, driver_home.class));
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
