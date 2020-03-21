@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     rider_mode_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.putExtra(mode, "rider" );
+        Intent i = new Intent(MainActivity.this, rider_home.class);
+        //i.putExtra(mode, "rider" );
         startActivity(i);
 
       }
