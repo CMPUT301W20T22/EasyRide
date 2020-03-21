@@ -134,8 +134,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
-                String start_location_string = "Dice!";
-                String end_location_string = "HUB";
+                String start_location_string = mh.getStartPlace().getName();
+                String end_location_string = mh.getEndPlace().getName();
                 Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
                 Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
                 SingleRide instance = SingleRide.getInstance();
@@ -201,14 +201,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (requestCode == request_code_start){
                     start_location_edittext.setText(place.getName());
                     if(place.toString()!=null && !place.toString().equals("")) {
-                        mh.setStartLatLang(place.getLatLng());
+                        mh.setStartLatLang(place.getLatLng(), place);
                         mh.showMarkers();
                     }
                 }
                 else if (requestCode == request_code_end){
                     end_location_edittext.setText(place.getName());
                     if( !place.toString().equals("")) {
-                        mh.setEndLatLang(place.getLatLng());
+                        mh.setEndLatLang(place.getLatLng(), place);
                         mh.showMarkers();
                     }
                 }
