@@ -17,7 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light">
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.driver.SearchRequestActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -28,16 +29,17 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/api_key"/>
-        <!--<activity
+            android:value="@string/api_key" />
+        <!--
+<activity
             android:name=".ui.rider.rider_home"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".map.MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".map.MapsActivity" />
-        </activity>-->
-
+        </activity>
+        -->
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -62,7 +64,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
