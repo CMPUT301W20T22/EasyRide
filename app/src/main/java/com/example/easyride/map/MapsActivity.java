@@ -142,15 +142,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 double distance = mh.getRouteDistance();
 
-                String count = null;
+                String ID = null;
                 try {
-                    count = createID();
+                    ID = createID();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                LatLng startPoint = mh.getStartLatLang();
-                LatLng endPoint = mh.getEndLatLang();
+                /*
+                   LatLng startPoint = mh.getStartLatLang();
+                   LatLng endPoint = mh.getEndLatLang();
+                */
                 Double cost = distance/1000+7;
                 DecimalFormat df = new DecimalFormat("#.##");
                 cost = Double.valueOf(df.format(cost));
@@ -171,7 +173,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 data.put("isAccepted", false);
                 data.put("isCompleted", false);
 
-                db.collection("RideRequest").document(count).set(data);
+                db.collection("RideRequest").document(ID).set(data);
 
                 Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
                 Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);

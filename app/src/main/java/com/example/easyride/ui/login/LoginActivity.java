@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(LoginActivity.this, rider_home.class);
 
-
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
