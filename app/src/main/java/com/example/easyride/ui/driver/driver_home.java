@@ -33,6 +33,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -55,6 +57,7 @@ public class driver_home extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FloatingActionButton searchBtn;
+    private FirebaseFirestoreSettings settings;
 
 
     @Override
@@ -66,6 +69,11 @@ public class driver_home extends AppCompatActivity {
 
                 // init database
         db = FirebaseFirestore.getInstance();
+        settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
         /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
         EasyRideUser user = driver.getCurrentDriverInfo();

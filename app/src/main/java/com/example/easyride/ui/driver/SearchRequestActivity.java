@@ -32,6 +32,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -53,6 +55,7 @@ public class SearchRequestActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
+    private FirebaseFirestoreSettings settings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,11 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         // init database
         db = FirebaseFirestore.getInstance();
+        settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
         /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
         EasyRideUser user = driver.getCurrentDriverInfo();
@@ -94,7 +102,7 @@ public class SearchRequestActivity extends AppCompatActivity {
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("isAccepted", false)
                 .orderBy("cost", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         if (e != null)  {
