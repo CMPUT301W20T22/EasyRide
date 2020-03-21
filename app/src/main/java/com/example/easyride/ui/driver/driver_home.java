@@ -60,6 +60,7 @@ public class driver_home extends AppCompatActivity {
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FloatingActionButton searchBtn;
     private FirebaseFirestoreSettings settings;
+    private boolean offLine = false;
 
 
     @Override
@@ -95,9 +96,16 @@ public class driver_home extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(driver_home.this, SearchRequestActivity.class);
-                startActivity(intent);
-                finish();
+                if (!offLine) {
+                    Intent intent = new Intent(driver_home.this, SearchRequestActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    Toast.makeText(driver_home.this,
+                            "You are in Offline Mode right now! You can't search for Request at this moment!", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
@@ -136,9 +144,18 @@ public class driver_home extends AppCompatActivity {
                                 mRequestList.setAdapter(rideRequestListAdapter);
                         }
 
-                            String source = querySnapshot.getMetadata().isFromCache() ?
+                        String source = querySnapshot.getMetadata().isFromCache() ?
                                     "local cache" : "server";
-                            Log.d(TAG, "Data fetched from " + source);
+
+                        // Check to see if the application is in offline mode or not
+                        if (source.equals("local cache")) {
+                            offLine = true;
+                        }
+                        else {
+                            offLine = false;
+                        }
+
+                        Log.d(TAG, "Data fetched from " + source);
 
                     }
                 });
