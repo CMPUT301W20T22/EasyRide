@@ -83,8 +83,9 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.searchToolBar);
         // Add Support ActionBar
+        // https://stackoverflow.com/questions/31311612/how-to-catch-navigation-icon-click-on-toolbar-from-fragment
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Search Request");
+        toolbar.setTitle("Search for Active Request");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -167,6 +168,7 @@ public class SearchRequestActivity extends AppCompatActivity {
         */
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setQueryHint("Search by rider username");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

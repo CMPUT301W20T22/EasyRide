@@ -82,6 +82,8 @@ public class driver_home extends AppCompatActivity {
         EasyRideUser user = driver.getCurrentDriverInfo();
         Log.d("User: ", user.getDisplayName());
         */
+        //ActionBar
+        getSupportActionBar().setTitle("Current Accepted Request");
 
         // initial views
         mRequestList = findViewById(R.id.request_list);
@@ -103,6 +105,7 @@ public class driver_home extends AppCompatActivity {
         });
 
         // Set OnclickListener for Search Btn
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +116,7 @@ public class driver_home extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(driver_home.this,
-                            "You are in Offline Mode right now! You can't search for Request at this moment!", Toast.LENGTH_SHORT)
+                            "You are in Offline Mode right now! You can't search for Request at the moment!", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -157,6 +160,7 @@ public class driver_home extends AppCompatActivity {
                                     "local cache" : "server";
 
                         // Check to see if the application is in offline mode or not
+                        // https://stackoverflow.com/questions/49068084/about-firestore-is-there-some-flag-i-can-check-if-the-data-is-on-off-line-data
                         if (source.equals("local cache")) {
                             offLine = true;
                         }
@@ -189,6 +193,7 @@ public class driver_home extends AppCompatActivity {
                 break;
             }
             case R.id.action_logout: {
+                // Sign out of the account
                 FirebaseAuth.getInstance().signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
