@@ -142,13 +142,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 double distance = mh.getRouteDistance();
 
-                String ID = null;
-                try {
-                    ID = createID();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 /*
                    LatLng startPoint = mh.getStartLatLang();
                    LatLng endPoint = mh.getEndLatLang();
@@ -156,6 +149,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Double cost = distance/1000+7;
                 DecimalFormat df = new DecimalFormat("#.##");
                 cost = Double.valueOf(df.format(cost));
+                distance = Double.parseDouble(df.format(distance));
                 String cost_string = Double.toString(cost);
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
@@ -165,18 +159,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String start_location_string = mh.getStartPlace().getName();
                 String end_location_string = mh.getEndPlace().getName();
 
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("user", user.getDisplayName());
-                data.put("from", start_location_string);
-                data.put("to", end_location_string);
-                data.put("cost", cost);
-                data.put("rideAccepted", false);
-                data.put("rideCompleted", false);
-
-                db.collection("RideRequest").document(ID).set(data);
-
-
-                Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
+                user = fAuth.getCurrentUser();
+                Rider riderInstance = Rider.getInstance(new EasyRideUser(user.getDisplayName()));
                 EasyRideUser currentU = riderInstance.getCurrentRiderInfo();
                 Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string,
                         currentU.getUserId(), distance_string);
@@ -279,9 +263,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-    public String createID() throws Exception{
-        return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
-    }
 }
 
 

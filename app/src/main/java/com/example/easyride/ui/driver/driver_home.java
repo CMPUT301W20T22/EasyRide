@@ -41,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public class driver_home extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FloatingActionButton searchBtn;
+    private FirebaseAuth fAuth;
     private FirebaseFirestoreSettings settings;
     private boolean offLine = false;
 
@@ -74,6 +76,7 @@ public class driver_home extends AppCompatActivity {
 
         // init database
         db = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
         settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .build();
@@ -149,7 +152,7 @@ public class driver_home extends AppCompatActivity {
                                 RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
-                                        doc.getDocument().getDouble("cost"),
+                                        doc.getDocument().getString("cost"),
                                         true,
                                         false);
                                 rideRequestList.add(rideRequest);
@@ -192,7 +195,11 @@ public class driver_home extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_account: {
-                startActivity(new Intent(driver_home.this, user_profile.class));
+                Intent i = new Intent(driver_home.this, user_profile.class);
+                FirebaseUser user = fAuth.getCurrentUser();
+                String ID = user.getUid();
+                i.putExtra("ID", ID);
+                startActivity(i);
                 break;
             }
             case R.id.action_logout: {
