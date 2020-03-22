@@ -91,8 +91,18 @@ public class driver_home extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         mRequestList.setLayoutManager(layoutManager);
 
+        rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
 
-        // Set OnclickListener
+        // set OnclickListener for RecyclerView
+        rideRequestListAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                rideRequestList.get(position);
+                Log.d(TAG, "Item Click on item " + position);
+            }
+        });
+
+        // Set OnclickListener for Search Btn
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +150,6 @@ public class driver_home extends AppCompatActivity {
                                 rideRequestList.add(rideRequest);
                             }
                                 // Set Adapter
-                                rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
                                 mRequestList.setAdapter(rideRequestListAdapter);
                         }
 
@@ -195,4 +204,6 @@ public class driver_home extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
