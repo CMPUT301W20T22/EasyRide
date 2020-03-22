@@ -24,6 +24,8 @@ import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.user_profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +62,7 @@ public class driver_home extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FloatingActionButton searchBtn;
+    private FirebaseAuth fAuth;
     private FirebaseFirestoreSettings settings;
     private boolean offLine = false;
 
@@ -72,6 +76,7 @@ public class driver_home extends AppCompatActivity {
 
         // init database
         db = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
         settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .build();
@@ -127,7 +132,7 @@ public class driver_home extends AppCompatActivity {
 
     }
 
-    private void showData() g{
+    private void showData() {
 
 
         // Get the data by geoLocation
@@ -147,7 +152,7 @@ public class driver_home extends AppCompatActivity {
                                 RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
-                                        doc.getDocument().getDouble("cost"),
+                                        doc.getDocument().getString("cost"),
                                         true,
                                         false);
                                 rideRequestList.add(rideRequest);
@@ -190,6 +195,11 @@ public class driver_home extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_account: {
+                Intent i = new Intent(driver_home.this, user_profile.class);
+                FirebaseUser user = fAuth.getCurrentUser();
+                String ID = user.getUid();
+                i.putExtra("ID", ID);
+                startActivity(i);
                 break;
             }
             case R.id.action_logout: {

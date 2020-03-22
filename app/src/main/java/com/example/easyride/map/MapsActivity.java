@@ -142,13 +142,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 double distance = mh.getRouteDistance();
 
-                String ID = null;
-                try {
-                    ID = createID();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 /*
                    LatLng startPoint = mh.getStartLatLang();
                    LatLng endPoint = mh.getEndLatLang();
@@ -156,29 +149,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Double cost = distance/1000+7;
                 DecimalFormat df = new DecimalFormat("#.##");
                 cost = Double.valueOf(df.format(cost));
+                distance = Double.parseDouble(df.format(distance));
                 String cost_string = Double.toString(cost);
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
 
-                String start_location_string = "Dice!";
-                String end_location_string = "HUB";
 
+                String start_location_string = mh.getStartPlace().getName();
+                String end_location_string = mh.getEndPlace().getName();
 
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("user", user.getDisplayName());
-                data.put("from", start_location_string);
-                data.put("to", end_location_string);
-                data.put("cost", cost);
-                data.put("rideAccepted", false);
-                data.put("rideCompleted", false);
+                user = fAuth.getCurrentUser();
+                Rider riderInstance = Rider.getInstance(new EasyRideUser(user.getDisplayName()));
+                EasyRideUser currentU = riderInstance.getCurrentRiderInfo();
+                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string,
+                        currentU.getUserId(), distance_string);
 
-                db.collection("RideRequest").document(ID).set(data);
-
-                Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
-                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
-                SingleRide instance = SingleRide.getInstance();
-                instance.addRide(rideInsert);
+                riderInstance.addRide(rideInsert);
+                //SingleRide instance = SingleRide.getInstance();
+                //instance.addRide(rideInsert);
 
                 Intent i = new Intent(MapsActivity.this, rider_home.class);
                 startActivity(i);
@@ -245,14 +234,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (requestCode == request_code_start){
                     start_location_edittext.setText(place.getName());
                     if(place.toString()!=null && !place.toString().equals("")) {
-                        mh.setStartLatLang(place.getLatLng());
+                        mh.setStartLatLang(place.getLatLng(), place);
                         mh.showMarkers();
                     }
                 }
                 else if (requestCode == request_code_end){
                     end_location_edittext.setText(place.getName());
                     if( !place.toString().equals("")) {
-                        mh.setEndLatLang(place.getLatLng());
+                        mh.setEndLatLang(place.getLatLng(), place);
                         mh.showMarkers();
                     }
                 }
@@ -274,9 +263,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-    public String createID() throws Exception{
-        return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
-    }
 }
 
 

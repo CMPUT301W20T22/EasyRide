@@ -23,14 +23,14 @@ import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
+import com.example.easyride.ui.login.LoginActivity;
 import com.example.easyride.user_profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.auth.FirebaseUser;
+
 
 import java.util.ArrayList;
 
@@ -45,9 +45,8 @@ public class rider_home extends AppCompatActivity {
     public ListView LV;
     public ArrayAdapter<Ride> rideAdapter;
     public ArrayList<Ride> DataList;
-
-
-
+    private FirebaseUser user;
+    private String userID;
 
 
     @Override
@@ -65,9 +64,13 @@ public class rider_home extends AppCompatActivity {
         //DataList = instance.getRide();
         //TODO get the current list of ride requests by user
         //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
-        Rider alright = Rider.getInstance(new EasyRideUser("kk"));
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getDisplayName();
+        Rider alright = Rider.getInstance(new EasyRideUser(userID));
         EasyRideUser user = alright.getCurrentRiderInfo();
-        Log.e("HEYYYY", user.getDisplayName());
+        if (user.getDisplayName() != null ) {
+            Log.e("HEYYYY", user.getDisplayName());
+        }
         alright.updateList();
         DataList = alright.getActiveRequests();
         /*new Thread(new Runnable() {
@@ -164,11 +167,9 @@ public class rider_home extends AppCompatActivity {
                 break;
             }
             case R.id.action_logout: {
-
                 Rider.clear();
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 fAuth.signOut();
-
                 Intent i = new Intent(rider_home.this, MainActivity.class);
                 startActivity(i);
                 break;

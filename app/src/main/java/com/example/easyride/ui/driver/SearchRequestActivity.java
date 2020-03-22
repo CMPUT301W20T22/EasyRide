@@ -147,7 +147,7 @@ public class SearchRequestActivity extends AppCompatActivity {
                                 RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
-                                        doc.getDocument().getDouble("cost"),
+                                        doc.getDocument().getString("cost"),
                                         doc.getDocument().getBoolean("rideAccepted"),
                                         doc.getDocument().getBoolean("rideCompleted"));
 
@@ -206,7 +206,7 @@ public class SearchRequestActivity extends AppCompatActivity {
                             RideRequest rideRequest = new RideRequest(doc.getString("user"),
                                     doc.getString("from"),
                                     doc.getString("to"),
-                                    doc.getDouble("cost"),
+                                    doc.getString("cost"),
                                     false,
                                     false);
                             rideRequestList.add(rideRequest);

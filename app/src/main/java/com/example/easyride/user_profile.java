@@ -15,6 +15,8 @@ import com.example.easyride.ui.rider.rider_home;
 // Should be able to edit contact info
 public class user_profile extends AppCompatActivity {
 
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
