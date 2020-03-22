@@ -196,7 +196,7 @@ public class driver_home extends AppCompatActivity {
                 // Sign out of the account
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             }
             case R.id.action_home: {
