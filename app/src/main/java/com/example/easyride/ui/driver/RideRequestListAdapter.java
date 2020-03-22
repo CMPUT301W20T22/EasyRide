@@ -1,9 +1,11 @@
 package com.example.easyride.ui.driver;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -20,7 +22,15 @@ import java.util.List;
 public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> {
 
     private List<RideRequest> rideRequestsList;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnClickLisnter(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public RideRequestListAdapter(List<RideRequest> rideRequestsList) {
         this.rideRequestsList = rideRequestsList;
@@ -29,8 +39,11 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ride_content_display,parent,false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.ride_content_display,parent,false);
+
+
+        return new ViewHolder(view, mListener);
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,7 +70,7 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
         public TextView riderName, pickupLocation, destination, fee;
 
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             mView = itemView;
@@ -66,6 +79,22 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
             pickupLocation = mView.findViewById(R.id.pickUp);
             destination = mView.findViewById(R.id.target);
             fee = mView.findViewById(R.id.cost);
+
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)  {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+
+
     }
+
+
 }

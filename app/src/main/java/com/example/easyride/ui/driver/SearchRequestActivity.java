@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -106,8 +107,17 @@ public class SearchRequestActivity extends AppCompatActivity {
         searchRequestAdapter = new RideRequestListAdapter(rideRequestList);
         mRequestList.setAdapter(searchRequestAdapter);
 
+        searchRequestAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                rideRequestList.get(position);
+                Log.d(TAG, "Item Click on item " + position);
+            }
+        });
+
         // show data in Recycler View
         showData();
+
     }
 
     @Override
@@ -214,7 +224,5 @@ public class SearchRequestActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 
 }
