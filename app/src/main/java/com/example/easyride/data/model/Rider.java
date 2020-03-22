@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
+import java.lang.reflect.*;
 
 /**
  * Rider class that captures user information for logged in users retrieved from LoginRepository
@@ -26,13 +27,13 @@ import static com.android.volley.VolleyLog.TAG;
  * @see EasyRideUser
  */
 public class Rider extends EasyRideUser{
-  private ArrayList<Ride> activeRequests = new ArrayList<Ride>();
+  private ArrayList<Ride> activeRequests;
   private ArrayList<String> requestsID;
   private EasyRideUser currentRiderInfo;
   private static Rider instance;
   private FirebaseFirestore db;
 
-  public Rider(EasyRideUser user){
+  public Rider(final EasyRideUser user){
     super(user.getUserId());
     //super(userId);
     // UserDatabaseManager database = new UserDatabaseManager();
@@ -47,6 +48,8 @@ public class Rider extends EasyRideUser{
     Log.e("HEYYYY", "IM HERE");
 
     requestsID = new ArrayList<>();
+    activeRequests= new ArrayList<Ride>();
+
     db.collection("RideRequest")
             .whereEqualTo("user", user.getUserId())
             .get()
@@ -55,9 +58,10 @@ public class Rider extends EasyRideUser{
               public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                   for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                      requestsID.add(document.getId());
-                      activeRequests.add(document.toObject(Ride.class));
-
+                    requestsID.add(document.getId());
+                    activeRequests.add(document.toObject(Ride.class));
+                    //Log.e("SIZE", user.getUserId());
+                    //Log.e("SIZE", Integer.toString(activeRequests.size()));
 
                   }
                 } else {
@@ -66,6 +70,7 @@ public class Rider extends EasyRideUser{
               }
             });
     currentRiderInfo = user;
+    //updateList();
 
     //TODO: add activeRequests
   }
@@ -81,6 +86,39 @@ public class Rider extends EasyRideUser{
     instance = null;
   }
 
+  public void updateList() {
+
+    //requestsID = new ArrayList<>();
+    //activeRequests = new ArrayList<Ride>();
+    //requestsID.clear();
+    //activeRequests.clear();
+    //new ArrayList<>(activeRequests);
+    Log.e("SIZE", Integer.toString(activeRequests.size()));
+    db.collection("RideRequest")
+            .whereEqualTo("user", currentRiderInfo.getUserId())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+              @Override
+              public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                  activeRequests.clear();
+                  requestsID.clear();
+                  for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    requestsID.add(document.getId());
+                    activeRequests.add(document.toObject(Ride.class));
+                    Log.e("user", currentRiderInfo.getUserId());
+                    Log.e("SIZE", Integer.toString(activeRequests.size()));
+
+                  }
+                } else {
+                  Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+              }
+            });
+
+
+  }
+
   public void addRide(Ride rideInsert){
     DocumentReference newCityRef = db.collection("RideRequest").document();
     newCityRef.set(rideInsert);
@@ -88,6 +126,7 @@ public class Rider extends EasyRideUser{
   }
 
   public ArrayList<Ride> getActiveRequests() {
+    //updateList();
     return activeRequests;
   }
 

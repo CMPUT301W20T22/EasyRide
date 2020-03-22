@@ -25,9 +25,11 @@ import java.util.ArrayList;
 // Handles viewing of a ride request. Don't need to be able to edit the request
 public class edit_ride extends AppCompatActivity {
 
-    public static ArrayList<Ride> DataList;
+    public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
     String fareWithTip;
+    String ride_cost_short;
+    String ride_distance_short;
 
 
     @Override
@@ -40,13 +42,21 @@ public class edit_ride extends AppCompatActivity {
        // SingleRide instance = SingleRide.getInstance();
        // DataList = instance.getRide();
         Rider alright = Rider.getInstance(new EasyRideUser("kk"));
+
         DataList = alright.getActiveRequests();
         final Ride rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
-        String ride_distance_short = ride_distance.substring(0, 3);
+        if (ride_distance.length() > 4) {
+            ride_distance_short = ride_distance.substring(0, 5);
+        }else{
+            ride_distance_short = ride_distance;
+        }
         String ride_cost= rideReq.getCost();
-        String ride_cost_short = ride_cost.substring(0, 3);
-
+        if (ride_cost.length() > 4) {
+            ride_cost_short = ride_cost.substring(0, 4);
+        }else {
+            ride_cost_short = ride_cost;
+        }
         from = findViewById(R.id.from_text);
         to = findViewById(R.id.to_text);
         cost = findViewById(R.id.cost_text);
@@ -78,19 +88,21 @@ public class edit_ride extends AppCompatActivity {
             }
         });
 
+        if (rideReq.isRideAccepted()) {
+            Button viewProfile = findViewById(R.id.profile_button);
+            viewProfile.setText("Driver Profile");
+            viewProfile.setClickable(true);
+            viewProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), user_profile.class);
+                    startActivity(i);
+                }
 
-        Button viewProfile = findViewById(R.id.profile_button);
-        viewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), user_profile.class);
-                startActivity(i);
-            }
 
+            });
+        }
 
-
-
-        });
         final Rider instance = Rider.getInstance(new EasyRideUser("kk"));
 
         Button delete = findViewById(R.id.delete_button);
@@ -151,7 +163,10 @@ public class edit_ride extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 fareWithTip = input.getText().toString();
                 dialog.dismiss();
-                cost.setText(fareWithTip);
+                if (!fareWithTip.equals("")) {
+                    //ride_cost_short = fareWithTip.substring(0, 4);
+                    cost.setText(fareWithTip);
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -8,6 +8,9 @@ public class Ride {
     private String cost;
     private String user;
     private String distance;
+    private String driverUserName;
+    private boolean rideAccepted;
+    private boolean rideCompleted;
 
 
     // CONSTRUCTOR
@@ -17,6 +20,9 @@ public class Ride {
         this.cost = cost;
         this.user = user;
         this.distance = distance;
+        this.rideAccepted = false;
+        this.rideCompleted = false;
+
 
     }
 
@@ -41,6 +47,33 @@ public class Ride {
 
     public String getDistance() { return distance; }
 
+    public void setRideCompleted(boolean rideCompleted) {
+        this.rideCompleted = rideCompleted;
+    }
+
+    private void setRideAccepted(boolean rideAccepted) {
+        this.rideAccepted = rideAccepted;
+    }
+
+    public void setDriverUserName(String driverUserName) {
+        this.driverUserName = driverUserName;
+        setRideAccepted(true);
+        if (driverUserName == null){
+            setRideAccepted(false);
+        }
+    }
+
+    public String getDriverUserName() {
+        return driverUserName;
+    }
+
+    public boolean isRideAccepted() {
+        return rideAccepted;
+    }
+
+    public boolean isRideCompleted() {
+        return rideCompleted;
+    }
 
     // SETTERS
     public void setUser(String user) {

@@ -42,9 +42,9 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class rider_home extends AppCompatActivity {
 
-    public static ListView LV;
-    public static ArrayAdapter<Ride> rideAdapter;
-    public static ArrayList<Ride> DataList;
+    public ListView LV;
+    public ArrayAdapter<Ride> rideAdapter;
+    public ArrayList<Ride> DataList;
 
 
 
@@ -60,6 +60,7 @@ public class rider_home extends AppCompatActivity {
         LV = findViewById(R.id.ride_list);
 
         DataList = new ArrayList<>();
+        DataList.clear();
         //SingleRide instance = SingleRide.getInstance();
         //DataList = instance.getRide();
         //TODO get the current list of ride requests by user
@@ -67,6 +68,7 @@ public class rider_home extends AppCompatActivity {
         Rider alright = Rider.getInstance(new EasyRideUser("kk"));
         EasyRideUser user = alright.getCurrentRiderInfo();
         Log.e("HEYYYY", user.getDisplayName());
+        alright.updateList();
         DataList = alright.getActiveRequests();
         /*new Thread(new Runnable() {
             public void run() {
