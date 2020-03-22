@@ -166,12 +166,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String end_location_string = mh.getEndPlace().getName();
 
                 HashMap<String, Object> data = new HashMap<>();
-                data.put("riderUserName", user.getDisplayName());
-                data.put("pickupPoint", start_location_string);
-                data.put("targetPoint", end_location_string);
+                data.put("user", user.getDisplayName());
+                data.put("from", start_location_string);
+                data.put("to", end_location_string);
                 data.put("cost", cost);
-                data.put("isAccepted", false);
-                data.put("isCompleted", false);
+                data.put("rideAccepted", false);
+                data.put("rideCompleted", false);
 
                 db.collection("RideRequest").document(ID).set(data);
 
