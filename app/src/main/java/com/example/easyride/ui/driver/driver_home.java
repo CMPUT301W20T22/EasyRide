@@ -24,6 +24,8 @@ import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.ui.login.LoginActivity;
+import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.user_profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -190,6 +192,7 @@ public class driver_home extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_account: {
+                startActivity(new Intent(driver_home.this, user_profile.class));
                 break;
             }
             case R.id.action_logout: {

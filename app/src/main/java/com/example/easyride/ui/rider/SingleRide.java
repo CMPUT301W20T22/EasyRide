@@ -2,6 +2,8 @@ package com.example.easyride.ui.rider;
 
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -9,6 +11,7 @@ public class SingleRide {
 
     private static SingleRide instance;
     private ArrayList<Ride> ride;
+    private FirebaseFirestore db;
 
 
     private SingleRide(){
@@ -21,6 +24,7 @@ public class SingleRide {
 
         // activeRequests = new ArrayList<>();
         // }
+        db = FirebaseFirestore.getInstance();
 
         ride = new ArrayList<>();
 
@@ -35,6 +39,8 @@ public class SingleRide {
     }
 
     public void addRide(Ride rideInsert){
+        DocumentReference newCityRef = db.collection("RideRequest").document();
+        newCityRef.set(rideInsert);
         this.ride.add(rideInsert);
     }
 
