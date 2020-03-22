@@ -9,6 +9,7 @@ import com.example.easyride.ui.rider.Ride;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,7 +26,7 @@ import static com.android.volley.VolleyLog.TAG;
  * @see EasyRideUser
  */
 public class Rider extends EasyRideUser{
-  private ArrayList<Ride> activeRequests;
+  private ArrayList<Ride> activeRequests = new ArrayList<Ride>();
   private ArrayList<String> requestsID;
   private EasyRideUser currentRiderInfo;
   private static Rider instance;
@@ -44,7 +45,7 @@ public class Rider extends EasyRideUser{
     //}
     db = FirebaseFirestore.getInstance();
     Log.e("HEYYYY", "IM HERE");
-    activeRequests = new ArrayList<Ride>();
+
     requestsID = new ArrayList<>();
     db.collection("RideRequest")
             .whereEqualTo("user", user.getUserId())
@@ -76,7 +77,7 @@ public class Rider extends EasyRideUser{
     return instance;
   }
 
-  public void clear(){
+  public static void clear(){
     instance = null;
   }
 

@@ -163,8 +163,7 @@ public class rider_home extends AppCompatActivity {
             }
             case R.id.action_logout: {
 
-               // Rider instance = Rider.getInstance(new EasyRideUser("dummy"));
-               // instance.clear();
+                Rider.clear();
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 fAuth.signOut();
 
