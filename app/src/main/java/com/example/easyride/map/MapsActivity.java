@@ -137,9 +137,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String start_location_string = mh.getStartPlace().getName();
                 String end_location_string = mh.getEndPlace().getName();
                 Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
-                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
-                SingleRide instance = SingleRide.getInstance();
-                instance.addRide(rideInsert);
+                EasyRideUser currentU = riderInstance.getCurrentRiderInfo();
+                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string,
+                        currentU.getUserId(), distance_string);
+
+                riderInstance.addRide(rideInsert);
+                //SingleRide instance = SingleRide.getInstance();
+                //instance.addRide(rideInsert);
                 Intent i = new Intent(MapsActivity.this, rider_home.class);
                 startActivity(i);
             }

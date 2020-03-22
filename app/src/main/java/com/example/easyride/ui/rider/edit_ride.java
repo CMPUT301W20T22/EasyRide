@@ -2,6 +2,7 @@ package com.example.easyride.ui.rider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
 import com.example.easyride.user_profile;
 import com.google.firebase.database.DatabaseReference;
 
@@ -30,8 +33,10 @@ public class edit_ride extends AppCompatActivity {
         Intent intent = getIntent();
         final int position = intent.getIntExtra("position", 0);
         DataList = new ArrayList<>();
-        SingleRide instance = SingleRide.getInstance();
-        DataList = instance.getRide();
+       // SingleRide instance = SingleRide.getInstance();
+       // DataList = instance.getRide();
+        Rider alright = Rider.getInstance(new EasyRideUser("kk"));
+        DataList = alright.getActiveRequests();
         Ride rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
         String ride_distance_short = ride_distance.substring(0, 5);
@@ -80,7 +85,7 @@ public class edit_ride extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SingleRide instance = SingleRide.getInstance();
+                Rider instance = Rider.getInstance(new EasyRideUser("kk"));
                 instance.removeAt(position);
                 Intent i = new Intent(getApplicationContext(), rider_home.class);
                 startActivity(i);

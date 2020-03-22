@@ -20,7 +20,7 @@ public class Ride {
 
     }
 
-
+    public Ride(){}
     // GETTERS
     public String getFrom() {
         return from;
