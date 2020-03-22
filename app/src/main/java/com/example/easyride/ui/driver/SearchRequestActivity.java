@@ -131,7 +131,7 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
-        db.collection("RideRequest").whereEqualTo("isAccepted", false)
+        db.collection("RideRequest").whereEqualTo("rideAccepted", false)
                 .orderBy("cost", Query.Direction.ASCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
                     @Override
@@ -139,16 +139,17 @@ public class SearchRequestActivity extends AppCompatActivity {
                         if (e != null)  {
                             Log.d(TAG, "Error : " + e.getMessage());
                         }
+                        assert queryDocumentSnapshots != null;
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
 
                             if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
-                                        doc.getDocument().getString("pickupPoint"),
-                                        doc.getDocument().getString("targetPoint"),
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
+                                        doc.getDocument().getString("from"),
+                                        doc.getDocument().getString("to"),
                                         doc.getDocument().getDouble("cost"),
-                                        doc.getDocument().getBoolean("isAccepted"),
-                                        doc.getDocument().getBoolean("isCompleted"));
+                                        doc.getDocument().getBoolean("rideAccepted"),
+                                        doc.getDocument().getBoolean("rideCompleted"));
 
                                 rideRequestList.add(rideRequest);
                                 searchRequestAdapter.notifyDataSetChanged();
@@ -193,8 +194,8 @@ public class SearchRequestActivity extends AppCompatActivity {
 
     private void searchData(String query) {
         // search data
-        db.collection("RideRequest").whereEqualTo("riderUserName", query.toLowerCase())
-                .whereEqualTo("isAccepted", false)
+        db.collection("RideRequest").whereEqualTo("user", query.toLowerCase())
+                .whereEqualTo("rideAccepted", false)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -202,9 +203,9 @@ public class SearchRequestActivity extends AppCompatActivity {
                         // called when searching is successful
                         rideRequestList.clear();
                         for (DocumentSnapshot doc : task.getResult()) {
-                            RideRequest rideRequest = new RideRequest(doc.getString("riderUserName"),
-                                    doc.getString("pickupPoint"),
-                                    doc.getString("targetPoint"),
+                            RideRequest rideRequest = new RideRequest(doc.getString("user"),
+                                    doc.getString("from"),
+                                    doc.getString("to"),
                                     doc.getDouble("cost"),
                                     false,
                                     false);

@@ -132,7 +132,7 @@ public class driver_home extends AppCompatActivity {
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
-        db.collection("RideRequest").whereEqualTo("isAccepted", true)
+        db.collection("RideRequest").whereEqualTo("rideAccepted", true)
                 .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot querySnapshot,
@@ -144,9 +144,9 @@ public class driver_home extends AppCompatActivity {
 
                         for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
                             if (doc.getType() == DocumentChange.Type.ADDED) {
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("riderUserName"),
-                                        doc.getDocument().getString("pickupPoint"),
-                                        doc.getDocument().getString("targetPoint"),
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
+                                        doc.getDocument().getString("from"),
+                                        doc.getDocument().getString("to"),
                                         doc.getDocument().getDouble("cost"),
                                         true,
                                         false);
