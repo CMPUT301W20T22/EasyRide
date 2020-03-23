@@ -56,10 +56,6 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
 
-        // ActionBar
-
-
-
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressLint("SetTextI18n")
@@ -76,10 +72,11 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         });
 
 
-        // TODO: Set up fragment to edit user's contact info.
+        /**
+         * Set up fragment to edit user's contact info.
+         */
 
         Button editButton = findViewById(R.id.edit_contact_button);
-
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +121,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Home Navigation Option
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 

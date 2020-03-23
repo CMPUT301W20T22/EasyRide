@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,15 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import com.example.easyride.R;
-import com.example.easyride.data.model.Driver;
-import com.example.easyride.data.model.EasyRideUser;
-import com.example.easyride.ui.login.LoginActivity;
-import com.example.easyride.ui.rider.Ride;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -44,13 +35,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-// DRIVER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A DRIVER.
-// Handles the driver home screen to display and navigate between active requests, as well as
-// allowing users to select and accept a new ride request.
 
 
+// SEARCH ACTIVITY. WHEN YOU CLICK ON THE SEARCH BUTTON, THIS SHOULD DISPLAY.
+// Handles the Search Activity, you are able to search between Active Requests based on Geo Location.
+// allowing users to search for the requests.
 
 public class SearchRequestActivity extends AppCompatActivity {
 
