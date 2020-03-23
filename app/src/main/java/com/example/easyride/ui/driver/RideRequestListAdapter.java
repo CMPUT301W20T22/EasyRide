@@ -1,13 +1,9 @@
 package com.example.easyride.ui.driver;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easyride.R;
 
-import android.content.Context;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestListAdapter.ViewHolder> {
