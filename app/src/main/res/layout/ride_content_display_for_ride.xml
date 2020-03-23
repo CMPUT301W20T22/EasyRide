@@ -1,43 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Creates a linear list where each item in the list has multiple text components.-->
 
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="horizontal">
+    android:layout_margin="8dp"
+    app:contentPadding="5dp"
+    app:cardBackgroundColor="#ffff"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true">
 
-
-
-    <!-- From -->
-    <TextView
-        android:id="@+id/from_text"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="3"
-        android:textSize="25sp"
-        android:text="From" />
+        android:orientation="vertical">
 
-    <!-- To -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight=".25"
-        android:ems="1"
-        android:text="   to"
-        android:textSize="20sp" />
+        <!--show rider name-->
 
-    <TextView
-        android:id="@+id/to_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="3"
-        android:textSize="25sp"
-        android:text="To" />
+        <!--show pickupPoint-->
+        <TextView
+            android:id="@+id/from_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pickup Location"
+            android:gravity="center"
+            
+            android:textColor="#000000"
+            android:textSize="22dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--show destination-->
+
+        <TextView
+            android:id="@+id/to_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Target Location"
+            android:textColor="#000000"
+            android:textSize="22dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/from_text" />
+
+        <TextView
+            android:id="@+id/display_cost"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:autoSizeTextType="none"
+            android:text="Cost"
+            android:textColor="#000000"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ride_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/to_text" />
+
+        <TextView
+            android:id="@+id/ride_status"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="Status"
+            android:textColor="#000000"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/display_cost"
+            app:layout_constraintTop_toBottomOf="@+id/to_text" />
+
+        <!--show fee-->
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>
