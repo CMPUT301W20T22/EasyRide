@@ -2,6 +2,8 @@ package com.example.easyride.data.model;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /**
  * EasyRideUser class that captures user information for logged in users retrieved from LoginRepository
  * Note that the user's password is not save in any field
@@ -13,9 +15,11 @@ public class EasyRideUser {
     private String userId;
     private String password;
     private String displayName;
+    // private String Mode;
 
     public EasyRideUser(String userId) {
         this.userId = userId;
+        //this.Mode = Mode;
        // this.displayName = displayName;
     }
 
@@ -28,6 +32,10 @@ public class EasyRideUser {
     public String getDisplayName() {
         return displayName;
     }
+
+    // public String isDriver() { return Mode; }
+
+    // public void setStatus(String isDriver) { this.Mode = isDriver; }
 
     public void setPassword(String password){this.password = password;}
 

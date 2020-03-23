@@ -85,7 +85,7 @@ public class SearchRequestActivity extends AppCompatActivity {
         // Add Support ActionBar
         // https://stackoverflow.com/questions/31311612/how-to-catch-navigation-icon-click-on-toolbar-from-fragment
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Search for Active Request");
+        getSupportActionBar().setTitle("Search for Active Request");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -199,6 +199,7 @@ public class driver_home extends AppCompatActivity {
                 FirebaseUser user = fAuth.getCurrentUser();
                 String ID = user.getUid();
                 i.putExtra("ID", ID);
+                i.putExtra("mode", "driver");
                 startActivity(i);
                 break;
             }
