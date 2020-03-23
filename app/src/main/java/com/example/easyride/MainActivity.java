@@ -2,19 +2,15 @@ package com.example.easyride;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.login.LoginActivity;
-import com.example.easyride.ui.rider.rider_home;
 
 public class MainActivity extends AppCompatActivity {
 
-  public static final String mode = "";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -29,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.putExtra(mode, "driver" );
+        i.putExtra("mode", "driver" );
         startActivity(i);
-
       }
     });
 
@@ -39,9 +34,8 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.putExtra(mode, "rider" );
+        i.putExtra("mode", "rider" );
         startActivity(i);
-
       }
     });
 

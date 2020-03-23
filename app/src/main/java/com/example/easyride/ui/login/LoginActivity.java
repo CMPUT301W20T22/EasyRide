@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.password);
 
         Intent intent = getIntent();
-        Mode = intent.getStringExtra(MainActivity.mode);
+        Mode = intent.getStringExtra("mode");
         isUser = false;
 
         // init database
@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 intent.putExtra("Mode", Mode);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -116,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
+
                                         DocumentSnapshot document = task.getResult();
+                                        /*
                                         Map<String, Object> data = document.getData();
                                         String userEmail = (String) data.get("Email: ");
                                         String displayname = (String) data.get("Name: ");
@@ -124,7 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                                         EasyRideUser user = new EasyRideUser(userEmail);
                                         user.setPassword(password);
                                         user.setDisplayName(displayname);
-                                        Log.d("User: ", user.getDisplayName());
+                                        */
+
+                                        /*Log.d("User: ", user.getDisplayName());*/
 
 
                                         isUser = document.exists();

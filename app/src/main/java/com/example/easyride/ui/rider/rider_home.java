@@ -158,6 +158,9 @@ public class rider_home extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_account: {
                 Intent i = new Intent(rider_home.this, user_profile.class);
+                String ID = user.getUid();
+                i.putExtra("mode", "rider");
+                i.putExtra("ID", ID);
                 startActivity(i);
                 break;
             }
