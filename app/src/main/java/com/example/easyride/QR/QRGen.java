@@ -1,4 +1,4 @@
-package com.example.easyride.ui.rider;
+package com.example.easyride.QR;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,17 +13,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-// Allows Rider to pay for ride with QR code.
-public class QR_Pay extends AppCompatActivity {
+public class QRGen extends AppCompatActivity {
 
+    private String strToQR;
+    private String driver = "None";
+    private ImageView image;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_pay);
-
-        String strToQR;
-        String driver = "None";
-        ImageView image;
         image = findViewById(R.id.QRView);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
