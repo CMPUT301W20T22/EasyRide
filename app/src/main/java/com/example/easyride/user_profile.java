@@ -13,14 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
+
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.ui.login.LoginActivity;
-=======
+
 import com.example.easyride.ui.driver.driver_home;
->>>>>>> master
+
 import com.example.easyride.ui.rider.rider_home;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,9 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
-<<<<<<< HEAD
-public class user_profile extends AppCompatActivity{
-=======
+
+
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
     private String userID;
@@ -47,7 +46,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     private FirebaseFirestore db;
     private TextView riderName, Email, Phone, Rating;
 
->>>>>>> master
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +61,14 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
 
-<<<<<<< HEAD
-
-        //EasyRideUser user = getCurrentRiderInfo();
-
-        //Rider settingInstance = Rider.getInstance(user);
 
 
-
-        //Button editButton = findViewById(R.id.edit_contact_button);
-=======
         // TextView assign
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
->>>>>>> master
+
 
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
