@@ -18,7 +18,6 @@ import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.signup.SignUpActivity;
@@ -53,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.password);
 
         Intent intent = getIntent();
-        Mode = intent.getStringExtra(MainActivity.mode);
+        Mode = intent.getStringExtra("mode");
         isUser = false;
 
         // init database
@@ -70,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 intent.putExtra("Mode", Mode);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -107,9 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             final String ID = user.getUid();
-                            final Intent driver_intent = new Intent(LoginActivity.this, driver_home.class);
-                            driver_intent.putExtra("Mode", Mode);
-                            driver_intent.putExtra("ID", ID);
                             /*
                              Check if the user existed in the collection (Rider/Driver)
                              If it's not then deny the access to the application
@@ -120,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
+
                                         DocumentSnapshot document = task.getResult();
+                                        /*
                                         Map<String, Object> data = document.getData();
                                         String userEmail = (String) data.get("Email: ");
                                         String displayname = (String) data.get("Name: ");
@@ -128,7 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                                         EasyRideUser user = new EasyRideUser(userEmail);
                                         user.setPassword(password);
                                         user.setDisplayName(displayname);
-                                        Log.d("User: ", user.getDisplayName());
+                                        */
+
+                                        /*Log.d("User: ", user.getDisplayName());*/
 
 
                                         isUser = document.exists();
@@ -140,27 +141,22 @@ public class LoginActivity extends AppCompatActivity {
                                         // Start new Activity if the user is correct
                                         else if (isUser && Mode.equals("rider")) {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
-
                                             Intent intent = new Intent(LoginActivity.this, rider_home.class);
-
-
-                                            Rider settingInstance = Rider.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
-
                                             startActivity(intent);
+                                            finish();
                                         }
 
                                         else if (isUser && Mode.equals("driver")) {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
-
                                             Intent intent = new Intent(LoginActivity.this, driver_home.class);
-                                            Driver settingInstance = Driver.getInstance(user);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
+                                            finish();
                                         }
                                     }
                                     else {
@@ -171,14 +167,12 @@ public class LoginActivity extends AppCompatActivity {
                             });
 
 
-
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             mEmail.setText("");
                             mPassword.setText("");
                         }
-
 
                     }
                 });
