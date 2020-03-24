@@ -1,6 +1,5 @@
 package com.example.easyride.ui.driver;
 
-import android.location.Address;
 import android.location.Location;
 
 /**
@@ -13,9 +12,9 @@ public class RideRequest {
  // private String key;
   private String pickupPoint;
   private String targetPoint;
-  private String rideAccepted;
-  private String rideCompleted;
-  private Integer cost;
+  private boolean rideAccepted;
+  private boolean rideCompleted;
+  private String cost;
   // private int distance;
   private String riderUserName;
   private String driverUserName;
@@ -25,12 +24,13 @@ public class RideRequest {
   }
 
 
-  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, Integer cost) {
+  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, String cost, boolean rideAccepted, boolean rideCompleted) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;
     this.targetPoint = targetPoint;
     this.cost = cost;
-
+    this.rideAccepted = rideAccepted;
+    this.rideCompleted = rideCompleted;
   }
 
   public String getPickupPoint() {
@@ -41,7 +41,7 @@ public class RideRequest {
     return targetPoint;
   }
 
-  public Integer getCost() {
+  public String getCost() {
     return cost;
   }
 
@@ -57,11 +57,11 @@ public class RideRequest {
     return riderUserName;
   }
 
-  public String isRideAccepted() { return rideAccepted; }
+  public boolean isRideAccepted() { return rideAccepted; }
 
-  public String isRideCompleted() { return rideCompleted; }
+  public boolean isRideCompleted() { return rideCompleted; }
 
-  public void setCost(int cost) { this.cost = cost; }
+  public void setCost(String cost) { this.cost = cost; }
 
 //  public void setDistance(int distance) {
 //    this.distance = distance;
@@ -75,11 +75,11 @@ public class RideRequest {
     this.pickupPoint = pickupPoint;
   }
 
-  public void setRideAccepted(String rideAccepted) {
+  public void setRideAccepted(boolean rideAccepted) {
     this.rideAccepted = rideAccepted;
   }
 
-  public void setRideCompleted(String rideCompleted) {
+  public void setRideCompleted(boolean rideCompleted) {
     this.rideCompleted = rideCompleted;
   }
 
