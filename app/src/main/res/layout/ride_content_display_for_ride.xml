@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <!--show rider name-->
 
         <!--show pickupPoint-->
@@ -29,7 +30,7 @@
             android:layout_marginTop="8dp"
             android:text="Pickup Location"
             android:gravity="center"
-            
+            android:fontFamily="@font/sfdisplayregular"
             android:textColor="#000000"
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +46,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Target Location"
+            android:fontFamily="@font/sfdisplayregular"
             android:textColor="#000000"
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +64,7 @@
             android:autoSizeTextType="none"
             android:text="Cost"
             android:textColor="#000000"
+            android:fontFamily="@font/sfdisplayregular"
             android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ride_status"
@@ -78,6 +81,7 @@
             android:autoSizeTextType="none"
             android:gravity="center"
             android:text="Status"
+            android:fontFamily="@font/sfdisplayregular"
             android:textColor="#000000"
             android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
