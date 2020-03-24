@@ -97,7 +97,9 @@ public class edit_ride extends AppCompatActivity {
             viewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), user_profile.class);
+                    Intent i = new Intent(getApplicationContext(), AcceptedDriver.class);
+                    //i.putExtra("mode", "driver");
+                    i.putExtra("ID", rideReq.getDriverUserName());
                     startActivity(i);
                 }
 

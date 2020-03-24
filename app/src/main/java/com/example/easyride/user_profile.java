@@ -64,9 +64,9 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     assert doc != null;
-                    riderName.setText(doc.getString("Name"));
-                    Email.setText("Email: " + doc.getString("Email"));
-                    Phone.setText("Phone: " + doc.getString("Phone"));
+                    riderName.setText(doc.getString("Name:"));
+                    Email.setText("Email: " + doc.getString("Email:"));
+                    Phone.setText("Phone: " + doc.getString("Phone:"));
                 }
             }
         });
