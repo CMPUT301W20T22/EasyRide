@@ -10,19 +10,6 @@
 
 
     <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Edit Request"
-        android:textSize="35sp"
-        android:fontFamily="@font/sfdisplaybold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
         android:id="@+id/from_text"
         android:layout_width="408dp"
         android:layout_height="75dp"
@@ -30,21 +17,23 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="2dp"
         android:ems="10"
-        android:gravity="center"
         android:fontFamily="@font/sfdisplayregular"
+        android:gravity="center"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/sfdisplayregular"
         android:text="To:"
         android:textSize="20sp"
-        android:fontFamily="@font/sfdisplayregular"
         app:layout_constraintBottom_toTopOf="@+id/to_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -57,13 +46,14 @@
         android:layout_height="76dp"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
+        android:layout_marginBottom="20dp"
         android:ems="10"
         android:fontFamily="@font/sfdisplayregular"
         android:gravity="center"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.maps.MapView
@@ -77,19 +67,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="20dp"
-        android:text="Distance:"
-        android:fontFamily="@font/sfdisplayregular"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_button"
-        app:layout_constraintStart_toEndOf="@+id/cost_text" />
 
     <TextView
         android:id="@+id/distance"
@@ -107,19 +84,6 @@
         app:layout_constraintStart_toEndOf="@+id/textView4" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/sfdisplayregular"
-        android:text="Cost:"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_button"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/cost_text"
         android:layout_width="61dp"
         android:layout_height="34dp"
@@ -133,6 +97,32 @@
         app:layout_constraintBottom_toTopOf="@+id/profile_button"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/sfdisplayregular"
+        android:text="Distance:"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_button"
+        app:layout_constraintStart_toEndOf="@+id/cost_text" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/sfdisplayregular"
+        android:text="Cost:"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/profile_button"
         android:layout_width="match_parent"
@@ -140,14 +130,14 @@
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/buttonw"
         android:clickable="false"
         android:fontFamily="@font/sfdisplayregular"
         android:text="@string/request_not_accepted_yet"
         app:layout_constraintBottom_toTopOf="@+id/tip_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -157,7 +147,7 @@
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/buttonw"
         android:fontFamily="@font/sfdisplayregular"
         android:text="Pay"
@@ -172,7 +162,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
         android:text="Delete Ride"
@@ -185,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/buttonw"
         android:fontFamily="@font/sfdisplayregular"
         android:text="ADD TIP"
@@ -200,7 +190,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
         android:text="Back"
@@ -215,7 +205,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
         android:text="Save"
