@@ -16,6 +16,7 @@
     <!-- For Navigation bar -->
     <string name="Close">NavBar</string>
     <string name="Open">NavBar</string>
+    <string name="request_not_accepted_yet">Request not accepted yet</string>
 
 
 </resources>

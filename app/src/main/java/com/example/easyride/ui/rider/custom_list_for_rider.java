@@ -1,5 +1,6 @@
 package com.example.easyride.ui.rider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class custom_list_for_rider extends ArrayAdapter<Ride> {
     // getView() allows you to set the values for the views in your listView. Use autocomplete.
     // We want get to reference the TextViews in the content.xml layout file and fill them with
     // values (Date, Systolic, Diastolic, and Heart Rate).
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -49,11 +51,21 @@ public class custom_list_for_rider extends ArrayAdapter<Ride> {
 
         TextView from = view.findViewById(R.id.from_text);
         TextView to = view.findViewById(R.id.to_text);
-
+        TextView cost = view.findViewById(R.id.display_cost);
+        TextView status = view.findViewById(R.id.ride_status);
 
         from.setText(ride.getFrom());
         to.setText(ride.getTo());
-
+        if (ride.getCost().length() > 4) {
+            cost.setText("$" + ride.getCost().substring(0, 4));
+        }else{
+            cost.setText("$" + ride.getCost());
+        }
+        if(ride.isRideAccepted()) {
+            status.setText("Accepted");
+        }else{
+            status.setText("Not Accepted");
+        }
 
         return view;
     }
