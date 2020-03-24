@@ -54,7 +54,7 @@ public class rider_home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_home);
 
-
+        getSupportActionBar().setTitle("Current Active Request");
 
         LV = findViewById(R.id.ride_list);
 
@@ -65,7 +65,7 @@ public class rider_home extends AppCompatActivity {
         //TODO get the current list of ride requests by user
         //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
         user = FirebaseAuth.getInstance().getCurrentUser();
-        userID = user.getDisplayName();
+        userID = user.getEmail();
         Rider alright = Rider.getInstance(new EasyRideUser(userID));
         EasyRideUser user = alright.getCurrentRiderInfo();
         if (user.getDisplayName() != null ) {
