@@ -28,13 +28,13 @@ public class user_profile extends AppCompatActivity{
         // TODO: Set up fragment to edit user's contact info.
 
 
-        EasyRideUser user = getCurrentRiderInfo();
+        //EasyRideUser user = getCurrentRiderInfo();
 
-        Rider settingInstance = Rider.getInstance(user);
+        //Rider settingInstance = Rider.getInstance(user);
 
 
 
-        Button editButton = findViewById(R.id.edit_contact_button);
+        //Button editButton = findViewById(R.id.edit_contact_button);
 
 
         /*
