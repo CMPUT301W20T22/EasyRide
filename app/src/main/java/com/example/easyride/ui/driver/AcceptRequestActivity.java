@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.easyride.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +32,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
     private String mFrom, mTo, mCost, mRider;
     private String user, email, phone;
     private FirebaseFirestore db;
+    private FirebaseAuth fAuth;
     Button riderProfile, mAccept;
 
     @Override
@@ -46,6 +48,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
 
         // init database
         db = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
 
         // ActionBAr
         getSupportActionBar().setTitle("Ride Request Details");
@@ -95,6 +98,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String ID = getIntent().getStringExtra("ID");
                 db.collection("RideRequest").document(ID).update("rideAccepted", true);
+                db.collection("RideRequest").document(ID).update("driverUserName", fAuth.getCurrentUser().getDisplayName());
                 startActivity(new Intent(getApplicationContext(), driver_home.class));
                 finish();
             }
