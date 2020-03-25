@@ -90,6 +90,23 @@ public class edit_ride extends AppCompatActivity {
 
         final Rider instance = Rider.getInstance(new EasyRideUser("kk"));
 
+
+        
+        Button delete = findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instance.removeAt(position);
+                goBack();
+            }
+        });
+
+
+
+
+
+
+
         if (rideReq.isRideAccepted()) {
             Button viewProfile = findViewById(R.id.profile_button);
             viewProfile.setText("Driver Profile");
@@ -105,14 +122,6 @@ public class edit_ride extends AppCompatActivity {
             });
 
 
-            Button delete = findViewById(R.id.delete_button);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    instance.removeAt(position);
-                    goBack();
-                }
-            });
         }
 
 
