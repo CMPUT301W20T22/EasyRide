@@ -14,12 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -131,7 +130,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
 
         if (mode.equals("rider")){
-            startActivity(new Intent(this, rider_home.class));
+            startActivity(new Intent(this, RiderHome.class));
             finish();
         }
 

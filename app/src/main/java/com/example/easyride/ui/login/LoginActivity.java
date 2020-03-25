@@ -6,20 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.easyride.MainActivity;
 import com.example.easyride.R;
-import com.example.easyride.data.model.Driver;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.ui.rider.RiderHome;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -119,15 +116,17 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
 
                                         DocumentSnapshot document = task.getResult();
-                                        /*
+
+                                        assert document != null;
                                         Map<String, Object> data = document.getData();
+                                        assert data != null;
                                         String userEmail = (String) data.get("Email: ");
                                         String displayname = (String) data.get("Name: ");
-                                        String password = (String) data.get("Password: ");
+                                        //String password = (String) data.get("Password: ");
                                         EasyRideUser user = new EasyRideUser(userEmail);
-                                        user.setPassword(password);
+                                        //user.setPassword(password);
                                         user.setDisplayName(displayname);
-                                        */
+
 
                                         /*Log.d("User: ", user.getDisplayName());*/
 
@@ -141,8 +140,11 @@ public class LoginActivity extends AppCompatActivity {
                                         // Start new Activity if the user is correct
                                         else if (isUser && Mode.equals("rider")) {
                                             Toast.makeText(LoginActivity.this, "Enjoy the App! Rate us 5 star", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, rider_home.class);
-
+                                            Intent intent = new Intent(LoginActivity.this, RiderHome.class);
+                                            //user = FirebaseAuth.getInstance().getCurrentUser();
+                                            //assert user != null;
+                                            //userID = user.getEmail();
+                                            Rider alright = Rider.getInstance(user);
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);

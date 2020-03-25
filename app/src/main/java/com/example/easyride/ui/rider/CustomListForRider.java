@@ -15,7 +15,7 @@ import com.example.easyride.R;
 
 import java.util.ArrayList;
 
-public class custom_list_for_rider extends ArrayAdapter<Ride> {
+public class CustomListForRider extends ArrayAdapter<Ride> {
 
 
     // Hold the Measurement attributes I want to display, and the activity context.
@@ -23,7 +23,7 @@ public class custom_list_for_rider extends ArrayAdapter<Ride> {
     private Context context;
 
     // Implementation of constructor from the parent class.
-    public custom_list_for_rider (Context context, ArrayList<Ride> rides) {
+    public CustomListForRider(Context context, ArrayList<Ride> rides) {
         super(context,0,rides);
         this.rides = rides;
         this.context = context;

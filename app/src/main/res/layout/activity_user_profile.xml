@@ -16,31 +16,31 @@
 
     <TextView
         android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        android:textSize="20sp"
+        android:layout_width="347dp"
+        android:layout_height="62dp"
         android:layout_gravity="center
-"       android:layout_marginTop="200dp"/>
+"
+        android:layout_marginTop="200dp"
+        android:text="Email"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/ph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone Number:"
-        android:textSize="20sp"
+        android:layout_width="341dp"
+        android:layout_height="58dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:text="Phone Number:"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="rating %"
+        android:layout_width="335dp"
+        android:layout_height="55dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
-    </TextView>
+        android:layout_marginTop="20dp"
+        android:text="rating %"
+        android:textSize="30sp"></TextView>
 
     <Button
         android:id="@+id/edit_contact_button"

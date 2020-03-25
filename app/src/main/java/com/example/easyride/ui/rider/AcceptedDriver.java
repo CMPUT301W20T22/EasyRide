@@ -32,7 +32,7 @@ public class AcceptedDriver extends AppCompatActivity {
 
     private DocumentReference docRef;
     private FirebaseFirestore db;
-    private TextView riderName, Email, Phone, Rating;
+    private TextView riderName, email, Phone, Rating;
 
 
     @Override
@@ -43,26 +43,27 @@ public class AcceptedDriver extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
         //mode = intent.getStringExtra("mode");
-
+        Log.e("Driver ID:" , userID);
         // init database
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("driver").document(userID);
         riderName = findViewById(R.id.user_name);
-        Email = findViewById(R.id.email);
+        email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
-
+        //userID = "sqle@ualberta.ca";
         db.collection("driver")
-                .whereEqualTo("Email:", userID)
+                .whereEqualTo("Email", userID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                riderName.setText(document.getString("Name:"));
-                                Email.setText("Email: " + document.getString("Email:"));
-                                Phone.setText("Phone: " + document.getString("Phone:"));
+
+                                //riderName.setText();
+                                email.setText("Email: " + document.getString("Email"));
+                                Phone.setText("Phone: " + document.getString("Phone"));
 
                                 //Log.e("SIZE", user.getUserId());
                                 //Log.e("SIZE", Integer.toString(activeRequests.size()));
@@ -75,7 +76,7 @@ public class AcceptedDriver extends AppCompatActivity {
                 });
         // TextView assign
 
-
+/*
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressLint("SetTextI18n")
@@ -84,12 +85,12 @@ public class AcceptedDriver extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     assert doc != null;
-                    riderName.setText(doc.getString("Name"));
-                    Email.setText("Email: " + doc.getString("Email"));
-                    Phone.setText("Phone: " + doc.getString("Phone"));
+                    riderName.setText(doc.getString("Name: "));
+                    Email.setText("Email: " + doc.getString("Email: "));
+                    Phone.setText("Phone: " + doc.getString("Phone: "));
                 }
             }
-        });
+        });*/
 
         Button editButton = findViewById(R.id.edit_contact_button);
 

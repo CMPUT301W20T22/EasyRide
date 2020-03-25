@@ -68,9 +68,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.rider.rider_home" />
-        <activity android:name=".ui.rider.add_ride" />
-        <activity android:name=".ui.rider.edit_ride" />
+        <activity android:name=".ui.rider.RiderHome" />
+        <activity android:name=".ui.rider.AddRide" />
+        <activity android:name=".ui.rider.EditRide" />
         <activity android:name=".ui.driver.driver_home" />
         <activity android:name=".ui.rider.QR_Pay" />
         <activity android:name=".user_profile" />
@@ -83,6 +83,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.easyride.ui.driver.driver_home" />
         </activity>
+        <activity android:name=".ui.rider.AcceptedDriver"
+            android:parentActivityName=".ui.rider.EditRide"/>
         <activity
             android:name=".ui.driver.ride_review"
             android:theme="@style/CustomTheme" />
