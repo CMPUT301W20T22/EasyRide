@@ -17,8 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light">
-\        <!--
+        android:theme="@style/Theme.AppCompat">
+       <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -69,7 +69,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.rider.rider_home" />
-        <activity android:name=".ui.rider.add_ride" />
         <activity android:name=".ui.rider.edit_ride" />
         <activity android:name=".ui.driver.driver_home" />
         <activity android:name=".ui.rider.QR_Pay" />
