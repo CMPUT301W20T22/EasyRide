@@ -86,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
+                android:fontFamily="@font/sftextregular"
                 android:defaultFocusHighlightEnabled="false"
                 android:focusableInTouchMode="false"
                 android:hint="Enter Start Location" />
@@ -110,6 +111,7 @@
                 android:id="@+id/end_location_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sftextregular"
                 android:focusableInTouchMode="false"
                 android:hint="Enter End Location" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -135,7 +137,8 @@
         android:clickable="true"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
-        map:srcCompat="@android:drawable/ic_menu_send" />
+        map:srcCompat="@android:drawable/ic_menu_send"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

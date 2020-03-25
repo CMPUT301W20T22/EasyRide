@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditInfoFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="10dp">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Update Email Address"
+            android:inputType="textEmailAddress"
+            android:id="@+id/editEmail"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editEmail"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Update Phone Number"
+            android:inputType="phone"
+            android:id="@+id/editPhone"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editPhone"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Update Password"
+            android:inputType="textPassword"
+            android:id="@+id/editPassword"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

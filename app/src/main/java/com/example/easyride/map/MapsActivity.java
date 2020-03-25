@@ -51,6 +51,9 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -64,8 +67,10 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -83,11 +88,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FloatingActionButton sendRequestButton;
     private boolean isMapLoaded = false;
     private LatLng latLng;
+    private FirebaseFirestore db;
+    private FirebaseAuth fAuth;
+    private FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        db = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -122,41 +136,58 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivityForResult(intent, request_code_end);
             }
         });
+
         sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 double distance = mh.getRouteDistance();
-                Log.e("DISTANCE : ", Double.toString(distance));
-                LatLng startPoint = mh.getStartLatLang();
-                LatLng endPoint = mh.getEndLatLang();
+
+                /*
+                   LatLng startPoint = mh.getStartLatLang();
+                   LatLng endPoint = mh.getEndLatLang();
+                */
                 Double cost = distance/1000+7;
+                DecimalFormat df = new DecimalFormat("#.##");
+                cost = Double.valueOf(df.format(cost));
+                distance = Double.parseDouble(df.format(distance));
                 String cost_string = Double.toString(cost);
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
+
                 String start_location_string = mh.getStartPlace().getName();
                 String end_location_string = mh.getEndPlace().getName();
-                Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
-                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
-                SingleRide instance = SingleRide.getInstance();
-                instance.addRide(rideInsert);
+
+                user = fAuth.getCurrentUser();
+                Rider riderInstance = Rider.getInstance(new EasyRideUser(user.getDisplayName()));
+                EasyRideUser currentU = riderInstance.getCurrentRiderInfo();
+                Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string,
+                        currentU.getUserId(), distance_string);
+
+                riderInstance.addRide(rideInsert);
+                //SingleRide instance = SingleRide.getInstance();
+                //instance.addRide(rideInsert);
                 Intent i = new Intent(MapsActivity.this, rider_home.class);
                 startActivity(i);
             }
         });
+
     }
 
-//    private void fabClicked(){
-//        SingleRide instance = SingleRide.getInstance();
-//
-//        Rider riderInstance = Rider.getInstance(new EasyRideUser("userid"));
-//        Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string, "me", distance_string);
-//
-//        instance.addRide(rideInsert);
-//
-//        Intent i = new Intent(MapsActivity.this, rider_home.class);
-//        startActivity(i);
-//    }
+
+
+
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Gwoogle Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -229,6 +260,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // The user canceled the operation.
             }
         }
-    }
+
+}
+
+
 //  }
 //}
