@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    getSupportActionBar().setTitle(" ");
+
     Button driver_mode_button = findViewById(R.id.driver_mode_button);
     Button rider_mode_button = findViewById(R.id.rider_mode_button);
 

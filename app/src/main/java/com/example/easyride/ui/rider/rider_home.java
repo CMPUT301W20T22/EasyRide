@@ -106,19 +106,7 @@ public class rider_home extends AppCompatActivity {
         });
 
 
-        // DELETE ITEM ON LONG CLICK.
-        LV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DataList.remove(position);
-                rideAdapter.notifyDataSetChanged();
-                SingleRide instance = SingleRide.getInstance();
-                instance.removeAt(position);
-                Toast.makeText(rider_home.this, "Item Deleted", Toast.LENGTH_LONG).show();
 
-                return true;
-            }
-        });
 
 
         // onClickListener for FloatingActionButton

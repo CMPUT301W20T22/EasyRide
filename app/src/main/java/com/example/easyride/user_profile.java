@@ -53,6 +53,8 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        getSupportActionBar().setTitle("User Profile");
+
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
         mode = intent.getStringExtra("mode");
