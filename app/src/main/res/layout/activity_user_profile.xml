@@ -14,6 +14,16 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
+    <ImageView
+        android:layout_width="171dp"
+        android:layout_height="174dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_account_circle_black_24dp">
+
+    </ImageView>
+
+
     <TextView
         android:id="@+id/email"
         android:layout_width="wrap_content"
@@ -36,11 +46,10 @@
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="rating %"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
-    </TextView>
+        android:layout_marginTop="20dp"
+        android:text="rating %"
+        android:textSize="30sp"></TextView>
 
     <Button
         android:id="@+id/edit_contact_button"

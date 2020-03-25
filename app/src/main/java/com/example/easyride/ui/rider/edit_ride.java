@@ -91,7 +91,7 @@ public class edit_ride extends AppCompatActivity {
         final Rider instance = Rider.getInstance(new EasyRideUser("kk"));
 
 
-        
+
         Button delete = findViewById(R.id.delete_button);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
