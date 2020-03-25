@@ -36,6 +36,17 @@
             android:inputType="phone"
             android:id="@+id/editPhone"/>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editPhone"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Update Password"
+            android:inputType="textPassword"
+            android:id="@+id/editPassword"/>
+
 
     </RelativeLayout>
 
