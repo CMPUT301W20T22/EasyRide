@@ -103,7 +103,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateInfo(String email, String phone) {
+    public void updateInfo(String email, String phone, String password) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -118,10 +118,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         if (!phone.equals("")) {
             Phone.setText("Phone: " + phone);
             docRef.update("Phone", phone);
-            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(phone)
-                    .build();
-            user.updateProfile(profileChangeRequest);
+        }
+
+        if (!password.equals("")) {
+            user.updatePassword(password);
         }
 
     }

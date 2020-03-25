@@ -57,6 +57,7 @@ public class SearchRequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_request);
 
+
         // init database
         db = FirebaseFirestore.getInstance();
         settings = new FirebaseFirestoreSettings.Builder()
@@ -100,14 +101,21 @@ public class SearchRequestActivity extends AppCompatActivity {
         searchRequestAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                rideRequestList.get(position);
+                RideRequest ride = rideRequestList.get(position);
+                Intent intent = new Intent(getApplicationContext(), AcceptRequestActivity.class);
+                intent.putExtra("ID", ride.getKey());
+                intent.putExtra("pickUpLocation", ride.getPickupPoint());
+                intent.putExtra("destination", ride.getTargetPoint());
+                intent.putExtra("fare", ride.getCost());
+                intent.putExtra("rider", ride.getRiderUserName());
+                startActivity(intent);
                 Log.d(TAG, "Item Click on item " + position);
+                Log.d(TAG, "RiderUserName: " + ride.getRiderUserName());
             }
         });
 
         // show data in Recycler View
         showData();
-
     }
 
     @Override
@@ -128,12 +136,10 @@ public class SearchRequestActivity extends AppCompatActivity {
                         if (e != null)  {
                             Log.d(TAG, "Error : " + e.getMessage());
                         }
-                        assert queryDocumentSnapshots != null;
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-
                             if (doc.getType() == DocumentChange.Type.ADDED) {
-
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
+                                        doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
                                         doc.getDocument().getString("cost"),
@@ -192,7 +198,8 @@ public class SearchRequestActivity extends AppCompatActivity {
                         // called when searching is successful
                         rideRequestList.clear();
                         for (DocumentSnapshot doc : task.getResult()) {
-                            RideRequest rideRequest = new RideRequest(doc.getString("user"),
+                            RideRequest rideRequest = new RideRequest(doc.getId(),
+                                    doc.getString("user"),
                                     doc.getString("from"),
                                     doc.getString("to"),
                                     doc.getString("cost"),

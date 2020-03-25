@@ -21,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:text="PickUp Location"
+        android:gravity="center"
         android:textSize="25sp"/>
 
     <TextView
@@ -36,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:gravity="center"
         android:textSize="25sp"/>
 
     <com.google.android.gms.maps.MapView
@@ -51,7 +54,7 @@
         android:layout_height="wrap_content"
         android:text="Cost:"
         android:textSize="25sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
         android:id="@+id/cost_text"
@@ -74,14 +77,6 @@
         android:layout_height="wrap_content"
         android:text="Accept Pay"
         android:layout_gravity="center"/>
-
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Ride"
-        android:layout_gravity="center"/>
-
 
 
 </LinearLayout>

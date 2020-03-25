@@ -9,7 +9,9 @@ import android.location.Location;
  * @see Location
  */
 public class RideRequest {
- // private String key;
+
+
+
   private String pickupPoint;
   private String targetPoint;
   private boolean rideAccepted;
@@ -18,19 +20,21 @@ public class RideRequest {
   // private int distance;
   private String riderUserName;
   private String driverUserName;
+  private String key;
 
   public RideRequest() {
 
   }
 
 
-  public RideRequest(String riderUserName, String pickupPoint, String targetPoint, String cost, boolean rideAccepted, boolean rideCompleted) {
+  public RideRequest(String key, String riderUserName, String pickupPoint, String targetPoint, String cost, boolean rideAccepted, boolean rideCompleted) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;
     this.targetPoint = targetPoint;
     this.cost = cost;
     this.rideAccepted = rideAccepted;
     this.rideCompleted = rideCompleted;
+    this.key = key;
   }
 
   public String getPickupPoint() {
@@ -44,6 +48,8 @@ public class RideRequest {
   public String getCost() {
     return cost;
   }
+
+  public String getKey() { return key; }
 
   //public int getDistance() {
   //  return distance;

@@ -2,6 +2,7 @@ package com.example.easyride.ui.driver;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,10 +92,18 @@ public class driver_home extends AppCompatActivity {
         rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
 
         // set OnclickListener for RecyclerView
+        // Passing RideRequest to ride_review activity
+        // https://stackoverflow.com/questions/768969/passing-a-bundle-on-startactivity
         rideRequestListAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                rideRequestList.get(position);
+                RideRequest ride = rideRequestList.get(position);
+                Intent intent = new Intent(getApplicationContext(), ride_review.class);
+                intent.putExtra("pickUpLocation", ride.getPickupPoint());
+                intent.putExtra("destination", ride.getTargetPoint());
+                intent.putExtra("fare", ride.getCost());
+                intent.putExtra("rider", ride.getRiderUserName());
+                startActivity(intent);
                 Log.d(TAG, "Item Click on item " + position);
             }
         });
@@ -139,7 +148,8 @@ public class driver_home extends AppCompatActivity {
 
                         for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
                             if (doc.getType() == DocumentChange.Type.ADDED) {
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
+                                        doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
                                         doc.getDocument().getString("cost"),
@@ -196,12 +206,12 @@ public class driver_home extends AppCompatActivity {
             case R.id.action_logout: {
                 // Sign out of the account
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
-                startActivity(new Intent(this, MainActivity.class));
                 break;
             }
             case R.id.action_home: {
-                startActivity(new Intent(this, driver_home.class));
+                startActivity(new Intent(getApplicationContext(), driver_home.class));
                 finish();
                 break;
             }
