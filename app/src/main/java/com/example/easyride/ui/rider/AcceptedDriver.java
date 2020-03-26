@@ -64,7 +64,10 @@ public class AcceptedDriver extends AppCompatActivity {
                                 //riderName.setText();
                                 email.setText("Email: " + document.getString("Email"));
                                 Phone.setText("Phone: " + document.getString("Phone"));
-
+                                int good = (int) document.get("good_reviews");
+                                int bad = (int) document.get("bad_reviews");
+                                int rate = (good/bad)*100;
+                                Rating.setText(rate);
                                 //Log.e("SIZE", user.getUserId());
                                 //Log.e("SIZE", Integer.toString(activeRequests.size()));
 
@@ -74,6 +77,8 @@ public class AcceptedDriver extends AppCompatActivity {
                         }
                     }
                 });
+
+
         // TextView assign
 
 /*
