@@ -1,6 +1,7 @@
 package com.example.easyride.ui.rider;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -21,6 +22,7 @@ import androidx.core.view.MenuItemCompat;
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.login.LoginActivity;
@@ -47,7 +49,7 @@ public class rider_home extends AppCompatActivity {
     public ArrayList<Ride> DataList;
     private FirebaseUser user;
     private String userID;
-
+    private Rider alright;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,24 +57,24 @@ public class rider_home extends AppCompatActivity {
         setContentView(R.layout.activity_rider_home);
 
         getSupportActionBar().setTitle("Current Active Request");
-
         LV = findViewById(R.id.ride_list);
-
         DataList = new ArrayList<>();
-        DataList.clear();
         //SingleRide instance = SingleRide.getInstance();
         //DataList = instance.getRide();
         //TODO get the current list of ride requests by user
         //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getEmail();
-        Rider alright = Rider.getInstance(new EasyRideUser(userID));
-        EasyRideUser user = alright.getCurrentRiderInfo();
-        if (user.getDisplayName() != null ) {
-            Log.e("HEYYYY", user.getDisplayName());
-        }
-        alright.updateList();
-        DataList = alright.getActiveRequests();
+//        alright = Rider.getInstance(new EasyRideUser(userID));
+
+        Rider alright2 = new Rider(new EasyRideUser(userID)) {
+            @Override
+            public void onDataLoaded(){ updateList2();}
+        };
+
+        alright = alright2.getInstance(new EasyRideUser(userID));
+//        alright.updateList();
+
         /*new Thread(new Runnable() {
             public void run() {
                 FirebaseFirestore db;
@@ -88,12 +90,6 @@ public class rider_home extends AppCompatActivity {
             }
         }).start();*/
 
-        rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
-        LV.setAdapter(rideAdapter);
-
-
-
-
         // EDIT ITEM FROM ARRAY LIST
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -101,10 +97,8 @@ public class rider_home extends AppCompatActivity {
                 Intent i = new Intent(view.getContext(), edit_ride.class);
                 i.putExtra("position", position);
                 startActivity(i);
-
             }
         });
-
 
         // DELETE ITEM ON LONG CLICK.
         LV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -115,11 +109,9 @@ public class rider_home extends AppCompatActivity {
                 SingleRide instance = SingleRide.getInstance();
                 instance.removeAt(position);
                 Toast.makeText(rider_home.this, "Item Deleted", Toast.LENGTH_LONG).show();
-
                 return true;
             }
         });
-
 
         // onClickListener for FloatingActionButton
         FloatingActionButton add_ride_button = findViewById(R.id.add_ride_button);
@@ -128,29 +120,21 @@ public class rider_home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), MapsActivity.class);
                 startActivity(i);
-
             }
         });
-
-
-
-
-
     }
 
+    @Override
+    public void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflating driver_menu
         getMenuInflater().inflate(R.menu.navigation_menu, menu);
-
-
-
-
-
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -181,5 +165,17 @@ public class rider_home extends AppCompatActivity {
         }
         return true;
     }
+
+    public void updateList2(){
+//        EasyRideUser user2 = alright.getCurrentRiderInfo();
+//        if (user2.getDisplayName() != null ) {
+//            Log.e("HEYYYY", user2.getDisplayName());
+//        }
+//        DataList.clear();
+        DataList = alright.getActiveRequests();
+        rideAdapter = new custom_list_for_rider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+        LV.setAdapter(rideAdapter);
+    }
+
 
 }

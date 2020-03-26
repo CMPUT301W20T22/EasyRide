@@ -3,14 +3,16 @@ package com.example.easyride.data.model;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.example.easyride.ui.driver.RideRequest;
 import com.example.easyride.ui.rider.Ride;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -18,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
-import java.lang.reflect.*;
+
+interface DatabaseListener{
+  void onDataLoaded();
+}
 
 /**
  * Rider class that captures user information for logged in users retrieved from LoginRepository
@@ -26,7 +31,7 @@ import java.lang.reflect.*;
  * @version 1.0
  * @see EasyRideUser
  */
-public class Rider extends EasyRideUser{
+public class Rider extends EasyRideUser implements DatabaseListener{
   private ArrayList<Ride> activeRequests;
   private ArrayList<String> requestsID;
   private EasyRideUser currentRiderInfo;
@@ -40,9 +45,9 @@ public class Rider extends EasyRideUser{
     // boolean exists = database.isRider("hi");
     // if (!exists){ currentRiderInfo = null; }
     //else {
-      // currentRiderInfo = database.getRider("hi");
+    // currentRiderInfo = database.getRider("hi");
 
-      // activeRequests = new ArrayList<>();
+    // activeRequests = new ArrayList<>();
     //}
     db = FirebaseFirestore.getInstance();
     Log.e("HEYYYY", "IM HERE");
@@ -50,25 +55,27 @@ public class Rider extends EasyRideUser{
     requestsID = new ArrayList<>();
     activeRequests= new ArrayList<Ride>();
 
-    db.collection("RideRequest")
-            .whereEqualTo("user", user.getUserId())
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-              @Override
-              public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                  for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    requestsID.add(document.getId());
-                    activeRequests.add(document.toObject(Ride.class));
-                    //Log.e("SIZE", user.getUserId());
-                    //Log.e("SIZE", Integer.toString(activeRequests.size()));
+    Query q = db.collection("RideRequest").whereEqualTo("user", user.getUserId());
 
-                  }
-                } else {
-                  Log.e(TAG, "Error getting documents: ", task.getException());
-                }
-              }
-            });
+    q.addSnapshotListener(new EventListener<QuerySnapshot>() {
+          @Override
+          public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            if (e != null) {
+              Log.w(TAG, "Listen failed.", e);
+              return;
+            }
+            requestsID.clear();
+            activeRequests.clear();
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+              requestsID.add(document.getId());
+              activeRequests.add(document.toObject(Ride.class));
+              //Log.e("SIZE", user.getUserId());
+              //Log.e("SIZE", Integer.toString(activeRequests.size()));
+              onDataLoaded();
+            }
+          }
+        });
+
     currentRiderInfo = user;
     //updateList();
 
@@ -95,28 +102,27 @@ public class Rider extends EasyRideUser{
     //new ArrayList<>(activeRequests);
     Log.e("SIZE", Integer.toString(activeRequests.size()));
     db.collection("RideRequest")
-            .whereEqualTo("user", currentRiderInfo.getUserId())
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-              @Override
-              public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                  activeRequests.clear();
-                  requestsID.clear();
-                  for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    requestsID.add(document.getId());
-                    activeRequests.add(document.toObject(Ride.class));
-                    Log.e("user", currentRiderInfo.getUserId());
-                    Log.e("SIZE", Integer.toString(activeRequests.size()));
+        .whereEqualTo("user", currentRiderInfo.getUserId())
+        .get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+              activeRequests.clear();
+              requestsID.clear();
+              for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                requestsID.add(document.getId());
+                activeRequests.add(document.toObject(Ride.class));
+                Log.e("user", currentRiderInfo.getUserId());
+                Log.e("SIZE", Integer.toString(activeRequests.size()));
 
-                  }
-                } else {
-                  Log.e(TAG, "Error getting documents: ", task.getException());
-                }
               }
-            });
-
-
+              onDataLoaded();
+            } else {
+              Log.e(TAG, "Error getting documents: ", task.getException());
+            }
+          }
+        });
   }
 
   public void addRide(Ride rideInsert){
@@ -137,5 +143,6 @@ public class Rider extends EasyRideUser{
   }
 
   public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
+  public void onDataLoaded() {}
 
 }

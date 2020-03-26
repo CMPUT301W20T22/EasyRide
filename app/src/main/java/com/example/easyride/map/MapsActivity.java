@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.example.easyride.MainActivity;
+import com.example.easyride.data.model.Rider;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.model.LocationBias;
 import com.google.android.libraries.places.api.model.Place.Field;
