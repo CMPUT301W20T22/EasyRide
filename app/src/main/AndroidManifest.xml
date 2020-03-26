@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-\        <!--
+        <service
+            android:name=".ui.rider.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -39,6 +47,8 @@
                 android:value=".map.MapsActivity" />
         </activity>
         -->
+
+
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -91,6 +101,8 @@
         <activity
             android:name=".ui.driver.AcceptRequestActivity"
             android:parentActivityName=".ui.driver.SearchRequestActivity" />
+
     </application>
+
 
 </manifest>

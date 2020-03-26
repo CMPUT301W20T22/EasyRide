@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
+import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.rider.RiderHome;
 import com.example.easyride.ui.signup.SignUpActivity;
@@ -25,8 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -120,13 +125,26 @@ public class LoginActivity extends AppCompatActivity {
                                         assert document != null;
                                         Map<String, Object> data = document.getData();
                                         assert data != null;
-                                        String userEmail = (String) data.get("Email: ");
-                                        String displayname = (String) data.get("Name: ");
+                                        String userEmail = (String) data.get("Email");
+                                        String displayname = (String) data.get("Name");
                                         //String password = (String) data.get("Password: ");
                                         EasyRideUser user = new EasyRideUser(userEmail);
                                         //user.setPassword(password);
                                         user.setDisplayName(displayname);
+                                        FirebaseInstanceId.getInstance().getInstanceId()
+                                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Log.w("Shit: ", "getInstanceId failed", task.getException());
+                                                            return;
+                                                        }
 
+                                                        // Get new Instance ID token
+                                                        String token = Objects.requireNonNull(task.getResult()).getToken();
+                                                        db.collection(Mode).document(ID).update("token", token);
+                                                    }
+                                                });
 
                                         /*Log.d("User: ", user.getDisplayName());*/
 
