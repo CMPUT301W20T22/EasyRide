@@ -21,7 +21,7 @@ import com.example.easyride.ui.login.LoginActivity;
 
 import com.example.easyride.ui.driver.driver_home;
 
-import com.example.easyride.ui.rider.rider_home;
+//import com.example.easyride.ui.rider.rider_home;
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

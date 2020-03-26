@@ -152,7 +152,7 @@ public class edit_ride extends AppCompatActivity {
     }
 
     private void goBack(){
-        Intent i = new Intent(getApplicationContext(), rider_home.class);
+        Intent i = new Intent(getApplicationContext(), RiderHome.class);
         startActivity(i);
     }
 
