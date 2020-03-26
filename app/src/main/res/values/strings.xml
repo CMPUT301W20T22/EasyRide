@@ -19,6 +19,7 @@
     <string name="request_not_accepted_yet">Request not accepted yet</string>
     <string name="editing_the_infomation">Editing the infomation</string>
     <string name="editing_the_information" />
+    <string name="driver_profile_unavailable">Driver Profile Unavailable</string>
 
 
 </resources>

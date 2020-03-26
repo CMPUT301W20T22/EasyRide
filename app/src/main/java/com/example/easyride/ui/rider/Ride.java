@@ -10,7 +10,9 @@ public class Ride {
     private String distance;
     private String driverUserName;
     private boolean rideAccepted;
+    private boolean rideConfirmAccepted;
     private boolean rideCompleted;
+    private boolean ridePaid;
 
 
     // CONSTRUCTOR
@@ -22,8 +24,26 @@ public class Ride {
         this.distance = distance;
         this.rideAccepted = false;
         this.rideCompleted = false;
+        this.rideConfirmAccepted = false;
+        this.ridePaid = false;
 
 
+    }
+
+    public boolean isRideConfirmAccepted() {
+        return rideConfirmAccepted;
+    }
+
+    public void setRideConfirmAccepted(boolean rideConfirmAccepted) {
+        this.rideConfirmAccepted = rideConfirmAccepted;
+    }
+
+    public boolean isRidePaid() {
+        return ridePaid;
+    }
+
+    public void setRidePaid(boolean ridePaid) {
+        this.ridePaid = ridePaid;
     }
 
     public Ride(){}

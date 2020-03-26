@@ -14,12 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,6 +46,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         mode = intent.getStringExtra("mode");
 
         // init database
+
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
 
@@ -55,6 +55,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
+
+        if (mode.equals("rider")){
+            Rating.setVisibility(View.INVISIBLE);
+        }
 
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -131,7 +135,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
 
         if (mode.equals("rider")){
-            startActivity(new Intent(this, rider_home.class));
+            startActivity(new Intent(this, RiderHome.class));
             finish();
         }
 
