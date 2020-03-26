@@ -125,11 +125,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double distance = mh.getRouteDistance();
+                double distance = mh.getRouteDistance()/1000;
                 Log.e("DISTANCE : ", Double.toString(distance));
                 LatLng startPoint = mh.getStartLatLang();
                 LatLng endPoint = mh.getEndLatLang();
-                Double cost = distance/1000+7;
+                Double cost = distance*2.5;
                 String cost_string = Double.toString(cost);
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
