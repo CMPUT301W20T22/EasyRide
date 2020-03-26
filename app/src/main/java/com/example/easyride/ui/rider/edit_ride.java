@@ -42,7 +42,7 @@ public class edit_ride extends AppCompatActivity {
        // SingleRide instance = SingleRide.getInstance();
        // DataList = instance.getRide();
         Rider alright = Rider.getInstance(new EasyRideUser("kk"));
-
+        getSupportActionBar().setTitle("Request");
         DataList = alright.getActiveRequests();
         final Ride rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
