@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -20,6 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import com.example.easyride.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -52,6 +55,8 @@ public class SearchRequestActivity extends AppCompatActivity {
     private FirebaseFirestoreSettings settings;
     private Toolbar toolbar;
 
+    private FusedLocationProviderClient client;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,10 @@ public class SearchRequestActivity extends AppCompatActivity {
                 .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+
+        // GET CURRENT LOCATION OF USER
+        //client = LocationServices.getFusedLocationProviderClient(this);
+        //client.getLastLocation().addOnSuccessListener()
 
         /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
@@ -124,7 +133,10 @@ public class SearchRequestActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     private void showData() {
+
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
