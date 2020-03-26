@@ -42,6 +42,7 @@ public class EditRide extends AppCompatActivity {
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
     String fareWithTip;
+    String ride_cost;
     String ride_cost_short;
     String ride_distance_short;
     Ride rideReq;
@@ -65,7 +66,7 @@ public class EditRide extends AppCompatActivity {
         }else{
             ride_distance_short = ride_distance;
         }
-        String ride_cost= rideReq.getCost();
+        ride_cost= rideReq.getCost();
         int index = ride_cost.indexOf('.');
         if (index == -1){
             ride_cost_short = ride_cost;
@@ -340,8 +341,7 @@ public class EditRide extends AppCompatActivity {
                             }
                         });
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
-                //i.putExtra("mode", "driver");
-
+                i.putExtra("cost", ride_cost);
                 startActivity(i);
             }
         });
