@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-\        <!--
+        <service
+            android:name=".ui.rider.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -39,6 +47,8 @@
                 android:value=".map.MapsActivity" />
         </activity>
         -->
+
+
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -68,9 +78,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.rider.rider_home" />
-        <activity android:name=".ui.rider.add_ride" />
-        <activity android:name=".ui.rider.edit_ride" />
+        <activity android:name=".ui.rider.RiderHome" />
+        <activity android:name=".ui.rider.AddRide" />
+        <activity android:name=".ui.rider.EditRide" />
         <activity android:name=".ui.driver.driver_home" />
         <activity android:name=".ui.rider.QR_Pay" />
         <activity android:name=".user_profile" />
@@ -83,12 +93,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.easyride.ui.driver.driver_home" />
         </activity>
+        <activity android:name=".ui.rider.AcceptedDriver"
+            android:parentActivityName=".ui.rider.EditRide"/>
         <activity
             android:name=".ui.driver.ride_review"
             android:theme="@style/CustomTheme" />
         <activity
             android:name=".ui.driver.AcceptRequestActivity"
             android:parentActivityName=".ui.driver.SearchRequestActivity" />
+
     </application>
+
 
 </manifest>

@@ -136,7 +136,8 @@ public class driver_home extends AppCompatActivity {
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
-        db.collection("RideRequest").whereEqualTo("rideAccepted", true)
+        db.collection("RideRequest").whereEqualTo("rideAccepted", true).
+                whereEqualTo("driverUserName", fAuth.getCurrentUser().getEmail())
                 .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot querySnapshot,

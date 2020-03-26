@@ -12,7 +12,7 @@ import com.example.easyride.R;
 // This class is when a rider wants to add a new ride request.
 // Layout is activity_add_ride
 
-public class add_ride extends rider_home {
+public class AddRide extends RiderHome {
 
     private EditText fromName;
     private EditText toName;
@@ -47,7 +47,7 @@ public class add_ride extends rider_home {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), rider_home.class);
+                Intent i = new Intent(getApplicationContext(), RiderHome.class);
                 startActivity(i);
             }
 
