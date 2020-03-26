@@ -122,7 +122,16 @@
 
         <com.google.android.gms.maps.MapView
             android:layout_width="379dp"
-            android:layout_height="206dp" />
+            android:layout_height="222dp" />
+
+        <Button
+            android:id="@+id/accept_pay_button"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="Accept Payment" />
 
     </LinearLayout>
 

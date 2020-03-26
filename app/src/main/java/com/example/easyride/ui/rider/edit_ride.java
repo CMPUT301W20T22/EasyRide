@@ -51,9 +51,9 @@ public class edit_ride extends AppCompatActivity {
         }else{
             ride_distance_short = ride_distance;
         }
-        String ride_cost= rideReq.getCost();
+        final String ride_cost= rideReq.getCost();
         if (ride_cost.length() > 4) {
-            ride_cost_short = ride_cost.substring(0, 4);
+            ride_cost_short = ride_cost.substring(0, 5);
         }else {
             ride_cost_short = ride_cost;
         }
@@ -72,6 +72,7 @@ public class edit_ride extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
+                i.putExtra("cost", ride_cost);
                 startActivity(i);
             }
 

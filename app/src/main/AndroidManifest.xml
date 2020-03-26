@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-\        <!--
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -29,16 +29,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
-        <!--
-<activity
-            android:name=".ui.rider.rider_home"
-            android:label="@string/title_activity_maps"
-            android:parentActivityName=".map.MapsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".map.MapsActivity" />
-        </activity>
-        -->
+
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -47,32 +38,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.login.LoginActivity" />
         </activity>
-        <activity
-            android:name=".ui.signup.SignUpActivity"
-            android:theme="@style/CustomTheme"
-            tools:ignore="DuplicateActivity"></activity>
+
         <activity
             android:name=".ui.login.LoginActivity"
-            android:parentActivityName=".MainActivity"
-            tools:ignore="DuplicateActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.rider.rider_home" />
         <activity android:name=".ui.rider.add_ride" />
         <activity android:name=".ui.rider.edit_ride" />
         <activity android:name=".ui.driver.driver_home" />
         <activity android:name=".ui.rider.QR_Pay" />
+        <activity android:name=".ui.driver.QR_Scan" />
         <activity android:name=".user_profile" />
         <activity
             android:name=".ui.driver.SearchRequestActivity"
