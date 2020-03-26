@@ -2,6 +2,8 @@ package com.example.easyride.ui.rider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.easyride.R;
 
@@ -56,13 +59,32 @@ public class CustomListForRider extends ArrayAdapter<Ride> {
 
         from.setText(ride.getFrom());
         to.setText(ride.getTo());
-        if (ride.getCost().length() > 4) {
-            cost.setText("$" + ride.getCost().substring(0, 4));
-        }else{
-            cost.setText("$" + ride.getCost());
+        String ride_cost = ride.getCost();
+        String ride_cost_short;
+        int index = ride_cost.indexOf('.');
+        if (index == -1){
+            ride_cost_short = ride_cost;
+        }else {
+            if (ride_cost.length() > 4 && index == 3) {
+                ride_cost_short = ride_cost.substring(0, 3);
+            } else if(ride_cost.length() > 4) {
+                ride_cost_short = ride_cost.substring(0, 4);
+            }else {
+                ride_cost_short = ride_cost;
+            }
         }
-        if(ride.isRideAccepted()) {
+
+        cost.setText("$" + ride_cost_short);
+
+        if(ride.isRideAccepted() && ride.isRideConfirmAccepted()) {
             status.setText("Accepted");
+            status.setTextColor(Color.GREEN);
+        }else if (ride.isRideAccepted() && !ride.isRideConfirmAccepted()){
+            status.setText("Action Required");
+            status.setTextColor(Color.RED);
+        }else if (!ride.isRidePaid() && ride.isRideCompleted()){
+            status.setText("Payment Required");
+            status.setTextColor(Color.RED);
         }else{
             status.setText("Not Accepted");
         }

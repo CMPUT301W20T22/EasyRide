@@ -134,7 +134,7 @@
         android:background="@drawable/buttonw"
         android:clickable="false"
         android:fontFamily="@font/sfdisplayregular"
-        android:text="@string/request_not_accepted_yet"
+        android:text="@string/driver_profile_unavailable"
         app:layout_constraintBottom_toTopOf="@+id/tip_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -157,15 +157,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/delete_button"
+        android:id="@+id/back_button"
         android:layout_width="135dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
-        android:text="Delete Ride"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -185,7 +185,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/delete_button"
         android:layout_width="135dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -193,11 +193,11 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
-        android:text="Back"
+        android:text="Delete Ride"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/save_button"
         app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toEndOf="@+id/delete_button" />
+        app:layout_constraintStart_toEndOf="@+id/back_button" />
 
     <Button
         android:id="@+id/save_button"

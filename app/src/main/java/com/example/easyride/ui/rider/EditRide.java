@@ -2,8 +2,12 @@ package com.example.easyride.ui.rider;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.NotificationModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
+import static android.view.View.GONE;
 import static com.android.volley.VolleyLog.TAG;
 
 // Handles viewing of a ride request. Don't need to be able to edit the request
@@ -59,10 +66,17 @@ public class EditRide extends AppCompatActivity {
             ride_distance_short = ride_distance;
         }
         String ride_cost= rideReq.getCost();
-        if (ride_cost.length() > 4) {
-            ride_cost_short = ride_cost.substring(0, 4);
-        }else {
+        int index = ride_cost.indexOf('.');
+        if (index == -1){
             ride_cost_short = ride_cost;
+        }else {
+            if (ride_cost.length() > 4 && index == 3) {
+                ride_cost_short = ride_cost.substring(0, 3);
+            } else if(ride_cost.length() > 4) {
+                ride_cost_short = ride_cost.substring(0, 4);
+            }else {
+                ride_cost_short = ride_cost;
+            }
         }
         from = findViewById(R.id.from_text);
         to = findViewById(R.id.to_text);
@@ -75,11 +89,13 @@ public class EditRide extends AppCompatActivity {
         distance.setText(ride_distance_short);
 
         Button payButton = findViewById(R.id.pay_button);
-        payButton.setText("Ride Not completed");
+
         payButton.setClickable(false);
         if (rideReq.isRideCompleted()) {
             payButton.setText("Confirm completion");
             payButton.setClickable(true);
+            payButton.setTextColor(Color.parseColor("7C1C1C"));
+
 
             //Todo: This is where QR is called.
             payButton.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +106,10 @@ public class EditRide extends AppCompatActivity {
 
 
             });
+        }else if(!rideReq.isRideAccepted()){
+            payButton.setText("Driver has not accepted");
+        }else{
+            payButton.setText("Waiting for ride completion");
         }
 
         Button addTip = findViewById(R.id.tip_button);
@@ -102,6 +122,13 @@ public class EditRide extends AppCompatActivity {
 
         final Rider instance = Rider.getInstance(new EasyRideUser("kk"));
         Button delete = findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instance.removeAt(position);
+                goBack();
+            }
+        });
 
         if (rideReq.isRideAccepted()) {
             Button viewProfile = findViewById(R.id.profile_button);
@@ -117,16 +144,29 @@ public class EditRide extends AppCompatActivity {
                 }
 
             });
-            delete.setClickable(false);
-            delete.setText("Accepted");
-        }else{
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    instance.removeAt(position);
-                    goBack();
-                }
-            });
+            if(!rideReq.isRideConfirmAccepted()) {
+                String tempString = "Confirm the request";
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                payButton.setText(spanString);
+                payButton.setTextColor(Color.parseColor("#C82828"));
+                payButton.setClickable(true);
+
+                //Todo: This is where QR is called.
+                payButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        confirmRide();
+                    }
+
+
+                });
+            }else{
+                delete.setText("Accepted");
+                delete.setVisibility(View.INVISIBLE);
+                delete.setClickable(false);
+
+            }
         }
 
 
@@ -138,9 +178,9 @@ public class EditRide extends AppCompatActivity {
             public void onClick(View v) {
                 if (fareWithTip != null){
                     rideReq.setCost(fareWithTip);
-                    instance.removeAt(position);
-                    instance.addRide(rideReq);
                 }
+                instance.removeAt(position);
+                instance.addRide(rideReq);
                 goBack();
             }
         });
@@ -161,6 +201,65 @@ public class EditRide extends AppCompatActivity {
         startActivity(i);
     }
 
+    private void notification(){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("driver").whereEqualTo("Email", rideReq.getDriverUserName())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                NotificationModel notificationModel = new NotificationModel(
+                                        rideReq.getFrom() + " to " + rideReq.getTo(),
+                                        rideReq.getUser());
+                                //Log.e("This is the id:", id[0]);
+
+                                db.collection("driver").document(doc.getId()).collection("notification").
+                                        document().set(notificationModel);
+
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void confirmRide(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure? You will no longer be able to cancel the ride");
+        // Set up the input
+
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
+        // Set up the buttons
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                rideReq.setRideConfirmAccepted(true);
+                Button delete = findViewById(R.id.delete_button);
+                delete.setClickable(false);
+                delete.setText("Accepted");
+                Button payButton = findViewById(R.id.pay_button);
+                payButton.setText("Waiting for ride completion");
+                payButton.setTextColor(Color.BLACK);
+                payButton.setClickable(false);
+                notification();
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+
+
+    }
     //https://stackoverflow.com/a/10904665/10861074
     private void tipDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -5,6 +5,7 @@ import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,7 +40,6 @@ public class AcceptedDriver extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
-
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
         //mode = intent.getStringExtra("mode");
@@ -62,15 +62,25 @@ public class AcceptedDriver extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
 
                                 //riderName.setText();
+                                riderName.setText(document.getString("Name") + "'s Profile");
                                 email.setText("Email: " + document.getString("Email"));
                                 Phone.setText("Phone: " + document.getString("Phone"));
-                                int good = (int) document.get("good_reviews");
-                                int bad = (int) document.get("bad_reviews");
-                                int rate = (good/bad)*100;
-                                Rating.setText(rate);
+                                try{
+                                    int good = (int) document.get("good_reviews");
+                                    int bad = (int) document.get("bad_reviews");
+                                    int rate = (good/bad)*100;
+                                    if (rate == 0){
+                                        throw new Exception("Rating is 0");
+                                    }
+                                    String rateS = String.valueOf(rate);
+                                    Rating.setText("Rate: " + rateS + "%");
+                                }catch (Exception e){
+                                    Log.e(TAG, "Error getting Ratings: ", e);
+                                    Rating.setText("Rating: Driver has not been rated yet");
+                                }
+
                                 //Log.e("SIZE", user.getUserId());
                                 //Log.e("SIZE", Integer.toString(activeRequests.size()));
-
                             }
                         } else {
                             Log.e(TAG, "Error getting documents: ", task.getException());
@@ -99,7 +109,7 @@ public class AcceptedDriver extends AppCompatActivity {
 
         Button editButton = findViewById(R.id.edit_contact_button);
 
-        editButton.setVisibility(GONE);
+        editButton.setVisibility(View.INVISIBLE);
 
     }
 

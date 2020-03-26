@@ -54,10 +54,10 @@ public class RiderHome extends AppCompatActivity {
         //DataList = instance.getRide();
         //TODO get the current list of ride requests by user
         //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
-       // user = FirebaseAuth.getInstance().getCurrentUser();
+       user = FirebaseAuth.getInstance().getCurrentUser();
        // assert user != null;
-       // userID = user.getEmail();
-        Rider alright = Rider.getInstance(new EasyRideUser("kk"));
+       userID = user.getEmail();
+        Rider alright = Rider.getInstance(new EasyRideUser(userID));
         EasyRideUser user = alright.getCurrentRiderInfo();
         if (user.getDisplayName() != null ) {
             Log.e("HEYYYY", user.getDisplayName());
@@ -81,8 +81,6 @@ public class RiderHome extends AppCompatActivity {
 
         rideAdapter = new CustomListForRider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);
-
-
 
 
         // EDIT ITEM FROM ARRAY LIST

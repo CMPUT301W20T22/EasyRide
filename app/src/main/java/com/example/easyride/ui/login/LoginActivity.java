@@ -144,6 +144,9 @@ public class LoginActivity extends AppCompatActivity {
                                                         String token = Objects.requireNonNull(task.getResult()).getToken();
                                                         db.collection(Mode).document(ID).update("token", token);
                                                     }
+
+
+
                                                 });
 
                                         /*Log.d("User: ", user.getDisplayName());*/

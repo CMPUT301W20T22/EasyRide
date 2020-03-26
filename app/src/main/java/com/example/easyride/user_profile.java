@@ -46,6 +46,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         mode = intent.getStringExtra("mode");
 
         // init database
+
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
 
@@ -55,6 +56,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
 
+        if (mode.equals("rider")){
+            Rating.setVisibility(View.INVISIBLE);
+        }
+
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressLint("SetTextI18n")
@@ -63,9 +68,9 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     assert doc != null;
-                    riderName.setText(doc.getString("Name:"));
-                    Email.setText("Email: " + doc.getString("Email:"));
-                    Phone.setText("Phone: " + doc.getString("Phone:"));
+                    riderName.setText(doc.getString("Name"));
+                    Email.setText("Email: " + doc.getString("Email"));
+                    Phone.setText("Phone: " + doc.getString("Phone"));
                 }
             }
         });
