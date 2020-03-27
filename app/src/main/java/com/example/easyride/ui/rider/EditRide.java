@@ -42,6 +42,7 @@ public class EditRide extends AppCompatActivity {
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
     String fareWithTip;
+    String ride_cost;
     String ride_cost_short;
     String ride_distance_short;
     Ride rideReq;
@@ -65,7 +66,7 @@ public class EditRide extends AppCompatActivity {
         }else{
             ride_distance_short = ride_distance;
         }
-        String ride_cost= rideReq.getCost();
+        ride_cost= rideReq.getCost();
         int index = ride_cost.indexOf('.');
         if (index == -1){
             ride_cost_short = ride_cost;
@@ -268,7 +269,7 @@ public class EditRide extends AppCompatActivity {
 // Set up the input
         final EditText input = new EditText(this);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         builder.setView(input);
 
@@ -276,7 +277,8 @@ public class EditRide extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                fareWithTip = input.getText().toString();
+                String Tip = input.getText().toString();
+                fareWithTip = Double.toString((Double.valueOf(Tip) + Double.valueOf(ride_cost)));
                 dialog.dismiss();
                 if (!fareWithTip.equals("")) {
                     //ride_cost_short = fareWithTip.substring(0, 4);
@@ -340,8 +342,7 @@ public class EditRide extends AppCompatActivity {
                             }
                         });
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
-                //i.putExtra("mode", "driver");
-
+                i.putExtra("cost", ride_cost);
                 startActivity(i);
             }
         });

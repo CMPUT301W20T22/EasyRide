@@ -75,8 +75,8 @@
         android:id="@+id/accept_pay_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Accept Request"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:text="Accept Ride" />
 
 
 </LinearLayout>
