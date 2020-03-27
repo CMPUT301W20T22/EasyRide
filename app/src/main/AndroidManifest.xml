@@ -39,6 +39,11 @@
             android:value="@string/api_key" />
 
         <activity
+            android:name=".ui.signup.SignUpActivity"
+            android:theme="@style/CustomTheme">
+        </activity>
+
+        <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".ui.login.LoginActivity">
