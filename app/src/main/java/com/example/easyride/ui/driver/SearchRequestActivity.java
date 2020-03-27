@@ -72,7 +72,7 @@ public class SearchRequestActivity extends AppCompatActivity {
 
         // GET CURRENT LOCATION OF USER
         //client = LocationServices.getFusedLocationProviderClient(this);
-        //client.getLastLocation().addOnSuccessListener()
+        //client.getLastLocation();
 
         /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
