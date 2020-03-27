@@ -13,7 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.login.LoginActivity;
+
 import com.example.easyride.ui.driver.driver_home;
+
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,8 +32,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 
+
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
+
+
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
     private String userID;
@@ -36,10 +46,13 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     private TextView riderName, Email, Phone, Rating;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
+        setContentView(R.layout.activity_user_profile);
+
+        getSupportActionBar().setTitle("User Profile");
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
@@ -50,15 +63,14 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
 
+
+
         // TextView assign
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
 
-        if (mode.equals("rider")){
-            Rating.setVisibility(View.INVISIBLE);
-        }
 
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

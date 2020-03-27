@@ -44,7 +44,7 @@ public class RiderHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_home);
 
-        getSupportActionBar().setTitle("Current Active Request");
+        getSupportActionBar().setTitle("Current Active Requests");
 
         LV = findViewById(R.id.ride_list);
 

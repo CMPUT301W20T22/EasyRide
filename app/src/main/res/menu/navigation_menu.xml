@@ -11,7 +11,7 @@
         android:id="@+id/action_home"
         android:title="Home"
         android:icon="@drawable/ic_home_black_24dp"
-        app:showAsAction="never">
+        app:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/action_logout"
