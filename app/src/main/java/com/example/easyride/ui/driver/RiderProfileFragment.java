@@ -13,9 +13,11 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.easyride.R;
 
-// Set up RiderProfileFragment for rider
-// Using DialogFragment from Android library
-
+/**
+ * Set up RiderProfileFragment for rider using DialogFragment from Android library.
+ * @author T22
+ * @version 1.0
+ */
 public class RiderProfileFragment extends DialogFragment {
 
     // widgets

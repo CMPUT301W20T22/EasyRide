@@ -11,6 +11,11 @@ import androidx.core.content.ContextCompat;
 
 import com.example.easyride.ui.login.LoginActivity;
 
+/**
+ * Main Activity where the user can choose their status (Rider/Driver) to use the app.
+ * @author T22
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
   @Override

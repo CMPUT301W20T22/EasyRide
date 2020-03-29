@@ -30,6 +30,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Sign Up Activity where the user can create a new account for them.
+ * @author T22
+ * @version 1.0
+ */
+
 public class SignUpActivity extends AppCompatActivity {
 
     EditText mFullName, mEmail, mPassword, mPhone;
@@ -77,7 +83,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.loading);
 
-
+        // Set onClickListener for the SignUpButton
+        // create new User Profile whenever the button is clicked
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,11 +120,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                /**
-                 * Create the user account
-                 * Add data to the database
-                 */
-
+                // Create the user account
+                // Add data to the database
                 fAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

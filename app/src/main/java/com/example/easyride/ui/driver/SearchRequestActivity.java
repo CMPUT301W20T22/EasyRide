@@ -40,9 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// SEARCH ACTIVITY. WHEN YOU CLICK ON THE SEARCH BUTTON, THIS SHOULD DISPLAY.
-// Handles the Search Activity, you are able to search between Active Requests based on Geo Location.
-// allowing users to search for the requests.
+/**
+ * Search Activity. When you click on the Search Button, this should display.
+ * Handles the Search Activity, you are able to search between Active Requests based on Geo Location.
+ * allowing users to search for the requests.
+ * @author T22
+ * @version 1.0
+ */
 
 public class SearchRequestActivity extends AppCompatActivity {
 
@@ -107,6 +111,7 @@ public class SearchRequestActivity extends AppCompatActivity {
         searchRequestAdapter = new RideRequestListAdapter(rideRequestList);
         mRequestList.setAdapter(searchRequestAdapter);
 
+        // Set on item onClickListener to the list
         searchRequestAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -134,10 +139,11 @@ public class SearchRequestActivity extends AppCompatActivity {
     }
 
 
-
-    private void showData() {
-
-
+    /**
+     * Method to display the data to RecyclerView from the database,
+     * depend on the driver, the data displayed on the activity will be different.
+     */
+    public void showData() {
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("rideAccepted", false)
@@ -166,6 +172,11 @@ public class SearchRequestActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Create Search Bar for Search Activity.
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflating driver_menu
@@ -199,7 +210,14 @@ public class SearchRequestActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void searchData(String query) {
+
+    /**
+     * method created to do the searching in the Database
+     * based on the query the driver input in the Search Bar
+     * and display it on the RecyclerView so that the driver can see the results.
+     * @param query
+     */
+    public void searchData(String query) {
         // search data
         db.collection("RideRequest").whereEqualTo("user", query.toLowerCase())
                 .whereEqualTo("rideAccepted", false)

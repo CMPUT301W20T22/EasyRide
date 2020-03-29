@@ -30,6 +30,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * The Activity will be called when the User want to see the details of a RideRequest,
+ * and maybe accept the RideRequest
+ * @author T22
+ * @version 1.0
+ */
+
 public class AcceptRequestActivity extends AppCompatActivity {
 
     private TextView from, to, cost;
@@ -69,7 +77,8 @@ public class AcceptRequestActivity extends AppCompatActivity {
         cost.setText(mCost);
 
 
-        // See Rider Profile
+        // Button to see Rider Profile
+        // invoke RiderProfileFragment whenever the button is clicked
         riderProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +105,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
             }
         });
 
-
+        // Button to Accept RideRequest
         mAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

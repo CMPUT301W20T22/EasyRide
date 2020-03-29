@@ -14,6 +14,13 @@ import com.example.easyride.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+/**
+ * Activity to scan the QR code whenever the Driver finishes the ride,
+ * and want to accept the payment.
+ * @author T22
+ * @version 1.0
+ */
+
 public class QR_Scan extends AppCompatActivity {
     private Button qr_scan_button;
     private String cost;
@@ -38,6 +45,12 @@ public class QR_Scan extends AppCompatActivity {
 
     }
 
+    /**
+     * Handle the result of scanning.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);

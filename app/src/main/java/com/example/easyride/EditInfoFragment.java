@@ -16,9 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 
-// Create a Dialog Fragment for the user to edit their contact information
-// https://stackoverflow.com/questions/13257038/custom-layout-for-dialogfragment-oncreateview-vs-oncreatedialog/15602648
+/**
+ * Create a Dialog Fragment for the user to edit their contact information
+ * @author T22
+ * @version 1.0
+ */
 
+// https://stackoverflow.com/questions/13257038/custom-layout-for-dialogfragment-oncreateview-vs-oncreatedialog/15602648
 public class EditInfoFragment extends AppCompatDialogFragment {
 
     // widgets
@@ -105,6 +109,9 @@ public class EditInfoFragment extends AppCompatDialogFragment {
         }
     }
 
+    /**
+     * Interface created to handle updating the new information to database
+     */
     public interface myListener {
         void updateInfo(String email, String phone, String password);
     }

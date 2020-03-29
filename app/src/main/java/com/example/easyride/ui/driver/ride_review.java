@@ -14,6 +14,12 @@ import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.ui.login.LoginActivity;
 import com.google.android.gms.maps.MapView;
+/**
+ * Allow the driver to Review the Details of the RideRequest he wants to see.
+ * Also, he can choose to accept the payment when he finishes the ride.
+ * @author T22
+ * @version 1.0
+ */
 
 public class ride_review extends AppCompatActivity {
 

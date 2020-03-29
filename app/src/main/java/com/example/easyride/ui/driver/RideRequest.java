@@ -3,13 +3,12 @@ package com.example.easyride.ui.driver;
 import android.location.Location;
 
 /**
- * RideRequest class that ...
+ * RideRequest Model.
  * @author T22
  * @version 1.0
  * @see Location
  */
 public class RideRequest {
-
 
 
   private String pickupPoint;
@@ -49,6 +48,16 @@ public class RideRequest {
     this.rideConfirmAccepted = rideConfirmAccepted;
   }
 
+  /**
+   * Model Constructor for RideRequest.
+   * @param key
+   * @param riderUserName
+   * @param pickupPoint
+   * @param targetPoint
+   * @param cost
+   * @param rideAccepted
+   * @param rideCompleted
+   */
   public RideRequest(String key, String riderUserName, String pickupPoint, String targetPoint, String cost, boolean rideAccepted, boolean rideCompleted) {
     this.riderUserName = riderUserName;
     this.pickupPoint = pickupPoint;

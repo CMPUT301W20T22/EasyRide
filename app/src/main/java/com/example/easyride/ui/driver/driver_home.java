@@ -2,7 +2,6 @@ package com.example.easyride.ui.driver;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,12 +37,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-// DRIVER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A DRIVER.
-// Handles the driver home screen to display and navigate between active requests, as well as
-// allowing users to select and accept a new ride request.
-
-
-
+/**
+ * Drive Home, the first page you should see when you sign in as a driver.
+ * Handles the driver home screen to display and navigate between active requests, as well as
+ * allowing users to select and accept a new ride request.
+ * @author T22
+ * @version 1.0
+ */
 public class driver_home extends AppCompatActivity {
 
     private static final String TAG = "FireLog";
@@ -108,8 +108,10 @@ public class driver_home extends AppCompatActivity {
             }
         });
 
-        // Set OnclickListener for Search Btn
 
+        // Set onClickListener for the Search Button
+        // Go to SearchRequestActivity if the Button is clicked
+        // and the app is not on OffLine Mode
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,8 +133,13 @@ public class driver_home extends AppCompatActivity {
 
     }
 
-    private void showData() {
 
+    /**
+     * Method to display the data to RecyclerView from the database,
+     * depend on the driver, the data displayed on the driver_home will be different.
+     * @use
+     */
+    public void showData() {
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
@@ -182,6 +189,11 @@ public class driver_home extends AppCompatActivity {
     }
 
 
+    /**
+     * Create option Menu for driver_home.
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -190,6 +202,14 @@ public class driver_home extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
+    /**
+     * Method to handle the Menu item onClick Event.
+     * For each option, there will be a different result to it.
+     * @param item
+     * @return boolean
+     */
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

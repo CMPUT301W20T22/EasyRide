@@ -1,0 +1,8 @@
+com.example.easyride
+com.example.easyride.data.model
+com.example.easyride.map
+com.example.easyride.ui
+com.example.easyride.ui.driver
+com.example.easyride.ui.login
+com.example.easyride.ui.rider
+com.example.easyride.ui.signup

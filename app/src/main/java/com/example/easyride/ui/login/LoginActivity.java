@@ -33,6 +33,11 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Login Activity where the user can log in to the app using their username and password.
+ * @author T22
+ * @version 1.0
+ */
 public class LoginActivity extends AppCompatActivity {
 
     public static final String ID = "";
@@ -64,10 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        /**
-         * Sign Up Button OnClickListener
-         * @param View.OnClickListener
-         */
+        // Sign Up Button OnClickListener
         signUpbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,10 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * Log In Button OnClickListener
-         * @param View.OnClickListener
-         */
+        // Log In Button OnClickListener
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,14 +103,14 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-
-                // authenticate the user and log in the application based on the Status (Rider/Driver)
+                // Authenticate the user and log in the application based on the Status (Rider/Driver)
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             final String ID = user.getUid();
+
                             /*
                              Check if the user existed in the collection (Rider/Driver)
                              If it's not then deny the access to the application

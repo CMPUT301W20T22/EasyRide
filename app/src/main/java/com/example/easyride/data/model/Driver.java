@@ -9,8 +9,6 @@ import java.util.ArrayList;
  * @author T22
  * @version 1.0
  * @see EasyRideUser
- *
- * get rid of extend
  */
 public class Driver extends EasyRideUser {
 

@@ -1,7 +1,20 @@
 package com.example.easyride.ui;
 
+
+/**
+ * Notification Model.
+ * @author T22
+ * @version 1.0
+ */
+
 public class NotificationModel {
     private String notificationMessage, senderUserEmail;
+
+    /**
+     * Model Constructor.
+     * @param notificationMessage
+     * @param senderUserEmail
+     */
     public NotificationModel(String notificationMessage, String senderUserEmail) {
         this.notificationMessage = notificationMessage;
         this.senderUserEmail = senderUserEmail;

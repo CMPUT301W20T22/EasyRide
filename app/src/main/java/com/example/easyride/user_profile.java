@@ -31,12 +31,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-
-
-// User profile screen that handles Name, Contact info, and rating.
-// Should be able to edit contact info
-
-
+/**
+ * User profile screen that handles Name, Contact info, and rating.
+ * Should be able to edit contact info
+ * @author T22
+ * @version 1.0
+ */
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
     private String userID;
@@ -88,12 +88,8 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         });
 
 
-        /**
-         * Set up fragment to edit user's contact info.
-         */
-
+        // Set up Fragment to edit user's info
         Button editButton = findViewById(R.id.edit_contact_button);
-
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +99,12 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         });
     }
 
+    /**
+     * Method to update the information to the database and display it in the activity
+     * @param email
+     * @param phone
+     * @param password
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void updateInfo(String email, String phone, String password) {
@@ -128,6 +130,11 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
 
     }
 
+    /**
+     * Create option Menu for the activity
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -137,7 +144,11 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         return super.onCreateOptionsMenu(menu);
     }
 
-    // Home Navigation Option
+    /**
+     * Home Navigation Option selection handle
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
