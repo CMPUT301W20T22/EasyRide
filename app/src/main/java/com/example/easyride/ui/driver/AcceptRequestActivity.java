@@ -13,7 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.easyride.R;
+import com.example.easyride.ui.NotificationModel;
+import com.example.easyride.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AcceptRequestActivity extends AppCompatActivity {
 
@@ -70,25 +75,24 @@ public class AcceptRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get user profile info
-                db.collection("rider").whereEqualTo("Name", mRider)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                                        user = doc.getString("Name");
-                                        email = doc.getString("Email");
-                                        Log.d("Document", doc.getId() + " => " + doc.getData());
-                                        // Pass data to Profile Fragment
-                                        RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
-                                        dialog.show(getSupportFragmentManager(), "My Profile Fragment");
-                                    }
-                                }
+
+                db.collection("rider").whereEqualTo("Email", mRider)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                user = doc.getString("Name");
+                                email = doc.getString("Email");
+                                Log.d("Document", doc.getId() + " => " + doc.getData());
+                                // Pass data to Profile Fragment
+                                RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
+                                dialog.show(getSupportFragmentManager(), "My Profile Fragment");
                             }
-                        });
-
-
+                        }
+                    }
+                });
             }
         });
 
@@ -97,12 +101,33 @@ public class AcceptRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String ID = getIntent().getStringExtra("ID");
+                assert ID != null;
                 db.collection("RideRequest").document(ID).update("rideAccepted", true);
-                db.collection("RideRequest").document(ID).update("driverUserName", fAuth.getCurrentUser().getDisplayName());
+                final String driver_email = Objects.requireNonNull(fAuth.getCurrentUser()).getEmail();
+                db.collection("RideRequest").document(ID).update("driverUserName",
+                        driver_email);
+                final String[] id = new String[1];
+                db.collection("rider").whereEqualTo("Email", mRider)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                        NotificationModel notificationModel = new NotificationModel(
+                                                mFrom + " to " + mTo, driver_email);
+                                        //Log.e("This is the id:", id[0]);
+
+                                        db.collection("rider").document(doc.getId()).collection("notification")
+                                        .document().set(notificationModel);
+
+                                    }
+                                }
+                            }
+                        });
                 startActivity(new Intent(getApplicationContext(), driver_home.class));
                 finish();
             }
         });
-
     }
 }

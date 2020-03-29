@@ -10,8 +10,9 @@ public class Ride {
     private String distance;
     private String driverUserName;
     private boolean rideAccepted;
+    private boolean rideConfirmAccepted;
     private boolean rideCompleted;
-
+    private boolean ridePaid;
 
     // CONSTRUCTOR
     public Ride(String from, String to, String cost, String user, String distance) {
@@ -22,11 +23,28 @@ public class Ride {
         this.distance = distance;
         this.rideAccepted = false;
         this.rideCompleted = false;
+        this.rideConfirmAccepted = false;
+        this.ridePaid = false;
+    }
+    //TODO: Should we keep this constructor
+    public Ride(){} 
 
-
+    public boolean isRideConfirmAccepted() {
+        return rideConfirmAccepted;
     }
 
-    public Ride(){}
+    public void setRideConfirmAccepted(boolean rideConfirmAccepted) {
+        this.rideConfirmAccepted = rideConfirmAccepted;
+    }
+
+    public boolean isRidePaid() {
+        return ridePaid;
+    }
+
+    public void setRidePaid(boolean ridePaid) {
+        this.ridePaid = ridePaid;
+    }
+
     // GETTERS
     public String getFrom() {
         return from;
@@ -43,7 +61,6 @@ public class Ride {
     public String getUser() {
         return user;
     }
-
 
     public String getDistance() { return distance; }
 
@@ -91,7 +108,6 @@ public class Ride {
     public void setFrom(String from) {
         this.from = from;
     }
-
 
     public void setDistance(String distance) { this.distance = distance; }
 

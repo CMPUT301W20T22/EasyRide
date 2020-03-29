@@ -1,52 +1,35 @@
 package com.example.easyride.map;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
 import com.example.easyride.MainActivity;
-import com.example.easyride.data.model.Rider;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.model.LocationBias;
+
 import com.google.android.libraries.places.api.model.Place.Field;
-import com.android.volley.toolbox.HttpResponse;
-import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.ui.login.LoginActivity;
 import com.example.easyride.ui.rider.Ride;
-import com.example.easyride.ui.rider.SingleRide;
-import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -56,23 +39,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -141,13 +112,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double distance = mh.getRouteDistance();
+                double distance = mh.getRouteDistance()/1000;
 
                 /*
                    LatLng startPoint = mh.getStartLatLang();
                    LatLng endPoint = mh.getEndLatLang();
                 */
-                Double cost = distance/1000+7;
+
+                Double cost = distance*2.5;
                 DecimalFormat df = new DecimalFormat("#.##");
                 cost = Double.valueOf(df.format(cost));
                 distance = Double.parseDouble(df.format(distance));
@@ -155,6 +127,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String distance_string = Double.toString(distance);
                 Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
+
 
                 String start_location_string = mh.getStartPlace().getName();
                 String end_location_string = mh.getEndPlace().getName();
@@ -168,17 +141,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 riderInstance.addRide(rideInsert);
                 //SingleRide instance = SingleRide.getInstance();
                 //instance.addRide(rideInsert);
-                Intent i = new Intent(MapsActivity.this, rider_home.class);
+
+                Intent i = new Intent(MapsActivity.this, RiderHome.class);
                 startActivity(i);
             }
         });
-
     }
-
-
-
-
-
 
     /**
      * Manipulates the map once available.
@@ -261,9 +229,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // The user canceled the operation.
             }
         }
-
 }
-
-
-//  }
-//}

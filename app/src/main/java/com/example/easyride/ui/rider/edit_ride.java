@@ -9,10 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
@@ -75,9 +73,6 @@ public class edit_ride extends AppCompatActivity {
                 startActivity(i);
             }
 
-
-
-
         });
 
         Button addTip = findViewById(R.id.tip_button);
@@ -89,6 +84,14 @@ public class edit_ride extends AppCompatActivity {
         });
 
         final Rider instance = Rider.getInstance(new EasyRideUser("kk"));
+        Button delete = findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instance.removeAt(position);
+                goBack();
+            }
+        });
 
         if (rideReq.isRideAccepted()) {
             Button viewProfile = findViewById(R.id.profile_button);
@@ -100,25 +103,18 @@ public class edit_ride extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), user_profile.class);
                     startActivity(i);
                 }
-
-
-            });
-
-
-            Button delete = findViewById(R.id.delete_button);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    instance.removeAt(position);
-                    goBack();
-                }
             });
         }
-
-
+        Button delete = findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instance.removeAt(position);
+                goBack();
+            }
+        });
 
         Button save = findViewById(R.id.save_button);
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,11 +135,10 @@ public class edit_ride extends AppCompatActivity {
                 goBack();
             }
         });
-
     }
 
     private void goBack(){
-        Intent i = new Intent(getApplicationContext(), rider_home.class);
+        Intent i = new Intent(getApplicationContext(), RiderHome.class);
         startActivity(i);
     }
 
@@ -151,15 +146,12 @@ public class edit_ride extends AppCompatActivity {
     private void tipDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Tip");
-
-// Set up the input
+        // Set up the input
         final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
-
         builder.setView(input);
-
-// Set up the buttons
+        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -177,7 +169,6 @@ public class edit_ride extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
         builder.show();
     }
 }

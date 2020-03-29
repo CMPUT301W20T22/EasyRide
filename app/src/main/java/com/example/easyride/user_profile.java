@@ -12,9 +12,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.login.LoginActivity;
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,10 +27,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
-
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
+
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
     private String userID;
@@ -36,11 +38,11 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     private FirebaseFirestore db;
     private TextView riderName, Email, Phone, Rating;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
+        setContentView(R.layout.activity_user_profile);
+        getSupportActionBar().setTitle("User Profile");
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
@@ -55,6 +57,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
+
 
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -75,9 +78,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         /**
          * Set up fragment to edit user's contact info.
          */
-
         Button editButton = findViewById(R.id.edit_contact_button);
-
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +93,6 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     public void updateInfo(String email, String phone, String password) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         // Update the information to database
 
         if (!email.equals("")) {
@@ -109,7 +109,6 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         if (!password.equals("")) {
             user.updatePassword(password);
         }
-
     }
 
     @Override
@@ -131,10 +130,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
 
         if (mode.equals("rider")){
-            startActivity(new Intent(this, rider_home.class));
+            startActivity(new Intent(this, RiderHome.class));
             finish();
         }
-
+        
         return super.onOptionsItemSelected(item);
     }
 }

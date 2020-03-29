@@ -5,14 +5,16 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.easyride.ui.driver.RideRequest;
 import com.example.easyride.ui.rider.Ride;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
+import java.lang.reflect.*;
 
 interface DatabaseListener{
   void onDataLoaded();
@@ -31,6 +34,7 @@ interface DatabaseListener{
  * @version 1.0
  * @see EasyRideUser
  */
+
 public class Rider extends EasyRideUser implements DatabaseListener{
   private ArrayList<Ride> activeRequests;
   private ArrayList<String> requestsID;
@@ -55,6 +59,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
     requestsID = new ArrayList<>();
     activeRequests= new ArrayList<Ride>();
 
+// <<<<<<< HEAD
     Query q = db.collection("RideRequest").whereEqualTo("user", user.getUserId());
 
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -76,6 +81,27 @@ public class Rider extends EasyRideUser implements DatabaseListener{
           }
         });
 
+// =======
+//     db.collection("RideRequest")
+//             .whereEqualTo("user", user.getUserId())
+//             .get()
+//             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//               @Override
+//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                 if (task.isSuccessful()) {
+//                   for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                     requestsID.add(document.getId());
+//                     activeRequests.add(document.toObject(Ride.class));
+//                     //Log.e("SIZE", user.getUserId());
+//                     //Log.e("SIZE", Integer.toString(activeRequests.size()));
+
+//                   }
+//                 } else {
+//                   Log.e(TAG, "Error getting documents: ", task.getException());
+//                 }
+//               }
+//             });
+// >>>>>>> master
     currentRiderInfo = user;
     //updateList();
 
@@ -102,6 +128,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
     //new ArrayList<>(activeRequests);
     Log.e("SIZE", Integer.toString(activeRequests.size()));
     db.collection("RideRequest")
+// <<<<<<< HEAD
         .whereEqualTo("user", currentRiderInfo.getUserId())
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -123,6 +150,30 @@ public class Rider extends EasyRideUser implements DatabaseListener{
             }
           }
         });
+// =======
+//             .whereEqualTo("user", currentRiderInfo.getUserId())
+//             .get()
+//             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//               @Override
+//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                 if (task.isSuccessful()) {
+//                   activeRequests.clear();
+//                   requestsID.clear();
+//                   for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                     requestsID.add(document.getId());
+//                     activeRequests.add(document.toObject(Ride.class));
+//                     Log.e("user", currentRiderInfo.getUserId());
+//                     Log.e("SIZE", Integer.toString(activeRequests.size()));
+
+//                   }
+//                 } else {
+//                   Log.e(TAG, "Error getting documents: ", task.getException());
+//                 }
+//               }
+//             });
+
+
+// >>>>>>> master
   }
 
   public void addRide(Ride rideInsert){

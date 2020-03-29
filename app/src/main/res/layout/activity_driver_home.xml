@@ -26,7 +26,8 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_gravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        app:srcCompat="@android:drawable/ic_menu_search"
+        android:backgroundTint="@color/colorAccent"/>
 
 
 </FrameLayout>
