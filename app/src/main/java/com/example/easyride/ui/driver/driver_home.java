@@ -9,20 +9,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
-
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
-
 import com.example.easyride.user_profile;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,49 +128,46 @@ public class driver_home extends AppCompatActivity {
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
-        db.collection("RideRequest").whereEqualTo("rideAccepted", true).
-                whereEqualTo("driverUserName", fAuth.getCurrentUser().getEmail())
-                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot querySnapshot,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen error", e);
-                            return;
-                        }
+        db.collection("RideRequest").whereEqualTo("rideAccepted", true)
+        .whereEqualTo("driverUserName", fAuth.getCurrentUser().getEmail())
+        .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot querySnapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen error", e);
+                    return;
+                }
 
-                        for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
-                                        doc.getDocument().getString("user"),
-                                        doc.getDocument().getString("from"),
-                                        doc.getDocument().getString("to"),
-                                        doc.getDocument().getString("cost"),
-                                        true,
-                                        false);
-                                rideRequestList.add(rideRequest);
-                            }
-                                // Set Adapter
-                                mRequestList.setAdapter(rideRequestListAdapter);
-                        }
-
-                        String source = querySnapshot.getMetadata().isFromCache() ?
-                                    "local cache" : "server";
-
-                        // Check to see if the application is in offline mode or not
-                        // https://stackoverflow.com/questions/49068084/about-firestore-is-there-some-flag-i-can-check-if-the-data-is-on-off-line-data
-                        if (source.equals("local cache")) {
-                            offLine = true;
-                        }
-                        else {
-                            offLine = false;
-                        }
-
-                        Log.d(TAG, "Data fetched from " + source);
-
+                for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
+                                doc.getDocument().getString("user"),
+                                doc.getDocument().getString("from"),
+                                doc.getDocument().getString("to"),
+                                doc.getDocument().getString("cost"),
+                                true,
+                                false);
+                        rideRequestList.add(rideRequest);
                     }
-                });
+                        // Set Adapter
+                        mRequestList.setAdapter(rideRequestListAdapter);
+                }
 
+                String source = querySnapshot.getMetadata().isFromCache() ?
+                            "local cache" : "server";
+
+                // Check to see if the application is in offline mode or not
+                // https://stackoverflow.com/questions/49068084/about-firestore-is-there-some-flag-i-can-check-if-the-data-is-on-off-line-data
+                if (source.equals("local cache")) {
+                    offLine = true;
+                }
+                else {
+                    offLine = false;
+                }
+                Log.d(TAG, "Data fetched from " + source);
+            }
+        });
     }
 
 
@@ -217,10 +206,6 @@ public class driver_home extends AppCompatActivity {
                 break;
             }
         }
-
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }

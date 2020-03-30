@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.easyride.MainActivity;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.LocationBias;
+
 import com.google.android.libraries.places.api.model.Place.Field;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
@@ -37,7 +41,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
@@ -110,6 +118,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                    LatLng startPoint = mh.getStartLatLang();
                    LatLng endPoint = mh.getEndLatLang();
                 */
+
                 Double cost = distance*2.5;
                 DecimalFormat df = new DecimalFormat("#.##");
                 cost = Double.valueOf(df.format(cost));
@@ -137,13 +146,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(i);
             }
         });
-
     }
-
-
-
-
-
 
     /**
      * Manipulates the map once available.
@@ -226,9 +229,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // The user canceled the operation.
             }
         }
-
 }
-
-
-//  }
-//}

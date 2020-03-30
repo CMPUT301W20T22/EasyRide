@@ -1,4 +1,3 @@
-//package com.journaldev.maproutebetweenmarkers;
 package com.example.easyride.map;
 
 
