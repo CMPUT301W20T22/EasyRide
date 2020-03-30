@@ -121,8 +121,8 @@
         </LinearLayout>
 
         <com.google.android.gms.maps.MapView
-            android:layout_width="379dp"
-            android:layout_height="222dp" />
+            android:layout_width="350dp"
+            android:layout_height="182dp" />
 
         <Button
             android:id="@+id/accept_pay_button"
