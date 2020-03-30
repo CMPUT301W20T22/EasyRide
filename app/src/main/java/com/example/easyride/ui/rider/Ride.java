@@ -13,7 +13,21 @@ public class Ride {
     private boolean rideConfirmAccepted;
     private boolean rideCompleted;
     private boolean ridePaid;
+    private Long riderRating;
 
+//    public enum RiderRating{
+//        GOOD(1L),
+//        NONE((0L)),
+//        BAD(-1L);
+//        private long rating;
+//        RiderRating(Long rating){
+//            this.rating = rating;
+//        }
+//
+//        public long getRating() {
+//            return rating;
+//        }
+//    }
 
     // CONSTRUCTOR
     public Ride(String from, String to, String cost, String user, String distance) {
@@ -26,9 +40,10 @@ public class Ride {
         this.rideCompleted = false;
         this.rideConfirmAccepted = false;
         this.ridePaid = false;
-
-
+        this.riderRating = 0L;
     }
+    //TODO: Should we keep this constructor
+    public Ride(){} 
 
     public boolean isRideConfirmAccepted() {
         return rideConfirmAccepted;
@@ -46,7 +61,6 @@ public class Ride {
         this.ridePaid = ridePaid;
     }
 
-    public Ride(){}
     // GETTERS
     public String getFrom() {
         return from;
@@ -64,8 +78,9 @@ public class Ride {
         return user;
     }
 
-
     public String getDistance() { return distance; }
+
+    public Long getRiderRating() { return riderRating; }
 
     public void setRideCompleted(boolean rideCompleted) {
         this.rideCompleted = rideCompleted;
@@ -112,7 +127,8 @@ public class Ride {
         this.from = from;
     }
 
-
     public void setDistance(String distance) { this.distance = distance; }
+
+    public void setRiderRating(Long riderRating) { this.riderRating = riderRating; }
 
 }

@@ -2,16 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.easyride">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
+
         <service
             android:name=".ui.rider.NotificationService"
             android:exported="false">
@@ -34,27 +34,33 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
 
         <activity
-            android:name=".ui.signup.SignUpActivity"
-            android:theme="@style/CustomTheme">
-        </activity>
-
-        <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".ui.login.LoginActivity">
+            android:parentActivityName=".ui.login.LoginActivity"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.login.LoginActivity" />
         </activity>
 
         <activity
+            android:name=".ui.signup.SignUpActivity"
+            android:theme="@style/CustomTheme"
+            tools:ignore="DuplicateActivity"
+            android:launchMode="singleTask">   
+        </activity>
+
+        <activity
             android:name=".ui.login.LoginActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            tools:ignore="DuplicateActivity"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -62,38 +68,51 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.rider.RiderHome" />
-        <activity android:name=".ui.rider.AddRide" />
-        <activity android:name=".ui.rider.EditRide" />
+
+        <!-- rider_home -->
+        <activity android:name=".ui.rider.RiderHome"
+            android:launchMode="singleTask"/>
+        <!-- add_ride -->
+        <activity android:name=".ui.rider.AddRide"
+            android:launchMode="singleTask"/>
+        <!-- edit_ride -->
+        <activity android:name=".ui.rider.EditRide"
+            android:launchMode="singleTask"/>
+
         <activity android:name=".ui.driver.driver_home" />
-        <activity android:name=".ui.rider.QR_Pay" />
-        <activity android:name=".ui.driver.QR_Scan" />
-        <activity android:name=".user_profile" />
+
+        <activity android:name=".ui.rider.QR_Pay"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".user_profile"
+            android:launchMode="singleTask"/>
+
         <activity
             android:name=".ui.driver.SearchRequestActivity"
             android:theme="@style/CustomTheme">
-
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.easyride.ui.driver.driver_home" />
         </activity>
+
         <activity android:name=".ui.rider.AcceptedDriver"
             android:parentActivityName=".ui.rider.EditRide"/>
+
         <activity
             android:name=".ui.driver.ride_review"
             android:theme="@style/CustomTheme" />
+
         <activity
             android:name=".ui.driver.AcceptRequestActivity"
             android:parentActivityName=".ui.driver.SearchRequestActivity" />
 
     </application>
-
-
 </manifest>

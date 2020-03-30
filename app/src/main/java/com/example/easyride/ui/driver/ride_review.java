@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.ui.login.LoginActivity;
@@ -34,7 +32,6 @@ public class ride_review extends AppCompatActivity {
         rider = findViewById(R.id.RiderUserName);
         toolbar = findViewById(R.id.reviewToolbar);
         accept_pay_button = (Button)findViewById(R.id.accept_pay_button);
-
         // Set up ActionBar
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Ride Request Details");

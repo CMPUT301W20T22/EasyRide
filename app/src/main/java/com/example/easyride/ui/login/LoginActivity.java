@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.map.MapsActivity;
 import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.rider.RiderHome;
 import com.example.easyride.ui.signup.SignUpActivity;
@@ -118,12 +117,16 @@ public class LoginActivity extends AppCompatActivity {
                              https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection/53335711
                             */
 
-                            db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            db.collection(Mode)
+                            .document(ID)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
 
                                         DocumentSnapshot document = task.getResult();
+
 
                                         assert document != null;
                                         Map<String, Object> data = document.getData();
@@ -134,23 +137,22 @@ public class LoginActivity extends AppCompatActivity {
                                         EasyRideUser user = new EasyRideUser(userEmail);
                                         //user.setPassword(password);
                                         user.setDisplayName(displayname);
-                                        FirebaseInstanceId.getInstance().getInstanceId()
-                                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                                        if (!task.isSuccessful()) {
-                                                            Log.w("Shit: ", "getInstanceId failed", task.getException());
-                                                            return;
-                                                        }
 
-                                                        // Get new Instance ID token
-                                                        String token = Objects.requireNonNull(task.getResult()).getToken();
-                                                        db.collection(Mode).document(ID).update("token", token);
-                                                    }
+                                        FirebaseInstanceId.getInstance()
+                                        .getInstanceId()
+                                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.w("Shit: ", "getInstanceId failed", task.getException());
+                                                    return;
+                                                }
 
-
-
-                                                });
+                                                // Get new Instance ID token
+                                                String token = Objects.requireNonNull(task.getResult()).getToken();
+                                                db.collection(Mode).document(ID).update("token", token);
+                                            }
+                                        });
 
                                         /*Log.d("User: ", user.getDisplayName());*/
 
