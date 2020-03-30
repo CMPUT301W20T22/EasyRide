@@ -196,4 +196,14 @@ public class Rider extends EasyRideUser implements DatabaseListener{
   public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
   public void onDataLoaded() {}
 
+  public boolean updateRequest(int position){
+    if (position >= activeRequests.size()) return false;
+    String documentID = requestsID.get(position);
+    Ride updatedRequest = getActiveRequests().get(position);
+    DocumentReference rideRequestRef = db.collection("RideRequest").document(documentID);
+    rideRequestRef.update("cost", updatedRequest.getCost() );
+    rideRequestRef.update("rideConfirmAccepted", updatedRequest.isRideConfirmAccepted());
+    rideRequestRef.update("riderRating",updatedRequest.getRiderRating() );
+    return  true;
+  }
 }
