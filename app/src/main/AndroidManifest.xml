@@ -86,7 +86,8 @@
         <activity android:name=".ui.rider.EditRide"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.driver.driver_home" />
+        <activity android:name=".ui.driver.driver_home"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.rider.QR_Pay"
             android:launchMode="singleTask"/>
