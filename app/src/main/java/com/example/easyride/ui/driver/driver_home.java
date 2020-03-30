@@ -1,6 +1,11 @@
 package com.example.easyride.ui.driver;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +38,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +59,7 @@ public class driver_home extends AppCompatActivity {
     private FloatingActionButton searchBtn;
     private FirebaseAuth fAuth;
     private FirebaseFirestoreSettings settings;
-    private boolean offLine = false;
+    private boolean connected = true;
 
 
     @Override
@@ -91,9 +95,9 @@ public class driver_home extends AppCompatActivity {
 
         rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
 
+
         // set OnclickListener for RecyclerView
         // Passing RideRequest to ride_review activity
-        // https://stackoverflow.com/questions/768969/passing-a-bundle-on-startactivity
         rideRequestListAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -115,7 +119,8 @@ public class driver_home extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!offLine) {
+                connected = isNetworkAvailable();
+                if (connected) {
                     Intent intent = new Intent(driver_home.this, SearchRequestActivity.class);
                     startActivity(intent);
                     finish();
@@ -169,25 +174,21 @@ public class driver_home extends AppCompatActivity {
                                 mRequestList.setAdapter(rideRequestListAdapter);
                         }
 
-                        String source = querySnapshot.getMetadata().isFromCache() ?
-                                    "local cache" : "server";
-
-                        // Check to see if the application is in offline mode or not
-                        // https://stackoverflow.com/questions/49068084/about-firestore-is-there-some-flag-i-can-check-if-the-data-is-on-off-line-data
-                        if (source.equals("local cache")) {
-                            offLine = true;
-                        }
-                        else {
-                            offLine = false;
-                        }
-
-                        Log.d(TAG, "Data fetched from " + source);
 
                     }
                 });
 
     }
 
+    /**
+     * Method to check the internet connectivity of the device
+     * @return boolean
+     */
+    // https://stackoverflow.com/questions/9570237/android-check-internet-connection
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
 
     /**
      * Create option Menu for driver_home.
