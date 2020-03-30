@@ -13,21 +13,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.example.easyride.R;
+import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Rider;
+import com.example.easyride.ui.login.LoginActivity;
+
 import com.example.easyride.ui.driver.driver_home;
-import com.example.easyride.ui.rider.rider_home;
+
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 
+
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
+
+
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
     private String userID;
@@ -37,24 +46,31 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     private TextView riderName, Email, Phone, Rating;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
+        setContentView(R.layout.activity_user_profile);
+
+        getSupportActionBar().setTitle("User Profile");
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
         mode = intent.getStringExtra("mode");
 
         // init database
+
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
+
+
 
         // TextView assign
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
+
 
         // Getting the info from database
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -89,7 +105,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateInfo(String email, String phone) {
+    public void updateInfo(String email, String phone, String password) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -104,10 +120,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         if (!phone.equals("")) {
             Phone.setText("Phone: " + phone);
             docRef.update("Phone", phone);
-            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(phone)
-                    .build();
-            user.updateProfile(profileChangeRequest);
+        }
+
+        if (!password.equals("")) {
+            user.updatePassword(password);
         }
 
     }
@@ -131,7 +147,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
 
         if (mode.equals("rider")){
-            startActivity(new Intent(this, rider_home.class));
+            startActivity(new Intent(this, RiderHome.class));
             finish();
         }
 

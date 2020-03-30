@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -20,6 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import com.example.easyride.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -52,10 +55,13 @@ public class SearchRequestActivity extends AppCompatActivity {
     private FirebaseFirestoreSettings settings;
     private Toolbar toolbar;
 
+    private FusedLocationProviderClient client;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_request);
+
 
         // init database
         db = FirebaseFirestore.getInstance();
@@ -63,6 +69,10 @@ public class SearchRequestActivity extends AppCompatActivity {
                 .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+
+        // GET CURRENT LOCATION OF USER
+        //client = LocationServices.getFusedLocationProviderClient(this);
+        //client.getLastLocation();
 
         /*
         Driver driver = Driver.getInstance(new EasyRideUser("dumbby"));
@@ -100,14 +110,21 @@ public class SearchRequestActivity extends AppCompatActivity {
         searchRequestAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                rideRequestList.get(position);
+                RideRequest ride = rideRequestList.get(position);
+                Intent intent = new Intent(getApplicationContext(), AcceptRequestActivity.class);
+                intent.putExtra("ID", ride.getKey());
+                intent.putExtra("pickUpLocation", ride.getPickupPoint());
+                intent.putExtra("destination", ride.getTargetPoint());
+                intent.putExtra("fare", ride.getCost());
+                intent.putExtra("rider", ride.getRiderUserName());
+                startActivity(intent);
                 Log.d(TAG, "Item Click on item " + position);
+                Log.d(TAG, "RiderUserName: " + ride.getRiderUserName());
             }
         });
 
         // show data in Recycler View
         showData();
-
     }
 
     @Override
@@ -116,7 +133,10 @@ public class SearchRequestActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     private void showData() {
+
 
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
@@ -128,12 +148,10 @@ public class SearchRequestActivity extends AppCompatActivity {
                         if (e != null)  {
                             Log.d(TAG, "Error : " + e.getMessage());
                         }
-                        assert queryDocumentSnapshots != null;
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-
                             if (doc.getType() == DocumentChange.Type.ADDED) {
-
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getString("user"),
+                                RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
+                                        doc.getDocument().getString("user"),
                                         doc.getDocument().getString("from"),
                                         doc.getDocument().getString("to"),
                                         doc.getDocument().getString("cost"),
@@ -192,7 +210,8 @@ public class SearchRequestActivity extends AppCompatActivity {
                         // called when searching is successful
                         rideRequestList.clear();
                         for (DocumentSnapshot doc : task.getResult()) {
-                            RideRequest rideRequest = new RideRequest(doc.getString("user"),
+                            RideRequest rideRequest = new RideRequest(doc.getId(),
+                                    doc.getString("user"),
                                     doc.getString("from"),
                                     doc.getString("to"),
                                     doc.getString("cost"),

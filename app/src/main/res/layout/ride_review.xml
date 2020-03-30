@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reviewToolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_pin_drop_black_24dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/pickUpLocation"
+                android:text="Pickup Location"
+                android:layout_weight="9"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_map_black_24dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/Destination"
+                android:text="Destination"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="9"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageView
+                android:src="@mipmap/ic_fee_black_24dp"
+                android:layout_width="24dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/Fare"
+                android:text="Fare"
+                android:layout_weight="9"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageView
+                android:src="@drawable/ic_account_circle_black_24dp"
+                android:layout_width="24dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/RiderUserName"
+                android:text="Rider"
+                android:layout_weight="9"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="350dp"
+            android:layout_height="182dp" />
+
+        <Button
+            android:id="@+id/accept_pay_button"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="Accept Payment" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

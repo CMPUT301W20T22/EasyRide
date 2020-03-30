@@ -130,7 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             // Update the DisplayName
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(Phone)
+                                    .setDisplayName(FullName)
                                     .build();
 
                             user.updateProfile(profileChangeRequest);

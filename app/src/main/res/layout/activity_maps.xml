@@ -148,6 +148,7 @@
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:srcCompat="@android:drawable/ic_menu_send"
+        android:backgroundTint="@color/colorAccent"
         />
 
 
