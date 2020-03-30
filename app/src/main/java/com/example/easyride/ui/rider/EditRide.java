@@ -178,14 +178,10 @@ public class EditRide extends AppCompatActivity {
         builder.setTitle("Add Tip");
         // Set up the input
         final EditText input = new EditText(this);
-<<<<<<< HEAD
+
         /* Specify the type of input expected; this, for example, sets the input as a password, and will mask the text*/
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-=======
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
->>>>>>> parent of f917447... Merge pull request #48 from CMPUT301W20T22/joy
         builder.setView(input);
         /* Set up the buttons*/
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
