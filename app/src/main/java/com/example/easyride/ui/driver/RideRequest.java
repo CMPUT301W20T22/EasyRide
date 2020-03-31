@@ -9,9 +9,6 @@ import android.location.Location;
  * @see Location
  */
 public class RideRequest {
-
-
-
   private String pickupPoint;
   private String targetPoint;
   private boolean rideAccepted;
@@ -24,9 +21,7 @@ public class RideRequest {
   private String driverUserName;
   private String key;
 
-
   public RideRequest() {
-
   }
 
   public boolean isRideConfirmAccepted() {
@@ -40,6 +35,7 @@ public class RideRequest {
   public void setRidePaid(boolean ridePaid) {
     this.ridePaid = ridePaid;
   }
+
 
   public void setKey(String key) {
     this.key = key;
@@ -118,7 +114,4 @@ public class RideRequest {
   public void setTargetPoint(String targetPoint) {
     this.targetPoint = targetPoint;
   }
-
-
-
 }
