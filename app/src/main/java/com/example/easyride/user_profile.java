@@ -48,6 +48,13 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         userID = intent.getStringExtra("ID");
         mode = intent.getStringExtra("mode");
 
+        if (mode.equals("rider")){
+            findViewById(R.id.rating).setVisibility(View.INVISIBLE);
+        }else{
+            Rating = findViewById(R.id.rating);
+            //TODO PLease display the rating for driver
+        }
+
         // init database
         db = FirebaseFirestore.getInstance();
         docRef = db.collection(mode).document(userID);
@@ -56,7 +63,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
-        Rating = findViewById(R.id.rating);
+
 
 
         // Getting the info from database
@@ -90,16 +97,16 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateInfo(String email, String phone, String password) {
+    public void updateInfo(String phone, String password) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Update the information to database
 
-        if (!email.equals("")) {
+       /* if (!email.equals("")) {
             Email.setText("Email: " + email);
             docRef.update("Email", email);
             user.updateEmail(email);
-        }
+        }*/
 
         if (!phone.equals("")) {
             Phone.setText("Phone: " + phone);
