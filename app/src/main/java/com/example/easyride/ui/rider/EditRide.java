@@ -213,7 +213,9 @@ public class EditRide extends AppCompatActivity {
     }
 
     private void ratePayDialog(){
-        final boolean[] goodReview = new boolean[1];
+        boolean[] review = new boolean[1];
+        review[0] = true;
+        final boolean[] goodReview = review;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please rate and Pay");
         final CharSequence[] array = {"Good" , "Bad"};
@@ -223,20 +225,14 @@ public class EditRide extends AppCompatActivity {
                 goodReview[0] = which == 0;
             }
         });
-        if (goodReview[0]) {
-            alright.getActiveRequests().get(position).setRiderRating(1L);
-        }
-        else {
-            alright.getActiveRequests().get(position).setRiderRating(-1L);
-        }
-        alright.updateRequest(position);
 
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final String[] documentID = new String[1];
+
+//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        final String[] documentID = new String[1];
 // Set up the buttons
-//        builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 //                db.collection("driver")
 //                    .whereEqualTo("Email", rideReq.getDriverUserName())
 //                    .get()
@@ -264,18 +260,25 @@ public class EditRide extends AppCompatActivity {
 //                        }
 //                    }
 //                    });
-//                Intent i = new Intent(getApplicationContext(), QR_Pay.class);
-//                i.putExtra("cost", ride_cost);
-//                startActivity(i);
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//        builder.show();
+                if (goodReview[0]) {
+                    alright.getActiveRequests().get(position).setRiderRating(1L);
+                }
+                else {
+                    alright.getActiveRequests().get(position).setRiderRating(-1L);
+                }
+                alright.updateRequest(position);
+                Intent i = new Intent(getApplicationContext(), QR_Pay.class);
+                i.putExtra("cost", ride_cost);
+                startActivity(i);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
     public void updateView(){
         getSupportActionBar().setTitle("Request");
@@ -317,25 +320,16 @@ public class EditRide extends AppCompatActivity {
         }
         rideIsAccepted = rideReq.isRideAccepted();
 
-        if (rideReq.isRideCompleted()) {
-            payButton.setText("Rate and Pay!");
-            payButton.setClickable(true);
-            payButton.setTextColor(Color.parseColor("#7C1C1C"));
 
-            //Todo: This is where QR is called.
-            payButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ratePayDialog();
-                }
-            });
-        }else if(!rideReq.isRideAccepted()){
+        if (!rideReq.isRideAccepted()){
             payButton.setText("Driver has not accepted");
-        }else{
-            payButton.setText("Waiting for ride completion");
+            payButton.setClickable(false);
+            viewProfile.setClickable(false);
+            delete.setVisibility(View.VISIBLE);
+            delete.setClickable(true);
         }
-
-        if (rideReq.isRideAccepted()) {
+        else
+        {
             viewProfile.setText("Driver Profile");
             viewProfile.setClickable(true);
             viewProfile.setOnClickListener(new View.OnClickListener() {
@@ -346,15 +340,16 @@ public class EditRide extends AppCompatActivity {
                     i.putExtra("ID", rideReq.getDriverUserName());
                     startActivity(i);
                 }
-
             });
-            if(!rideReq.isRideConfirmAccepted()) {
+            if (!rideReq.isRideConfirmAccepted()) {
                 String tempString = "Confirm the request";
                 SpannableString spanString = new SpannableString(tempString);
                 spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
                 payButton.setText(spanString);
                 payButton.setTextColor(Color.parseColor("#C82828"));
                 payButton.setClickable(true);
+                delete.setVisibility(View.VISIBLE);
+                delete.setClickable(true);
                 //Todo: This is where QR is called.
                 payButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -362,12 +357,35 @@ public class EditRide extends AppCompatActivity {
                         confirmRide();
                     }
                 });
-                delete.setVisibility(View.VISIBLE);
-            }else{
+            }
+            else { //ride is accepted and confirmed
                 delete.setVisibility(View.INVISIBLE);
                 delete.setClickable(false);
+                if (!rideReq.isRideCompleted()) {
+                    payButton.setText("Waiting for ride completion");
+                    payButton.setClickable(false);
+                }
+                else { //ride is accepted and confirmed and completed
+                    if (!rideReq.isRidePaid()) {
+                        payButton.setText("Rate and Pay!");
+                        payButton.setClickable(true);
+                        payButton.setTextColor(Color.parseColor("#7C1C1C"));
+                        //This is where QR is called.
+                        payButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ratePayDialog();
+                            }
+                        });
+                    }
+                    else { //ride is accepted and confirmed and completed and paid
+                        payButton.setText("Ride is pied!");
+                        payButton.setClickable(false);
+                    }
+                }
             }
         }
-
     }
 }
+
+

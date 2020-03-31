@@ -72,11 +72,8 @@ public class Rider extends EasyRideUser implements DatabaseListener{
             requestsID.clear();
             activeRequests.clear();
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-              Ride generalRide = document.toObject(Ride.class);
-              if (!generalRide.isRidePaid()) {
-                requestsID.add(document.getId());
-                activeRequests.add(generalRide);
-              }
+              requestsID.add(document.getId());
+              activeRequests.add( document.toObject(Ride.class));
               //Log.e("SIZE", user.getUserId());
               //Log.e("SIZE", Integer.toString(activeRequests.size()));
             }
@@ -142,13 +139,10 @@ public class Rider extends EasyRideUser implements DatabaseListener{
               requestsID.clear();
 
               for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                Ride generalRide = document.toObject(Ride.class);
-                if (!generalRide.isRidePaid()) {
-                  requestsID.add(document.getId());
-                  activeRequests.add(generalRide);
-                  Log.e("user", currentRiderInfo.getUserId());
-                  Log.e("SIZE", Integer.toString(activeRequests.size()));
-                }
+                requestsID.add(document.getId());
+                activeRequests.add( document.toObject(Ride.class));
+                Log.e("user", currentRiderInfo.getUserId());
+                Log.e("SIZE", Integer.toString(activeRequests.size()));
               }
               onDataLoaded();
             } else {
