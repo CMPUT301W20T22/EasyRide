@@ -51,7 +51,6 @@ public class AcceptedDriver extends AppCompatActivity {
         email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         Rating = findViewById(R.id.rating);
-        //userID = "sqle@ualberta.ca";
         db.collection("driver")
                 .whereEqualTo("Email", userID)
                 .get()

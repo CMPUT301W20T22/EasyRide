@@ -38,6 +38,7 @@ public class RiderHome extends AppCompatActivity {
   private FirebaseUser user;
   private String userID;
   private Rider alright;
+  public static int maxRiderActiveRequests = 2;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,10 @@ public class RiderHome extends AppCompatActivity {
     add_ride_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        if (alright.getActiveRequests().size() >= maxRiderActiveRequests){
+          Toast.makeText(RiderHome.this, "You cannot have more than one active request!", Toast.LENGTH_LONG).show();
+          return;
+        }
         Intent i = new Intent(v.getContext(), MapsActivity.class);
         startActivity(i);
       }

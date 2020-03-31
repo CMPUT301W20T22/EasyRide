@@ -43,13 +43,15 @@ public class EditRide extends AppCompatActivity {
 
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
-    private Button payButton, delete, viewProfile, addTip, save, back;
+    private Button payButton, delete, viewProfile, addTip, back;
+//    private  Button save;
     private String fareWithTip;
     private String ride_cost;
     private Ride rideReq;
     private Rider alright;
     private int position;
     private boolean rideIsAccepted = true;
+    private boolean isFinished = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,8 +65,8 @@ public class EditRide extends AppCompatActivity {
         payButton.setClickable(false);
         addTip = findViewById(R.id.tip_button);
         delete = findViewById(R.id.delete_button);
-        save = findViewById(R.id.save_button);
-        save.setClickable(false);
+//        save = findViewById(R.id.save_button);
+//        save.setClickable(false);
         back = findViewById(R.id.back_button);
         viewProfile = findViewById(R.id.profile_button);
         viewProfile.setClickable(false);
@@ -90,6 +92,7 @@ public class EditRide extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isFinished = true;
                 alright.removeAt(position);
                 goBack();
             }
@@ -118,6 +121,7 @@ public class EditRide extends AppCompatActivity {
     private void goBack(){
         Intent i = new Intent(getApplicationContext(), RiderHome.class);
         startActivity(i);
+        finish();
     }
 
 //    private void notification(){
@@ -187,7 +191,8 @@ public class EditRide extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                fareWithTip = input.getText().toString();
+                String Tip = input.getText().toString();
+                fareWithTip = Double.toString((Double.valueOf(Tip) + Double.valueOf(ride_cost)));
                 dialog.dismiss();
                 if (!fareWithTip.equals("")) {
                     //ride_cost_short = fareWithTip.substring(0, 4);
@@ -224,56 +229,60 @@ public class EditRide extends AppCompatActivity {
         else {
             alright.getActiveRequests().get(position).setRiderRating(-1L);
         }
+        alright.updateRequest(position);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String[] documentID = new String[1];
 // Set up the buttons
-        builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                db.collection("driver")
-                    .whereEqualTo("Email", rideReq.getDriverUserName())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                //riderName.setText();
-                                if (goodReview[0]) {
-                                    Long good = (Long) document.get("good_reviews");
-                                    good = good + 1;
-                                    db.collection("driver").document(document.getId()).
-                                            update("good_reviews", good);
-                                }
-                                else{
-                                    Long bad = (Long) document.get("bad_reviews");
-                                    bad = bad + 1;
-                                    db.collection("driver").document(document.getId()).
-                                            update("bad_reviews", bad);
-                                }
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                    });
-                Intent i = new Intent(getApplicationContext(), QR_Pay.class);
-                i.putExtra("cost", ride_cost);
-                startActivity(i);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
+//        builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                db.collection("driver")
+//                    .whereEqualTo("Email", rideReq.getDriverUserName())
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                                //riderName.setText();
+//                                if (goodReview[0]) {
+//                                    Long good = (Long) document.get("good_reviews");
+//                                    good = good + 1;
+//                                    db.collection("driver").document(document.getId()).
+//                                            update("good_reviews", good);
+//                                }
+//                                else{
+//                                    Long bad = (Long) document.get("bad_reviews");
+//                                    bad = bad + 1;
+//                                    db.collection("driver").document(document.getId()).
+//                                            update("bad_reviews", bad);
+//                                }
+//                            }
+//                        } else {
+//                            Log.e(TAG, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                    });
+//                Intent i = new Intent(getApplicationContext(), QR_Pay.class);
+//                i.putExtra("cost", ride_cost);
+//                startActivity(i);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//        builder.show();
     }
     public void updateView(){
         getSupportActionBar().setTitle("Request");
         DataList = alright.getActiveRequests();
+        if (isFinished){
+            return;
+        }
         rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
         String ride_distance_short;
@@ -346,7 +355,6 @@ public class EditRide extends AppCompatActivity {
                 payButton.setText(spanString);
                 payButton.setTextColor(Color.parseColor("#C82828"));
                 payButton.setClickable(true);
-
                 //Todo: This is where QR is called.
                 payButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -354,11 +362,10 @@ public class EditRide extends AppCompatActivity {
                         confirmRide();
                     }
                 });
+                delete.setVisibility(View.VISIBLE);
             }else{
-                delete.setText("Accepted");
                 delete.setVisibility(View.INVISIBLE);
                 delete.setClickable(false);
-
             }
         }
 
