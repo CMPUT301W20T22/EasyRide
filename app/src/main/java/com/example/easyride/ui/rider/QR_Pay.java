@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,11 +28,18 @@ public class QR_Pay extends AppCompatActivity {
         setContentView(R.layout.activity_qr_pay);
         Intent intent = getIntent();
         String cost = intent.getStringExtra("cost");
-
+        Button backButton = findViewById(R.id.qr_pay_button);
 
         ImageView image;
         image = findViewById(R.id.QRView);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(cost, BarcodeFormat.QR_CODE, 200, 200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -43,8 +52,6 @@ public class QR_Pay extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**

@@ -8,8 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-
-
 import com.example.easyride.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -58,7 +54,6 @@ public class SearchRequestActivity extends AppCompatActivity {
     private List<RideRequest> rideRequestList = new ArrayList<>();
     private FirebaseFirestoreSettings settings;
     private Toolbar toolbar;
-
     private FusedLocationProviderClient client;
 
     @Override
@@ -73,6 +68,7 @@ public class SearchRequestActivity extends AppCompatActivity {
                 .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+
 
         // GET CURRENT LOCATION OF USER
         //client = LocationServices.getFusedLocationProviderClient(this);
@@ -138,38 +134,41 @@ public class SearchRequestActivity extends AppCompatActivity {
         return true;
     }
 
+<<<<<<< HEAD
 
     /**
      * Method to display the data to RecyclerView from the database,
      * depend on the driver, the data displayed on the activity will be different.
      */
     public void showData() {
+=======
+    private void showData() {
+>>>>>>> 412f8349ce82c706fd35d85753827e5c4a95348c
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("rideAccepted", false)
-                .orderBy("cost", Query.Direction.ASCENDING)
-                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null)  {
-                            Log.d(TAG, "Error : " + e.getMessage());
-                        }
-                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
-                                        doc.getDocument().getString("user"),
-                                        doc.getDocument().getString("from"),
-                                        doc.getDocument().getString("to"),
-                                        doc.getDocument().getString("cost"),
-                                        doc.getDocument().getBoolean("rideAccepted"),
-                                        doc.getDocument().getBoolean("rideCompleted"));
-
-                                rideRequestList.add(rideRequest);
-                                searchRequestAdapter.notifyDataSetChanged();
-                            }
-                        }
+        .orderBy("cost", Query.Direction.ASCENDING)
+        .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null)  {
+                    Log.d(TAG, "Error : " + e.getMessage());
+                }
+                for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
+                            doc.getDocument().getString("user"),
+                            doc.getDocument().getString("from"),
+                            doc.getDocument().getString("to"),
+                            doc.getDocument().getString("cost"),
+                            doc.getDocument().getBoolean("rideAccepted"),
+                            doc.getDocument().getBoolean("rideCompleted"));
+                        rideRequestList.add(rideRequest);
+                        searchRequestAdapter.notifyDataSetChanged();
                     }
-                });
+                }
+            }
+        });
     }
 
     /**
@@ -220,38 +219,38 @@ public class SearchRequestActivity extends AppCompatActivity {
     public void searchData(String query) {
         // search data
         db.collection("RideRequest").whereEqualTo("user", query.toLowerCase())
-                .whereEqualTo("rideAccepted", false)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        // called when searching is successful
-                        rideRequestList.clear();
-                        for (DocumentSnapshot doc : task.getResult()) {
-                            RideRequest rideRequest = new RideRequest(doc.getId(),
-                                    doc.getString("user"),
-                                    doc.getString("from"),
-                                    doc.getString("to"),
-                                    doc.getString("cost"),
-                                    false,
-                                    false);
-                            rideRequestList.add(rideRequest);
-                        }
+        .whereEqualTo("rideAccepted", false)
+        .get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                // called when searching is successful
+                rideRequestList.clear();
+                for (DocumentSnapshot doc : task.getResult()) {
+                    RideRequest rideRequest = new RideRequest(doc.getId(),
+                        doc.getString("user"),
+                        doc.getString("from"),
+                        doc.getString("to"),
+                        doc.getString("cost"),
+                        false,
+                        false);
+                    rideRequestList.add(rideRequest);
+                }
 
-                        // adapter
-                        searchRequestAdapter = new RideRequestListAdapter(rideRequestList);
-                        // set adapter
-                        mRequestList.setAdapter(searchRequestAdapter);
+                // adapter
+                searchRequestAdapter = new RideRequestListAdapter(rideRequestList);
+                // set adapter
+                mRequestList.setAdapter(searchRequestAdapter);
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // called when there is any error
-                        Toast.makeText(SearchRequestActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // called when there is any error
+                Toast.makeText(SearchRequestActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

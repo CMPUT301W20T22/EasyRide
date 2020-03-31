@@ -130,8 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                              If it's not then deny the access to the application
                              https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection/53335711
                             */
-
-                                db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                             db.collection(Mode).document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
@@ -160,8 +159,6 @@ public class LoginActivity extends AppCompatActivity {
                                                             String token = Objects.requireNonNull(task.getResult()).getToken();
                                                             db.collection(Mode).document(ID).update("token", token);
                                                         }
-
-
                                                     });
 
                                             /*Log.d("User: ", user.getDisplayName());*/
@@ -230,3 +227,4 @@ public class LoginActivity extends AppCompatActivity {
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }
+

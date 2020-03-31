@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easyride.R;
@@ -83,25 +84,24 @@ public class AcceptRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get user profile info
+
                 db.collection("rider").whereEqualTo("Email", mRider)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-                                        user = doc.getString("Name");
-                                        email = doc.getString("Email");
-                                        Log.d("Document", doc.getId() + " => " + doc.getData());
-                                        // Pass data to Profile Fragment
-                                        RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
-                                        dialog.show(getSupportFragmentManager(), "My Profile Fragment");
-                                    }
-                                }
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                user = doc.getString("Name");
+                                email = doc.getString("Email");
+                                Log.d("Document", doc.getId() + " => " + doc.getData());
+                                // Pass data to Profile Fragment
+                                RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
+                                dialog.show(getSupportFragmentManager(), "My Profile Fragment");
                             }
-                        });
-
-
+                        }
+                    }
+                });
             }
         });
 
@@ -127,18 +127,16 @@ public class AcceptRequestActivity extends AppCompatActivity {
                                                 mFrom + " to " + mTo, driver_email);
                                         //Log.e("This is the id:", id[0]);
 
-                                        db.collection("rider").document(doc.getId()).collection("notification").
-                                                document().set(notificationModel);
+                                        db.collection("rider").document(doc.getId()).collection("notification")
+                                        .document().set(notificationModel);
 
                                     }
                                 }
                             }
                         });
-
                 startActivity(new Intent(getApplicationContext(), driver_home.class));
                 finish();
             }
         });
-
     }
 }
