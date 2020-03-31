@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -207,6 +209,28 @@ public class EditRide extends AppCompatActivity {
         builder.show();
     }
 
+    public void updateDriver(final Long rating){
+        final String[] id = new String[1];
+        String driverEmail = alright.getActiveRequests().get(position).getDriverUserName();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("driver").whereEqualTo("Email", driverEmail).get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot doc : Objects.requireNonNull(task.getResult())){
+                            id[0] = doc.getId();
+                        }
+                    }
+                });
+        if (rating == 1L){
+            db.collection("driver").document(id[0]).update("goodrev", rating);
+        }else{
+            db.collection("driver").document(id[0]).update("badrev", rating);
+        }
+    }
+
+
+
     private void ratePayDialog(){
         final boolean[] goodReview = new boolean[1];
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -220,9 +244,11 @@ public class EditRide extends AppCompatActivity {
         });
         if (goodReview[0]) {
             alright.getActiveRequests().get(position).setRiderRating(1L);
+            updateDriver(1L);
         }
         else {
             alright.getActiveRequests().get(position).setRiderRating(-1L);
+            updateDriver(-1L);
         }
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();

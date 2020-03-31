@@ -52,7 +52,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
             findViewById(R.id.rating).setVisibility(View.INVISIBLE);
         }else{
             Rating = findViewById(R.id.rating);
-            //TODO PLease display th erating for driver
+            //TODO PLease display the rating for driver
         }
 
         // init database
