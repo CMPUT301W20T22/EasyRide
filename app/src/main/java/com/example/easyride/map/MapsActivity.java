@@ -41,17 +41,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
- * https://stackoverflow.com/questions/18425141/android-google-maps-api-v2-zoom-to-current-location
- * https://github.com/ManishAndroidIos/Master-Google-Place-API
+ * Showing the Map and allow the rider to pick the start/end location.
+ * @author T22
+ * @version 1.0
  */
+
+// https://stackoverflow.com/questions/18425141/android-google-maps-api-v2-zoom-to-current-location
+// https://github.com/ManishAndroidIos/Master-Google-Place-API
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     MarkerHandler mh;
     private int request_code_start = 1001;
@@ -156,8 +156,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * If Gwoogle Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
+     * @param googleMap
      */
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 //        mMap = googleMap;
@@ -191,6 +191,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * Put a marker to the chosen location.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == request_code_start | requestCode == request_code_end) {

@@ -1,6 +1,11 @@
 package com.example.easyride.ui.rider;
 
-// Ride class that stores important information on each Ride Request.
+/**
+ * Ride class that stores important information on each Ride Request.
+ * @author T22
+ * @version 1.0
+ */
+
 public class Ride {
 
     private String from;
@@ -29,7 +34,14 @@ public class Ride {
 //        }
 //    }
 
-    // CONSTRUCTOR
+    /**
+     * Constructor
+     * @param from
+     * @param to
+     * @param cost
+     * @param user
+     * @param distance
+     */
     public Ride(String from, String to, String cost, String user, String distance) {
         this.from = from;
         this.to = to;

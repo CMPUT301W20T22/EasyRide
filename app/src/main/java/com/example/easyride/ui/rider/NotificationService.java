@@ -10,12 +10,25 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
+/**
+ * Class to handle Notification
+ * @author T22
+ * @version 1.0
+ */
 public class NotificationService extends FirebaseMessagingService {
     FirebaseAuth fAuth;
     FirebaseFirestore db;
+
+    /**
+     * Constructor
+     */
     public NotificationService() {
     }
 
+    /**
+     * Create a notification token
+     * @param s
+     */
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);

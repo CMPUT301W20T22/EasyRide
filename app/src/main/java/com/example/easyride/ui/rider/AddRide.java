@@ -9,8 +9,12 @@ import android.widget.TextView;
 
 import com.example.easyride.R;
 
-// This class is when a rider wants to add a new ride request.
-// Layout is activity_add_ride
+/**
+ * This class is when a rider wants to add a new ride request.
+ * @author T22
+ * @version 1.0
+ */
+
 
 public class AddRide extends RiderHome {
 
@@ -41,7 +45,6 @@ public class AddRide extends RiderHome {
 
 
             // TODO: Be able to update rider_home with newly added ride requests.
-
 
 
 

@@ -18,23 +18,40 @@ import com.example.easyride.R;
 
 import java.util.ArrayList;
 
-public class CustomListForRider extends ArrayAdapter<Ride> {
 
+/**
+ * Displays the ride information of active ride requests to the Rider home page.
+ * @author T22
+ * @version 1.0
+ */
+
+public class CustomListForRider extends ArrayAdapter<Ride> {
 
     // Hold the Measurement attributes I want to display, and the activity context.
     private ArrayList<Ride> rides;
     private Context context;
 
-    // Implementation of constructor from the parent class.
+    /**
+     * Class constructor
+     * @param context
+     * @param rides
+     */
+
     public CustomListForRider(Context context, ArrayList<Ride> rides) {
         super(context,0,rides);
         this.rides = rides;
         this.context = context;
     }
 
-    // getView() allows you to set the values for the views in your listView. Use autocomplete.
-    // We want get to reference the TextViews in the content.xml layout file and fill them with
-    // values (Date, Systolic, Diastolic, and Heart Rate).
+    /**
+     * getView() allows you to set the values for the views in your listView. Use autocomplete.
+     * We want get to reference the TextViews in the content.xml layout file and fill them with
+     * values (From, To).
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @SuppressLint("SetTextI18n")
     @NonNull
     @Override

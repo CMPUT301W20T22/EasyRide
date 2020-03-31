@@ -17,6 +17,10 @@ public class EasyRideUser {
     private String displayName;
     // private String Mode;
 
+    /**
+     * Class constructor
+     * @param userId
+     */
     public EasyRideUser(String userId) {
         this.userId = userId;
         //this.Mode = Mode;

@@ -38,7 +38,11 @@ import java.util.Objects;
 import static android.view.View.GONE;
 import static com.android.volley.VolleyLog.TAG;
 
-// Handles viewing of a ride request. Don't need to be able to edit the request
+/**
+ * Handles viewing of a ride request. Don't need to be able to edit the request
+ * @author T22
+ * @version 1.0
+ */
 public class EditRide extends AppCompatActivity {
 
     public ArrayList<Ride> DataList;
@@ -115,6 +119,9 @@ public class EditRide extends AppCompatActivity {
         });
     }
 
+    /**
+     * Go back to previous activity.
+     */
     private void goBack(){
         Intent i = new Intent(getApplicationContext(), RiderHome.class);
         startActivity(i);
@@ -144,6 +151,9 @@ public class EditRide extends AppCompatActivity {
 //        });
 //    }
 
+    /**
+     * Set up a dialog for the rider to confirm the ride.
+     */
     private void confirmRide(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure? You will no longer be able to cancel the ride");
@@ -173,6 +183,10 @@ public class EditRide extends AppCompatActivity {
         builder.show();
     }
     //https://stackoverflow.com/a/10904665/10861074
+
+    /**
+     * Set up a dialog for the rider to tip the driver.
+     */
     private void tipDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Tip");
@@ -207,6 +221,9 @@ public class EditRide extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Set up rating dialog for rider and allow the rider to pay the driver.
+     */
     private void ratePayDialog(){
         final boolean[] goodReview = new boolean[1];
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -271,6 +288,10 @@ public class EditRide extends AppCompatActivity {
         });
         builder.show();
     }
+
+    /**
+     * Update the list and handle the UI accordingly whenever there is an update in the database.
+     */
     public void updateView(){
         getSupportActionBar().setTitle("Request");
         DataList = alright.getActiveRequests();
@@ -354,7 +375,7 @@ public class EditRide extends AppCompatActivity {
                         confirmRide();
                     }
                 });
-            }else{
+            } else{
                 delete.setText("Accepted");
                 delete.setVisibility(View.INVISIBLE);
                 delete.setClickable(false);

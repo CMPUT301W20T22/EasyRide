@@ -35,6 +35,8 @@ import java.util.Locale;
 
 /**
  * This class handles start and end locations and shows them as markers on the map.
+ * @author T22
+ * @version 1.0
  */
 public class MarkerHandler {
   private Marker startMarker = null;
@@ -50,6 +52,11 @@ public class MarkerHandler {
     mockLatLangs();
   }
 
+  /**
+   * Class constructor
+   * @param mMap
+   * @param apiKey
+   */
   public MarkerHandler(GoogleMap mMap, String apiKey) {
     this.mMap = mMap;
     route = new Route(mMap, apiKey);
@@ -62,6 +69,10 @@ public class MarkerHandler {
 //    };
   }
 
+  /**
+   * Create a marker for pick up location.
+   * @return boolean
+   */
   private boolean showStartMarker() {
     if (startLatLang == null)
       return false;
@@ -76,6 +87,10 @@ public class MarkerHandler {
     return true; // returns true response if it works well
   }
 
+  /**
+   * Create a marker for destination.
+   * @return boolean
+   */
   private boolean showEndMarker() {
     if (endLatLang == null)
       return false;
@@ -89,6 +104,10 @@ public class MarkerHandler {
     return true; // returns true response if it works well
   }
 
+  /**
+   * Show the marker on the Map
+   * @return boolean
+   */
   public boolean showMarkers() {
 
     boolean S = showStartMarker();
@@ -147,6 +166,11 @@ public class MarkerHandler {
     endLatLang = new LatLng(53.5273536, -113.52911929999999);
   }
 
+  /**
+   * Animate the Camera whenever a location is picked.
+   * @param latLng
+   * @param zoom
+   */
   public void animateCamera(LatLng latLng, int zoom) { //zoom 15
     CameraPosition cameraPosition = new CameraPosition.Builder()
         .target(latLng)      // Sets the center of the map to Mountain View

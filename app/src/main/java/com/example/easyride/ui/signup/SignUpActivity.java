@@ -65,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.actionBar);
         // Add Support ActionBar
         // https://stackoverflow.com/questions/31311612/how-to-catch-navigation-icon-click-on-toolbar-from-fragment
+        // Author: https://stackoverflow.com/users/6645645/badr-el-amrani
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Sign Up");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

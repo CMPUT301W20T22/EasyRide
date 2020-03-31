@@ -25,9 +25,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-// RIDER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A RIDER.
-// Handles the rider home screen to display and navigate between active requests, as well as
-// allowing users to add a new request.
+/**
+ * Rider home. The first page you should see when you sign in as a rider.
+ * Handles the rider home screen to display and navigate between active requests, as well as
+ * allowing users to add a new request.
+ * @author T22
+ * @version 1.0
+ */
 
 public class RiderHome extends AppCompatActivity {
 
@@ -125,17 +129,34 @@ public class RiderHome extends AppCompatActivity {
     });
   }
 
+  /**
+   * ??
+   * @param intent
+   */
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
   }
 
+
+  /**
+   * Create option Menu for RiderHome.
+   * @param menu
+   * @return boolean
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // inflating driver_menu
     getMenuInflater().inflate(R.menu.navigation_menu, menu);
     return true;
   }
+
+  /**
+   * Method to handle the Menu item onClick Event.
+   * For each option, there will be a different result to it.
+   * @param item
+   * @return
+   */
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
@@ -165,9 +186,13 @@ public class RiderHome extends AppCompatActivity {
     return true;
   }
 
+  /**
+   * Update the List
+   */
   public void updateList2() {
     DataList = alright.getActiveRequests();
-    rideAdapter = new CustomListForRider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+    // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+    rideAdapter = new CustomListForRider(this, DataList);
     LV.setAdapter(rideAdapter);
   }
 }

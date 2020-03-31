@@ -16,21 +16,25 @@ import com.example.easyride.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
-import static android.view.View.GONE;
 import static com.android.volley.VolleyLog.TAG;
+
+
+/**
+ * ??
+ * @author T22
+ * @version 1.0
+ */
 
 public class AcceptedDriver extends AppCompatActivity {
 
 
     private String userID;
-
     private DocumentReference docRef;
     private FirebaseFirestore db;
     private TextView riderName, email, Phone, Rating;
@@ -65,7 +69,7 @@ public class AcceptedDriver extends AppCompatActivity {
                                 riderName.setText(document.getString("Name") + "'s Profile");
                                 email.setText("Email: " + document.getString("Email"));
                                 Phone.setText("Phone: " + document.getString("Phone"));
-                                try{
+                                try {
                                     int good = (int) document.get("good_reviews");
                                     int bad = (int) document.get("bad_reviews");
                                     int rate = (good/bad)*100;
@@ -74,7 +78,7 @@ public class AcceptedDriver extends AppCompatActivity {
                                     }
                                     String rateS = String.valueOf(rate);
                                     Rating.setText("Rate: " + rateS + "%");
-                                }catch (Exception e){
+                                } catch (Exception e){
                                     Log.e(TAG, "Error getting Ratings: ", e);
                                     Rating.setText("Rating: Driver has not been rated yet");
                                 }

@@ -42,6 +42,10 @@ public class Rider extends EasyRideUser implements DatabaseListener{
   private static Rider instance;
   private FirebaseFirestore db;
 
+  /**
+   * Class constructor
+   * @param user
+   */
   public Rider(final EasyRideUser user){
     super(user.getUserId());
     //super(userId);
@@ -59,7 +63,6 @@ public class Rider extends EasyRideUser implements DatabaseListener{
     requestsID = new ArrayList<>();
     activeRequests= new ArrayList<Ride>();
 
-// <<<<<<< HEAD
     Query q = db.collection("RideRequest").whereEqualTo("user", user.getUserId());
 
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -81,33 +84,18 @@ public class Rider extends EasyRideUser implements DatabaseListener{
           }
         });
 
-// =======
-//     db.collection("RideRequest")
-//             .whereEqualTo("user", user.getUserId())
-//             .get()
-//             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//               @Override
-//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                 if (task.isSuccessful()) {
-//                   for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-//                     requestsID.add(document.getId());
-//                     activeRequests.add(document.toObject(Ride.class));
-//                     //Log.e("SIZE", user.getUserId());
-//                     //Log.e("SIZE", Integer.toString(activeRequests.size()));
 
-//                   }
-//                 } else {
-//                   Log.e(TAG, "Error getting documents: ", task.getException());
-//                 }
-//               }
-//             });
-// >>>>>>> master
     currentRiderInfo = user;
     //updateList();
 
     //TODO: add activeRequests
   }
-  //return old instance or create a new one
+
+  /**
+   * Return old instance or create a new one.
+   * @param user
+   * @return
+   */
   public static Rider getInstance(EasyRideUser user){
     if(instance == null){
       instance = new Rider(user);
@@ -115,10 +103,17 @@ public class Rider extends EasyRideUser implements DatabaseListener{
     return instance;
   }
 
+  /**
+   * Clear the instance
+   */
   public static void clear(){
     instance = null;
   }
 
+
+  /**
+   * Update the list
+   */
   public void updateList() {
 
     //requestsID = new ArrayList<>();
@@ -150,52 +145,54 @@ public class Rider extends EasyRideUser implements DatabaseListener{
             }
           }
         });
-// =======
-//             .whereEqualTo("user", currentRiderInfo.getUserId())
-//             .get()
-//             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//               @Override
-//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                 if (task.isSuccessful()) {
-//                   activeRequests.clear();
-//                   requestsID.clear();
-//                   for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-//                     requestsID.add(document.getId());
-//                     activeRequests.add(document.toObject(Ride.class));
-//                     Log.e("user", currentRiderInfo.getUserId());
-//                     Log.e("SIZE", Integer.toString(activeRequests.size()));
 
-//                   }
-//                 } else {
-//                   Log.e(TAG, "Error getting documents: ", task.getException());
-//                 }
-//               }
-//             });
-
-
-// >>>>>>> master
   }
 
+  /**
+   * Adding the RideRequest to the activeRequest list.
+   * @param rideInsert
+   */
   public void addRide(Ride rideInsert){
     DocumentReference newCityRef = db.collection("RideRequest").document();
     newCityRef.set(rideInsert);
     instance.getActiveRequests().add(rideInsert);
   }
 
+  /**
+   * Getting all the active requests.
+   * @return activeRequests
+   */
   public ArrayList<Ride> getActiveRequests() {
     //updateList();
     return activeRequests;
   }
 
+  /**
+   * Remove the ride request.
+   * @param position
+   */
   public void removeAt(int position){
     String documentID = requestsID.get(position);
     db.collection("RideRequest").document(documentID).delete();
     activeRequests.remove(position);
   }
 
+  /**
+   * Get the current rider info.
+   * @return EasyRideUser
+   */
   public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
+
+  /**
+   * Update the list and handle the UI whenever there is an update in the database.
+   */
   public void onDataLoaded() {}
 
+  /**
+   * Update the ride request information.
+   * @param position
+   * @return
+   */
   public boolean updateRequest(int position){
     if (position >= activeRequests.size()) return false;
     String documentID = requestsID.get(position);

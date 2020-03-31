@@ -18,7 +18,11 @@ import java.util.ArrayList;
 import io.opencensus.stats.Measurement;
 
 
-// Displays the ride information of active ride requests to the Rider home page.
+/**
+ * Displays the ride information of active ride requests to the Rider home page.
+ * @author T22
+ * @version 1.0
+ */
 public class CustomList extends ArrayAdapter<Ride> {
 
 
@@ -26,16 +30,26 @@ public class CustomList extends ArrayAdapter<Ride> {
     private ArrayList<Ride> rides;
     private Context context;
 
-    // Implementation of constructor from the parent class.
+    /**
+     * Implementation of constructor from the parent class.
+     * @param context
+     * @param rides
+     */
     public CustomList(Context context, ArrayList<Ride> rides) {
         super(context,0,rides);
         this.rides = rides;
         this.context = context;
     }
 
-    // getView() allows you to set the values for the views in your listView. Use autocomplete.
-    // We want get to reference the TextViews in the content.xml layout file and fill them with
-    // values (From, To).
+    /**
+     * getView() allows you to set the values for the views in your listView. Use autocomplete.
+     * We want get to reference the TextViews in the content.xml layout file and fill them with
+     * values (From, To).
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

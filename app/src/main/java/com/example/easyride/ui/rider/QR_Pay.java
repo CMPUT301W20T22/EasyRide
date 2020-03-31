@@ -18,8 +18,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-// Allows Rider to pay for ride with QR code.
-
+/**
+ * Allow rider to pay the ride with QR code.
+ * @author T22
+ * @version 1.0
+ */
 public class QR_Pay extends AppCompatActivity {
 
     @Override
@@ -54,17 +57,4 @@ public class QR_Pay extends AppCompatActivity {
         }
     }
 
-    /**
-     * https://stackoverflow.com/questions/39959747/how-to-convert-string-into-image-android-studio
-    **/
-    public Bitmap StringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
 }

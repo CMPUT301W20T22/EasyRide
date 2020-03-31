@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class to handle the Polyline on the Map
+ * @author T22
+ * @version 1.0
+ */
 public  class  Route {
   private PolylineOptions polylineOptions;
   private Polyline polyline;
@@ -31,6 +36,11 @@ public  class  Route {
   private double distance;
   private String apiKey;
 
+  /**
+   * Class constructor
+   * @param gMap
+   * @param apiKey
+   */
   public Route(GoogleMap gMap, String apiKey) {
     this.gMap = gMap;
     this.apiKey = apiKey;
@@ -44,6 +54,11 @@ public  class  Route {
     return distance;
   }
 
+  /**
+   * Method to show the Polyline on the Map.
+   * @param start
+   * @param end
+   */
   public void showOnMap(LatLng start, LatLng end){
     if (polyline!=null){
       distance = 0.0;
@@ -137,66 +152,86 @@ public  class  Route {
     }
 
 
-    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+  /**
+   * ??
+   * @param origin
+   * @param dest
+   * @return
+   */
+  private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
-      // Origin of route
-      String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+    // Origin of route
+    String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
 
-      // Destination of route
-      String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+    // Destination of route
+    String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
 
-      // Sensor enabled
-      String sensor = "sensor=false";
-      String mode = "mode=driving";
-      String key = "key=" + apiKey;
-      // Building the parameters to the web service
-      String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + key;
+    // Sensor enabled
+    String sensor = "sensor=false";
+    String mode = "mode=driving";
+    String key = "key=" + apiKey;
+    // Building the parameters to the web service
+    String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + key;
 
-      // Output format
-      String output = "json";
+    // Output format
+    String output = "json";
 
-      // Building the url to the web service
-      String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-      return url;
-    }
+    // Building the url to the web service
+    String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+    return url;
+  }
 
-    private String downloadUrl(String strUrl) throws IOException {
-      String data = "";
-      InputStream iStream = null;
-      HttpURLConnection urlConnection = null;
-      try {
-        URL url = new URL(strUrl);
+  /**
+   * ??
+   * @param strUrl
+   * @return
+   * @throws IOException
+   */
+  private String downloadUrl(String strUrl) throws IOException {
+    String data = "";
+    InputStream iStream = null;
+    HttpURLConnection urlConnection = null;
+    try {
+      URL url = new URL(strUrl);
 
-        urlConnection = (HttpURLConnection) url.openConnection();
+      urlConnection = (HttpURLConnection) url.openConnection();
 
-        urlConnection.connect();
+      urlConnection.connect();
 
-        iStream = urlConnection.getInputStream();
+      iStream = urlConnection.getInputStream();
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+      BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
 
-        StringBuffer sb = new StringBuffer();
+      StringBuffer sb = new StringBuffer();
 
-        String line = "";
-        while ((line = br.readLine()) != null) {
-          sb.append(line);
-        }
-
-        data = sb.toString();
-
-        br.close();
-
-      } catch (Exception e) {
-        Log.d("Exception", e.toString());
-      } finally {
-        iStream.close();
-        urlConnection.disconnect();
+      String line = "";
+      while ((line = br.readLine()) != null) {
+        sb.append(line);
       }
-      return data;
-    }
 
-    // Author https://stackoverflow.com/users/502162/david-george
-    // https://stackoverflow.com/a/16794680
+      data = sb.toString();
+
+      br.close();
+
+    } catch (Exception e) {
+      Log.d("Exception", e.toString());
+    } finally {
+      iStream.close();
+      urlConnection.disconnect();
+    }
+    return data;
+  }
+
+
+  // Author https://stackoverflow.com/users/502162/david-george
+  // https://stackoverflow.com/a/16794680
+
+  /**
+   * Mathod to calculate the distance between the 2 locations.
+   * @param latLng1
+   * @param latLng2
+   * @return
+   */
   public static double distance(LatLng latLng1, LatLng latLng2) {
     final int R = 6371; // Radius of the earth
     double latDistance = Math.toRadians(latLng2.latitude - latLng1.latitude);
@@ -211,7 +246,13 @@ public  class  Route {
 
     return Math.sqrt(distance);
   }
-  public static double  lengthOfPolyline(List<LatLng> latLngs ){
+
+  /**
+   * Method to calculate the length of the Polyline
+   * @param latLngs
+   * @return
+   */
+  public static double lengthOfPolyline(List<LatLng> latLngs ){
     Double routeLength = 0.0;
     for (int i=0; i < latLngs.size();i++) {
       if (i!=0){

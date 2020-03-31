@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +24,8 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
     private List<RideRequest> rideRequestsList;
     private OnItemClickListener mListener;
 
+    // https://stackoverflow.com/a/28304164
+    // Author: https://stackoverflow.com/users/1633609/sir-nikolay-cesar-the-first
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -85,7 +86,9 @@ public class RideRequestListAdapter extends RecyclerView.Adapter<RideRequestList
         return rideRequestsList.size();
     }
 
-
+    /**
+     * Set up a holder for the views in the RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;

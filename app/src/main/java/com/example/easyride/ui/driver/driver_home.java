@@ -175,6 +175,7 @@ public class driver_home extends AppCompatActivity {
      * @return boolean
      */
     // https://stackoverflow.com/questions/9570237/android-check-internet-connection
+    // Author: https://stackoverflow.com/users/975292/seshu-vinay
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();

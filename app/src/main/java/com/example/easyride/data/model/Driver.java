@@ -16,6 +16,10 @@ public class Driver extends EasyRideUser {
   private static Driver instance;
 
 
+  /**
+   * Class constructor
+   * @param user
+   */
   private Driver(EasyRideUser user){
     super(user.getUserId());
     // UserDatabaseManager database = new UserDatabaseManager();
@@ -30,7 +34,12 @@ public class Driver extends EasyRideUser {
 
     //TODO: add activeRequests
   }
-  //return old instance or create a new one
+
+  /**
+   * Return old instance or create a new one.
+   * @param user
+   * @return
+   */
   public static Driver getInstance(EasyRideUser user){
     if(instance == null){
       instance = new Driver(user);
