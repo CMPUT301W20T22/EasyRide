@@ -134,16 +134,12 @@ public class SearchRequestActivity extends AppCompatActivity {
         return true;
     }
 
-<<<<<<< HEAD
-
     /**
      * Method to display the data to RecyclerView from the database,
      * depend on the driver, the data displayed on the activity will be different.
      */
     public void showData() {
-=======
-    private void showData() {
->>>>>>> 412f8349ce82c706fd35d85753827e5c4a95348c
+
         // Get the data by geoLocation
         // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
         db.collection("RideRequest").whereEqualTo("rideAccepted", false)

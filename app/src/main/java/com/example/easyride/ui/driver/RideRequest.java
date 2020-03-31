@@ -9,11 +9,7 @@ import android.location.Location;
  * @see Location
  */
 public class RideRequest {
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 412f8349ce82c706fd35d85753827e5c4a95348c
   private String pickupPoint;
   private String targetPoint;
   private boolean rideAccepted;
