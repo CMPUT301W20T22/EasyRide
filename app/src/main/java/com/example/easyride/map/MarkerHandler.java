@@ -45,6 +45,7 @@ public class MarkerHandler {
   private Place endPlace;
   public GoogleMap mMap;
   private Route route;
+  private boolean hasCompleteRequest= false;
 
   public MarkerHandler() { // TODO: change this constructor
     mockLatLangs();
@@ -94,14 +95,16 @@ public class MarkerHandler {
     boolean S = showStartMarker();
     boolean E = showEndMarker();
     if (S && !E) {
+      hasCompleteRequest = false;
       animateCamera(startLatLang);
     } else if (!S && E) {
+      hasCompleteRequest = false;
       animateCamera(endLatLang);
     } else if (S && E) {
 //      LatLng midP = new LatLng((startLatLang.latitude + endLatLang.latitude) / 2,
 //          (startLatLang.longitude + endLatLang.longitude) / 2);
 //      animateCamera(midP, 10);
-
+      hasCompleteRequest = true;
       LatLngBounds.Builder builder = new LatLngBounds.Builder();
       builder.include(startMarker.getPosition());
       builder.include(endMarker.getPosition());
@@ -177,5 +180,9 @@ public class MarkerHandler {
 
   public Place getEndPlace() {
     return endPlace;
+  }
+
+  public boolean hasCompleteRequest() {
+    return hasCompleteRequest;
   }
 }

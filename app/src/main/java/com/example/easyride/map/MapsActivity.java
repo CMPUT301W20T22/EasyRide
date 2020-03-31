@@ -112,6 +112,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mh.hasCompleteRequest()) {
+                    Toast.makeText(MapsActivity.this, "First specify both start and end points!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 double distance = mh.getRouteDistance()/1000;
 
                 /*
