@@ -1,8 +1,5 @@
 package com.example.easyride.data.model;
 
-import androidx.annotation.Nullable;
-
-import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * EasyRideUser class that captures user information for logged in users retrieved from LoginRepository

@@ -43,7 +43,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_edit_info_fragment, null);
 
-        newEmail = view.findViewById(R.id.editEmail);
+        //newEmail = view.findViewById(R.id.editEmail);
         newPhone = view.findViewById(R.id.editPhone);
         newPassword = view.findViewById(R.id.editPassword);
 
@@ -54,13 +54,13 @@ public class EditInfoFragment extends AppCompatDialogFragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String mEmail = newEmail.getText().toString();
+                //String mEmail = newEmail.getText().toString();
                 String mPhone = newPhone.getText().toString();
                 String mPassword = newPassword.getText().toString();
 
-                if (!(mEmail.isEmpty()) && !(Patterns.EMAIL_ADDRESS.matcher(mEmail).matches())) {
-                    EmailValid = false;
-                }
+                //if (!(mEmail.isEmpty()) && !(Patterns.EMAIL_ADDRESS.matcher(mEmail).matches())) {
+                //    EmailValid = false;
+                //}
 
                 if (0 < mPassword.length() && mPassword.length() < 5) {
                     PasswordValid = false;
@@ -71,13 +71,15 @@ public class EditInfoFragment extends AppCompatDialogFragment {
                 }
 
                 // Update info and handle errors
-                if (EmailValid && PhoneValid && PasswordValid) {
-                    mListener.updateInfo(mEmail, mPhone, mPassword);
+                if ( PhoneValid && PasswordValid) {
+                    mListener.updateInfo(mPhone, mPassword);
                 }
-                else if (!EmailValid){
-                    Toast.makeText(getActivity(), "The Email Address you entered is not in the correct format! Please update it again",
-                            Toast.LENGTH_SHORT).show();
-                }
+
+                //else if (!EmailValid){
+                //    Toast.makeText(getActivity(), "The Email Address you entered is not in the correct format! Please update it again",
+                //            Toast.LENGTH_SHORT).show();
+                //}
+
                 else if (!PhoneValid){
                     Toast.makeText(getActivity(), "The Phone Number you entered is not in the correct format! Please update it again",
                             Toast.LENGTH_SHORT).show();
@@ -113,7 +115,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
      * Interface created to handle updating the new information to database
      */
     public interface myListener {
-        void updateInfo(String email, String phone, String password);
+        void updateInfo(String phone, String password);
     }
 }
 

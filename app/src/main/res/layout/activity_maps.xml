@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<fragment -->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:map="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/map"-->
-<!--    android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".map.MapsActivity" />-->
+
+<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".map.MapsActivity" /> -->
+
+    <!--<fragment -->
+    <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:map="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/map"-->
+    <!--    android:name="com.google.android.gms.maps.SupportMapFragment"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".map.MapsActivity" />-->
 
 
-<!--<androidx.constraintlayout.widget.ConstraintLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:map="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/constraintLayout"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".map.MapsActivity">-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:map="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/constraintLayout"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".map.MapsActivity">-->
 
 
-<!--    <fragment-->
-<!--        android:id="@+id/place_start"-->
-<!--        class="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="66dp"-->
-<!--        map:layout_constraintBottom_toTopOf="@+id/place_end"-->
-<!--        map:layout_constraintEnd_toEndOf="parent"-->
-<!--        map:layout_constraintHorizontal_bias="0.0"-->
-<!--        map:layout_constraintStart_toStartOf="parent"-->
-<!--        map:layout_constraintTop_toTopOf="parent"-->
-<!--        map:layout_constraintVertical_bias="1.0" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/place_start"-->
+    <!--        class="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="66dp"-->
+    <!--        map:layout_constraintBottom_toTopOf="@+id/place_end"-->
+    <!--        map:layout_constraintEnd_toEndOf="parent"-->
+    <!--        map:layout_constraintHorizontal_bias="0.0"-->
+    <!--        map:layout_constraintStart_toStartOf="parent"-->
+    <!--        map:layout_constraintTop_toTopOf="parent"-->
+    <!--        map:layout_constraintVertical_bias="1.0" />-->
 
-<!--    <fragment-->
-<!--        android:id="@+id/place_end"-->
-<!--        class="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="68dp"-->
-<!--        map:layout_constraintBottom_toTopOf="@+id/map"-->
-<!--        map:layout_constraintEnd_toEndOf="parent"-->
-<!--        map:layout_constraintStart_toStartOf="parent"-->
-<!--        map:layout_constraintTop_toBottomOf="@+id/place_start" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/place_end"-->
+    <!--        class="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="68dp"-->
+    <!--        map:layout_constraintBottom_toTopOf="@+id/map"-->
+    <!--        map:layout_constraintEnd_toEndOf="parent"-->
+    <!--        map:layout_constraintStart_toStartOf="parent"-->
+    <!--        map:layout_constraintTop_toBottomOf="@+id/place_start" />-->
 
-<!--    <fragment-->
-<!--        android:id="@+id/map"-->
-<!--        class="com.google.android.gms.maps.SupportMapFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:scrollbars="vertical"-->
-<!--        map:layout_constraintBottom_toBottomOf="parent"-->
-<!--        map:layout_constraintEnd_toEndOf="parent"-->
-<!--        map:layout_constraintHorizontal_bias="0.0"-->
-<!--        map:layout_constraintStart_toStartOf="parent"-->
-<!--        map:layout_constraintTop_toBottomOf="@+id/place_end"-->
-<!--        map:layout_constraintVertical_bias="1.0" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/map"-->
+    <!--        class="com.google.android.gms.maps.SupportMapFragment"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:scrollbars="vertical"-->
+    <!--        map:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        map:layout_constraintEnd_toEndOf="parent"-->
+    <!--        map:layout_constraintHorizontal_bias="0.0"-->
+    <!--        map:layout_constraintStart_toStartOf="parent"-->
+    <!--        map:layout_constraintTop_toBottomOf="@+id/place_end"-->
+    <!--        map:layout_constraintVertical_bias="1.0" />-->
 
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,79 +77,79 @@
     tools:context=".map.MapsActivity">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardView1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="parent">
+<androidx.cardview.widget.CardView
+    android:id="@+id/CardView1"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    map:layout_constraintEnd_toEndOf="parent"
+    map:layout_constraintStart_toStartOf="parent"
+    map:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/TextInputLayout"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        map:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/start_location_EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            map:layout_constraintTop_toBottomOf="@+id/cardView">
+            android:cursorVisible="false"
+            android:fontFamily="@font/sftextregular"
+            android:defaultFocusHighlightEnabled="false"
+            android:focusableInTouchMode="false"
+            android:hint="Enter Start Location" />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.cardview.widget.CardView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/start_location_EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:fontFamily="@font/sftextregular"
-                android:defaultFocusHighlightEnabled="false"
-                android:focusableInTouchMode="false"
-                android:hint="Enter Start Location" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </androidx.cardview.widget.CardView>
+<androidx.cardview.widget.CardView
+    android:id="@+id/CardView2"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    map:layout_constraintBottom_toTopOf="@+id/map"
+    map:layout_constraintEnd_toEndOf="parent"
+    map:layout_constraintStart_toStartOf="parent"
+    map:layout_constraintTop_toBottomOf="@+id/CardView1">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardView2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        map:layout_constraintBottom_toTopOf="@+id/map"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/CardView1">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/TextInputLayout2"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/end_location_EditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sftextregular"
+            android:focusableInTouchMode="false"
+            android:hint="Enter End Location" />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.cardview.widget.CardView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/end_location_EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sftextregular"
-                android:focusableInTouchMode="false"
-                android:hint="Enter End Location" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </androidx.cardview.widget.CardView>
+<fragment
+    android:id="@+id/map"
+    class="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    map:layout_constraintBottom_toBottomOf="parent"
+    map:layout_constraintEnd_toEndOf="parent"
+    map:layout_constraintHorizontal_bias="0.0"
+    map:layout_constraintStart_toStartOf="parent"
+    map:layout_constraintTop_toBottomOf="@+id/CardView2" />
 
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintHorizontal_bias="0.0"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/CardView2" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/create_request_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:srcCompat="@android:drawable/ic_menu_send"
-        android:backgroundTint="@color/colorAccent"
-        />
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/create_request_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    android:clickable="true"
+    map:layout_constraintBottom_toBottomOf="parent"
+    map:layout_constraintEnd_toEndOf="parent"
+    map:srcCompat="@android:drawable/ic_menu_send"
+    android:backgroundTint="@color/colorAccent"
+    />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
