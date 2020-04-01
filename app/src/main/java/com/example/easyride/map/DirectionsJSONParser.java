@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * ??
+ * Extract the request information from Jason file responded by the Google Server.
  * @author T22
  * @version 1.0
  */

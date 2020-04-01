@@ -153,7 +153,7 @@ public  class  Route {
 
 
   /**
-   * ??
+   * Method to convert the start point, end point, and the api key to a valid string URL.
    * @param origin
    * @param dest
    * @return
@@ -182,7 +182,8 @@ public  class  Route {
   }
 
   /**
-   * ??
+   * Sends the request url created by getDirectionUrl and sends it to the server
+   * and downloads the response (a Jason file).
    * @param strUrl
    * @return
    * @throws IOException
