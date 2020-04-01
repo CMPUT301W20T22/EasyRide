@@ -41,6 +41,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
   private EasyRideUser currentRiderInfo;
   private static Rider instance;
   private FirebaseFirestore db;
+  private boolean dataLoaded = false;
 
   public Rider(final EasyRideUser user){
     super(user.getUserId());
@@ -78,6 +79,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
               //Log.e("SIZE", Integer.toString(activeRequests.size()));
             }
             onDataLoaded();
+            dataLoaded = true;
           }
         });
 
@@ -145,6 +147,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
               }
               onDataLoaded();
+              dataLoaded = true;
             } else {
               Log.e(TAG, "Error getting documents: ", task.getException());
             }
@@ -205,5 +208,9 @@ public class Rider extends EasyRideUser implements DatabaseListener{
     rideRequestRef.update("rideConfirmAccepted", updatedRequest.isRideConfirmAccepted());
     rideRequestRef.update("riderRating",updatedRequest.getRiderRating() );
     return  true;
+  }
+
+  public boolean isDataLoaded() {
+    return dataLoaded;
   }
 }
