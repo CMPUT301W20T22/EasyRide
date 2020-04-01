@@ -2,6 +2,8 @@ package com.example.easyride.ui.driver;
 
 import android.location.Location;
 
+import com.google.firebase.firestore.GeoPoint;
+
 /**
  * RideRequest class that ...
  * @author T22
@@ -20,6 +22,8 @@ public class RideRequest {
   private String riderUserName;
   private String driverUserName;
   private String key;
+  private GeoPoint startPoint;
+  private GeoPoint endPoint;
 
   public RideRequest() {
   }
@@ -81,6 +85,10 @@ public class RideRequest {
     return riderUserName;
   }
 
+  public GeoPoint getStartPoint() { return this.startPoint;}
+
+  public GeoPoint getEndPoint() { return this.endPoint;}
+
   public boolean isRideAccepted() { return rideAccepted; }
 
   public boolean isRideCompleted() { return rideCompleted; }
@@ -114,4 +122,8 @@ public class RideRequest {
   public void setTargetPoint(String targetPoint) {
     this.targetPoint = targetPoint;
   }
+
+  public void setStartPoint(GeoPoint startPoint) { this.startPoint = startPoint; }
+  public void setEndPoint(GeoPoint endPoint) { this.endPoint = endPoint; }
+
 }

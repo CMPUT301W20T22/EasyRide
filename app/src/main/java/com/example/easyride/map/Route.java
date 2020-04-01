@@ -6,8 +6,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.easyride.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -131,8 +134,16 @@ public  class  Route {
       distance = lengthOfPolyline(polylineOptions.getPoints());
 
 // Drawing polyline in the Google Map for the i-th route
-      polyline = gMap.addPolyline(lineOptions);
 
+
+      LatLngBounds.Builder builder = new LatLngBounds.Builder();
+      for (LatLng latLang: polylineOptions.getPoints()) {
+        builder.include(latLang);
+      }
+      LatLngBounds bounds = builder.build();
+      CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 3);
+      gMap.animateCamera(cu);
+      polyline = gMap.addPolyline(lineOptions);
       }
     }
 
