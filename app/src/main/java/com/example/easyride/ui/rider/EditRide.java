@@ -253,6 +253,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
                 alright.updateRequest(position);
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
                 i.putExtra("cost", ride_cost);
+                i.putExtra("position", position);
                 startActivity(i);
             }
         });
@@ -286,7 +287,9 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         }else {
             if (ride_cost.length() > 4 && index == 3) {
                 ride_cost_short = ride_cost.substring(0, 3);
-            } else if(ride_cost.length() > 4) {
+            } else if (ride_cost.length() > 4 && index > 3){
+                ride_cost_short = ride_cost.substring(0, index - 3) + "." + ride_cost.substring(index - 2, index) + "k";
+            }else if(ride_cost.length() > 4) {
                 ride_cost_short = ride_cost.substring(0, 4);
             }else {
                 ride_cost_short = ride_cost;
