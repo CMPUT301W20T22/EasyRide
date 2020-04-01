@@ -43,7 +43,7 @@ public class AcceptedDriver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
+        setContentView(R.layout.activity_accepted_driver); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
         //mode = intent.getStringExtra("mode");

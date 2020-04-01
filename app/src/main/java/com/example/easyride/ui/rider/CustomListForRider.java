@@ -78,7 +78,7 @@ public class CustomListForRider extends ArrayAdapter<Ride> {
 
         cost.setText("$" + ride_cost_short);
 
-        if(ride.isRideAccepted() && ride.isRideConfirmAccepted()) {
+        if(ride.isRideAccepted() && ride.isRideConfirmAccepted() && !ride.isRideCompleted()) {
             status.setText("Accepted");
             status.setTextColor(Color.GREEN);
         }else if (ride.isRideAccepted() && !ride.isRideConfirmAccepted()){
