@@ -207,6 +207,7 @@ public class EditRide extends AppCompatActivity {
                 alright.updateRequest(position);
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
                 i.putExtra("cost", ride_cost);
+                i.putExtra("position", position);
                 startActivity(i);
             }
         });
