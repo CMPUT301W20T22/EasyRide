@@ -62,19 +62,20 @@
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/to_text" />-->
+
     <fragment
         android:id="@+id/mapViewEditRide"
         class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="390dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="21dp"
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/distance"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/to_text" />
+        app:layout_constraintTop_toBottomOf="@+id/to_text"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/distance"
