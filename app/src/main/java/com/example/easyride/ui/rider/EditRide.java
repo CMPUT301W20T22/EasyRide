@@ -201,30 +201,11 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-  //        mMap = googleMap;
       if (! isMapLoaded){
         mh = new MarkerHandler(googleMap, getString(R.string.api_key));
       }
       isMapLoaded = true;
-
-      //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-//      if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-//          != PackageManager.PERMISSION_GRANTED
-//          && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-//          != PackageManager.PERMISSION_GRANTED) {
-//        Toast.makeText(EditRide.this, "First enable LOCATION ACCESS in settings.", Toast.LENGTH_LONG).show();
-//        return;
-//      }
-//      googleMap.setMyLocationEnabled(true);
-//      LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//      Criteria criteria = new Criteria();
-//      String provider = locationManager.getBestProvider(criteria, true);
-//      Location location = locationManager.getLastKnownLocation(provider);
-
-
-//      updateView();
-
+      alright.updateList();
     }
     private void ratePayDialog(){
         boolean[] review = new boolean[1];
@@ -265,11 +246,11 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.show();
     }
     public void updateView(){
-        getSupportActionBar().setTitle("Request");
         DataList = alright.getActiveRequests();
-        if (isFinished){
+        if (isFinished || !alright.isDataLoaded()){
             return;
         }
+        getSupportActionBar().setTitle("Request");
         rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
         String ride_distance_short;
@@ -292,12 +273,13 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
                 ride_cost_short = ride_cost;
             }
         }
-        if (isMapLoaded || isRouteShown){
+        if (isMapLoaded && !isRouteShown){
           LatLng startLatLang = new LatLng(rideReq.getStartPoint().getLatitude(), rideReq.getStartPoint().getLongitude());
           LatLng endLatLang = new LatLng(rideReq.getEndPoint().getLatitude(), rideReq.getEndPoint().getLongitude());
           mh.setStartLatLang(startLatLang);
           mh.setEndLatLang(endLatLang);
           mh.showMarkers();
+          isRouteShown = true;
         }
         from.setText(rideReq.getFrom());
         to.setText(rideReq.getTo());
