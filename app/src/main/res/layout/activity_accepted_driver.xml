@@ -15,14 +15,14 @@
         android:fontFamily="@font/sfdisplaybold"
         android:text="USERNAME"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintBottom_toTopOf="@+id/driver_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/driver_email"
         android:layout_width="0dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
@@ -32,13 +32,13 @@
         android:fontFamily="@font/sftextregular"
         android:text="Email"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/ph"
+        app:layout_constraintBottom_toTopOf="@+id/driver_ph"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/ph"
+        android:id="@+id/driver_ph"
         android:layout_width="0dp"
         android:layout_height="58dp"
         android:layout_gravity="center"
@@ -48,64 +48,26 @@
         android:fontFamily="@font/sftextregular"
         android:text="Phone Number:"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/balance"
+        app:layout_constraintBottom_toTopOf="@+id/driver_rating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <TextView
-        android:id="@+id/rating"
+        android:id="@+id/driver_rating"
         android:layout_width="0dp"
         android:layout_height="58dp"
         android:layout_gravity="center"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="84dp"
         android:fontFamily="@font/sftextregular"
         android:text="Rating % :"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_contact_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"></TextView>
-
-    <TextView
-        android:id="@+id/balance"
-        android:layout_width="221dp"
-        android:layout_height="58dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="35dp"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="@font/sftextregular"
-        android:text="Balance:"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/rating"
-        app:layout_constraintEnd_toStartOf="@+id/add_balance"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/add_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/button_circle"
-        android:text="Add"
-        app:layout_constraintBottom_toTopOf="@+id/rating"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/edit_contact_button"
-        android:layout_width="157dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/button"
-        android:text="Edit Contact Info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

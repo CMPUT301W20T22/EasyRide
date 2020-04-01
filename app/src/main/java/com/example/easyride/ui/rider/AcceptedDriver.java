@@ -52,9 +52,9 @@ public class AcceptedDriver extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("driver").document(userID);
         riderName = findViewById(R.id.user_name);
-        email = findViewById(R.id.email);
-        Phone = findViewById(R.id.ph);
-        Rating = findViewById(R.id.rating);
+        email = findViewById(R.id.driver_email);
+        Phone = findViewById(R.id.driver_ph);
+        Rating = findViewById(R.id.driver_rating);
         db.collection("driver")
                 .whereEqualTo("Email", userID)
                 .get()
@@ -96,9 +96,9 @@ public class AcceptedDriver extends AppCompatActivity {
             }
         });*/
 
-        Button editButton = findViewById(R.id.edit_contact_button);
+        //Button editButton = findViewById(R.id.edit_contact_button);
 
-        editButton.setVisibility(View.INVISIBLE);
+        //editButton.setVisibility(View.INVISIBLE);
 
     }
 
