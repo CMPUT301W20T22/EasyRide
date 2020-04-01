@@ -2,8 +2,12 @@ package com.example.easyride.ui.rider;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -18,13 +22,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
+import com.example.easyride.map.MapsActivity;
+import com.example.easyride.map.MarkerHandler;
 import com.example.easyride.ui.NotificationModel;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,7 +53,7 @@ import static android.view.View.GONE;
 import static com.android.volley.VolleyLog.TAG;
 
 // Handles viewing of a ride request. Don't need to be able to edit the request
-public class EditRide extends AppCompatActivity {
+public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
 
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
@@ -53,8 +65,10 @@ public class EditRide extends AppCompatActivity {
     private int position;
     private boolean rideIsAccepted = true;
     private boolean isFinished = false;
-
-    @Override
+    private boolean isMapLoaded = false;
+    private boolean isRouteShown = false;
+    MarkerHandler mh;
+  @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ride);
@@ -75,6 +89,11 @@ public class EditRide extends AppCompatActivity {
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
         String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewEditRide);
+        mapFragment.getMapAsync(this);
+        Places.initialize(getApplicationContext(),getString(R.string.api_key));
         alright = new Rider(new EasyRideUser(userID)) {
             @Override
             public void onDataLoaded() {
@@ -180,6 +199,33 @@ public class EditRide extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+  //        mMap = googleMap;
+      if (! isMapLoaded){
+        mh = new MarkerHandler(googleMap, getString(R.string.api_key));
+      }
+      isMapLoaded = true;
+
+      //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+//      if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+//          != PackageManager.PERMISSION_GRANTED
+//          && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+//          != PackageManager.PERMISSION_GRANTED) {
+//        Toast.makeText(EditRide.this, "First enable LOCATION ACCESS in settings.", Toast.LENGTH_LONG).show();
+//        return;
+//      }
+//      googleMap.setMyLocationEnabled(true);
+//      LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//      Criteria criteria = new Criteria();
+//      String provider = locationManager.getBestProvider(criteria, true);
+//      Location location = locationManager.getLastKnownLocation(provider);
+
+
+//      updateView();
+
+    }
     private void ratePayDialog(){
         boolean[] review = new boolean[1];
         review[0] = true;
@@ -248,6 +294,13 @@ public class EditRide extends AppCompatActivity {
             }else {
                 ride_cost_short = ride_cost;
             }
+        }
+        if (isMapLoaded || isRouteShown){
+          LatLng startLatLang = new LatLng(rideReq.getStartPoint().getLatitude(), rideReq.getStartPoint().getLongitude());
+          LatLng endLatLang = new LatLng(rideReq.getEndPoint().getLatitude(), rideReq.getEndPoint().getLongitude());
+          mh.setStartLatLang(startLatLang);
+          mh.setEndLatLang(endLatLang);
+          mh.showMarkers();
         }
         from.setText(rideReq.getFrom());
         to.setText(rideReq.getTo());
