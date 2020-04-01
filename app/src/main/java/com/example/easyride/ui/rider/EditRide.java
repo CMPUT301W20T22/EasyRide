@@ -65,6 +65,7 @@ public class EditRide extends AppCompatActivity {
         payButton = findViewById(R.id.pay_button);
         payButton.setClickable(false);
         addTip = findViewById(R.id.tip_button);
+        addTip.setClickable(false);
         delete = findViewById(R.id.delete_button);
         delete.setClickable(false);
         delete.setVisibility(View.INVISIBLE);
@@ -80,6 +81,16 @@ public class EditRide extends AppCompatActivity {
                 updateView();
             }
         };
+
+      viewProfile.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent i = new Intent(getApplicationContext(), AcceptedDriver.class);
+          //i.putExtra("mode", "driver");
+          i.putExtra("ID", rideReq.getDriverUserName());
+          startActivity(i);
+        }
+      });
 
         addTip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,7 +258,7 @@ public class EditRide extends AppCompatActivity {
         }
         rideIsAccepted = rideReq.isRideAccepted();
 
-
+        addTip.setClickable(true);
         if (!rideReq.isRideAccepted()){
             payButton.setText("Driver has not accepted");
             payButton.setClickable(false);
@@ -259,15 +270,6 @@ public class EditRide extends AppCompatActivity {
         {
             viewProfile.setText("Driver Profile");
             viewProfile.setClickable(true);
-            viewProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), AcceptedDriver.class);
-                    //i.putExtra("mode", "driver");
-                    i.putExtra("ID", rideReq.getDriverUserName());
-                    startActivity(i);
-                }
-            });
             if (!rideReq.isRideConfirmAccepted()) {
                 String tempString = "Confirm the request";
                 SpannableString spanString = new SpannableString(tempString);
@@ -277,7 +279,8 @@ public class EditRide extends AppCompatActivity {
                 payButton.setClickable(true);
                 delete.setVisibility(View.VISIBLE);
                 delete.setClickable(true);
-                //Todo: This is where QR is called.
+
+                //This is where QR is called.
                 payButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -287,7 +290,6 @@ public class EditRide extends AppCompatActivity {
             }
             else { //ride is accepted and confirmed
                 delete.setVisibility(View.INVISIBLE);
-                delete.setClickable(false);
                 payButton.setText("Waiting for ride completion");
                 payButton.setTextColor(Color.BLACK);
                 payButton.setClickable(false);
@@ -311,6 +313,7 @@ public class EditRide extends AppCompatActivity {
                     else { //ride is accepted and confirmed and completed and paid
                         payButton.setText("Ride is pied!");
                         payButton.setClickable(false);
+                        addTip.setClickable(false);
                     }
                 }
             }
