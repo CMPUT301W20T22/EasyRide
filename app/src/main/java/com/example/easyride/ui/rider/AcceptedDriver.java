@@ -4,6 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,24 +63,9 @@ public class AcceptedDriver extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
+                                updateView(document);
                                 //riderName.setText();
-                                riderName.setText(document.getString("Name") + "'s Profile");
-                                email.setText("Email: " + document.getString("Email"));
-                                Phone.setText("Phone: " + document.getString("Phone"));
-                                try{
-                                    int good = (int) document.get("good_reviews");
-                                    int bad = (int) document.get("bad_reviews");
-                                    int rate = (good/bad)*100;
-                                    if (rate == 0){
-                                        throw new Exception("Rating is 0");
-                                    }
-                                    String rateS = String.valueOf(rate);
-                                    Rating.setText("Rate: " + rateS + "%");
-                                }catch (Exception e){
-                                    Log.e(TAG, "Error getting Ratings: ", e);
-                                    Rating.setText("Rating: Driver has not been rated yet");
-                                }
+
 
                                 //Log.e("SIZE", user.getUserId());
                                 //Log.e("SIZE", Integer.toString(activeRequests.size()));
@@ -86,6 +75,7 @@ public class AcceptedDriver extends AppCompatActivity {
                         }
                     }
                 });
+
 
 
         // TextView assign
@@ -110,6 +100,44 @@ public class AcceptedDriver extends AppCompatActivity {
 
         editButton.setVisibility(View.INVISIBLE);
 
+    }
+
+    private void updateView(DocumentSnapshot document){
+        String name = document.getString("Name") + "'s Profile";
+        String riderEmail = "Email: " + document.getString("Email");
+        String riderPhone = "Phone: " + document.getString("Phone");
+
+        String emailLink = "mailto:" + document.getString("Email");
+        String phoneLink = "tel:" + document.getString("Phone");
+
+        int emailLen = riderEmail.length();
+        int phoneLen = riderPhone.length();
+
+        SpannableString riderSpanEmail = new SpannableString(riderEmail);
+        riderSpanEmail.setSpan(new URLSpan(emailLink), 7, emailLen, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString riderSpanPhone = new SpannableString(riderPhone);
+        riderSpanPhone.setSpan(new URLSpan(phoneLink), 7, phoneLen, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        riderName.setText(name);
+        email.setText(riderSpanEmail);
+        Phone.setText(riderSpanPhone);
+
+        email.setMovementMethod(LinkMovementMethod.getInstance());
+        Phone.setMovementMethod(LinkMovementMethod.getInstance());
+
+        try{
+            int good = (int) document.get("good_reviews");
+            int bad = (int) document.get("bad_reviews");
+            int rate = (good/bad)*100;
+            if (rate == 0){
+                throw new Exception("Rating is 0");
+            }
+            String rateS = String.valueOf(rate);
+            Rating.setText("Rate: " + rateS + "%");
+        }catch (Exception e){
+            Log.e(TAG, "Error getting Ratings: ", e);
+            Rating.setText("Rating: Driver has not been rated yet");
+        }
     }
 
 }
