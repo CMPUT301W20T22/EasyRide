@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,7 +46,6 @@ public class EditRide extends AppCompatActivity {
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
     private Button payButton, delete, viewProfile, addTip, back;
-//    private  Button save;
     private String fareWithTip;
     private String ride_cost;
     private Ride rideReq;
@@ -65,14 +66,13 @@ public class EditRide extends AppCompatActivity {
         payButton.setClickable(false);
         addTip = findViewById(R.id.tip_button);
         delete = findViewById(R.id.delete_button);
-//        save = findViewById(R.id.save_button);
-//        save.setClickable(false);
+        delete.setClickable(false);
+        delete.setVisibility(View.INVISIBLE);
         back = findViewById(R.id.back_button);
         viewProfile = findViewById(R.id.profile_button);
         viewProfile.setClickable(false);
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
-//        DataList = new ArrayList<>();
         String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         alright = new Rider(new EasyRideUser(userID)) {
             @Override
@@ -80,7 +80,6 @@ public class EditRide extends AppCompatActivity {
                 updateView();
             }
         };
-//        updateView();
 
         addTip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,18 +97,6 @@ public class EditRide extends AppCompatActivity {
             }
         });
 
-//        save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (fareWithTip != null){
-//                    rideReq.setCost(fareWithTip);
-//                }
-//                alright.removeAt(position);
-//                alright.addRide(rideReq);
-//                goBack();
-//            }
-//        });
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,30 +111,6 @@ public class EditRide extends AppCompatActivity {
         finish();
     }
 
-//    private void notification(){
-//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("driver").whereEqualTo("Email", rideReq.getDriverUserName())
-//            .get()
-//            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-//                        NotificationModel notificationModel = new NotificationModel(
-//                                rideReq.getFrom() + " to " + rideReq.getTo(),
-//                                rideReq.getUser());
-//                        //Log.e("This is the id:", id[0]);
-//                        db.collection("driver")
-//                            .document(doc.getId())
-//                            .collection("notification")
-//                            .document()
-//                            .set(notificationModel);
-//                    }
-//                }
-//            }
-//        });
-//    }
-
     private void confirmRide(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure? You will no longer be able to cancel the ride");
@@ -159,12 +122,6 @@ public class EditRide extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 alright.getActiveRequests().get(position).setRideConfirmAccepted(true);
                 alright.updateRequest(position);
-                delete.setClickable(false);
-                delete.setText("Accepted");
-                payButton.setText("Waiting for ride completion");
-                payButton.setTextColor(Color.BLACK);
-                payButton.setClickable(false);
-//                notification();
                 dialog.dismiss();
             }
         });
@@ -226,40 +183,10 @@ public class EditRide extends AppCompatActivity {
             }
         });
 
-
-//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        final String[] documentID = new String[1];
 // Set up the buttons
         builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                db.collection("driver")
-//                    .whereEqualTo("Email", rideReq.getDriverUserName())
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-//                                //riderName.setText();
-//                                if (goodReview[0]) {
-//                                    Long good = (Long) document.get("good_reviews");
-//                                    good = good + 1;
-//                                    db.collection("driver").document(document.getId()).
-//                                            update("good_reviews", good);
-//                                }
-//                                else{
-//                                    Long bad = (Long) document.get("bad_reviews");
-//                                    bad = bad + 1;
-//                                    db.collection("driver").document(document.getId()).
-//                                            update("bad_reviews", bad);
-//                                }
-//                            }
-//                        } else {
-//                            Log.e(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                    });
                 if (goodReview[0]) {
                     alright.getActiveRequests().get(position).setRiderRating(1L);
                 }
@@ -361,6 +288,9 @@ public class EditRide extends AppCompatActivity {
             else { //ride is accepted and confirmed
                 delete.setVisibility(View.INVISIBLE);
                 delete.setClickable(false);
+                payButton.setText("Waiting for ride completion");
+                payButton.setTextColor(Color.BLACK);
+                payButton.setClickable(false);
                 if (!rideReq.isRideCompleted()) {
                     payButton.setText("Waiting for ride completion");
                     payButton.setClickable(false);
@@ -387,5 +317,3 @@ public class EditRide extends AppCompatActivity {
         }
     }
 }
-
-
