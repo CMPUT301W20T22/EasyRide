@@ -38,6 +38,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -112,6 +113,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mh.hasCompleteRequest()) {
+                    Toast.makeText(MapsActivity.this, "First specify both start and end points!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 double distance = mh.getRouteDistance()/1000;
 
                 /*
@@ -128,15 +133,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.e("COST : ", Double.toString(cost));
 //                PolylineOptions polylineOptions= mh.getRoutePolyline();
 
-
-                String start_location_string = mh.getStartPlace().getName();
-                String end_location_string = mh.getEndPlace().getName();
+                String start_location_string = mh.getStartName();
+                String end_location_string = mh.getEndName();
+                GeoPoint startPoint = new GeoPoint(mh.getStartLatLang().latitude, mh.getStartLatLang().longitude);
+                GeoPoint endPoint = new GeoPoint(mh.getEndLatLang().latitude, mh.getEndLatLang().longitude);
 
                 user = fAuth.getCurrentUser();
                 Rider riderInstance = Rider.getInstance(new EasyRideUser(user.getDisplayName()));
                 EasyRideUser currentU = riderInstance.getCurrentRiderInfo();
                 Ride rideInsert = new Ride(start_location_string, end_location_string, cost_string,
-                        currentU.getUserId(), distance_string);
+                        currentU.getUserId(), distance_string, startPoint,  endPoint);
 
                 riderInstance.addRide(rideInsert);
                 //SingleRide instance = SingleRide.getInstance();
@@ -201,14 +207,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (requestCode == request_code_start){
                     start_location_edittext.setText(place.getName());
                     if(place.toString()!=null && !place.toString().equals("")) {
-                        mh.setStartLatLang(place.getLatLng(), place);
+                        mh.setStartLatLang(place.getLatLng());
+                        mh.setStartName(place.getName());
                         mh.showMarkers();
                     }
                 }
                 else if (requestCode == request_code_end){
                     end_location_edittext.setText(place.getName());
                     if( !place.toString().equals("")) {
-                        mh.setEndLatLang(place.getLatLng(), place);
+                        mh.setEndLatLang(place.getLatLng());
+                        mh.setEndName(place.getName());
                         mh.showMarkers();
                     }
                 }

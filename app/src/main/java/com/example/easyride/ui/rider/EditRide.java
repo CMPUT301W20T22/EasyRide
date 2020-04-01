@@ -2,8 +2,12 @@ package com.example.easyride.ui.rider;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -18,15 +22,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
+import com.example.easyride.map.MapsActivity;
+import com.example.easyride.map.MarkerHandler;
 import com.example.easyride.ui.NotificationModel;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,19 +53,22 @@ import static android.view.View.GONE;
 import static com.android.volley.VolleyLog.TAG;
 
 // Handles viewing of a ride request. Don't need to be able to edit the request
-public class EditRide extends AppCompatActivity {
+public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
 
     public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
-    private Button payButton, delete, viewProfile, addTip, save, back;
+    private Button payButton, delete, viewProfile, addTip, back;
     private String fareWithTip;
     private String ride_cost;
     private Ride rideReq;
     private Rider alright;
     private int position;
     private boolean rideIsAccepted = true;
-
-    @Override
+    private boolean isFinished = false;
+    private boolean isMapLoaded = false;
+    private boolean isRouteShown = false;
+    MarkerHandler mh;
+  @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ride);
@@ -62,23 +79,37 @@ public class EditRide extends AppCompatActivity {
         payButton = findViewById(R.id.pay_button);
         payButton.setClickable(false);
         addTip = findViewById(R.id.tip_button);
+        addTip.setClickable(false);
         delete = findViewById(R.id.delete_button);
-        save = findViewById(R.id.save_button);
-        save.setClickable(false);
+        delete.setClickable(false);
+        delete.setVisibility(View.INVISIBLE);
         back = findViewById(R.id.back_button);
         viewProfile = findViewById(R.id.profile_button);
         viewProfile.setClickable(false);
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
-//        DataList = new ArrayList<>();
         String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewEditRide);
+        mapFragment.getMapAsync(this);
+        Places.initialize(getApplicationContext(),getString(R.string.api_key));
         alright = new Rider(new EasyRideUser(userID)) {
             @Override
             public void onDataLoaded() {
                 updateView();
             }
         };
-//        updateView();
+
+      viewProfile.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent i = new Intent(getApplicationContext(), AcceptedDriver.class);
+          //i.putExtra("mode", "driver");
+          i.putExtra("ID", rideReq.getDriverUserName());
+          startActivity(i);
+        }
+      });
 
         addTip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,22 +121,11 @@ public class EditRide extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isFinished = true;
                 alright.removeAt(position);
                 goBack();
             }
         });
-
-//        save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (fareWithTip != null){
-//                    rideReq.setCost(fareWithTip);
-//                }
-//                alright.removeAt(position);
-//                alright.addRide(rideReq);
-//                goBack();
-//            }
-//        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,31 +138,8 @@ public class EditRide extends AppCompatActivity {
     private void goBack(){
         Intent i = new Intent(getApplicationContext(), RiderHome.class);
         startActivity(i);
+        finish();
     }
-
-//    private void notification(){
-//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("driver").whereEqualTo("Email", rideReq.getDriverUserName())
-//            .get()
-//            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-//                        NotificationModel notificationModel = new NotificationModel(
-//                                rideReq.getFrom() + " to " + rideReq.getTo(),
-//                                rideReq.getUser());
-//                        //Log.e("This is the id:", id[0]);
-//                        db.collection("driver")
-//                            .document(doc.getId())
-//                            .collection("notification")
-//                            .document()
-//                            .set(notificationModel);
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     private void confirmRide(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -155,12 +152,6 @@ public class EditRide extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 alright.getActiveRequests().get(position).setRideConfirmAccepted(true);
                 alright.updateRequest(position);
-                delete.setClickable(false);
-                delete.setText("Accepted");
-                payButton.setText("Waiting for ride completion");
-                payButton.setTextColor(Color.BLACK);
-                payButton.setClickable(false);
-//                notification();
                 dialog.dismiss();
             }
         });
@@ -187,7 +178,8 @@ public class EditRide extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                fareWithTip = input.getText().toString();
+                String Tip = input.getText().toString();
+                fareWithTip = Double.toString((Double.valueOf(Tip) + Double.valueOf(ride_cost)));
                 dialog.dismiss();
                 if (!fareWithTip.equals("")) {
                     //ride_cost_short = fareWithTip.substring(0, 4);
@@ -207,8 +199,37 @@ public class EditRide extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+  //        mMap = googleMap;
+      if (! isMapLoaded){
+        mh = new MarkerHandler(googleMap, getString(R.string.api_key));
+      }
+      isMapLoaded = true;
+
+      //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+//      if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+//          != PackageManager.PERMISSION_GRANTED
+//          && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+//          != PackageManager.PERMISSION_GRANTED) {
+//        Toast.makeText(EditRide.this, "First enable LOCATION ACCESS in settings.", Toast.LENGTH_LONG).show();
+//        return;
+//      }
+//      googleMap.setMyLocationEnabled(true);
+//      LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//      Criteria criteria = new Criteria();
+//      String provider = locationManager.getBestProvider(criteria, true);
+//      Location location = locationManager.getLastKnownLocation(provider);
+
+
+//      updateView();
+
+    }
     private void ratePayDialog(){
-        final boolean[] goodReview = new boolean[1];
+        boolean[] review = new boolean[1];
+        review[0] = true;
+        final boolean[] goodReview = review;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please rate and Pay");
         final CharSequence[] array = {"Good" , "Bad"};
@@ -218,48 +239,21 @@ public class EditRide extends AppCompatActivity {
                 goodReview[0] = which == 0;
             }
         });
-        if (goodReview[0]) {
-            alright.getActiveRequests().get(position).setRiderRating(1L);
-        }
-        else {
-            alright.getActiveRequests().get(position).setRiderRating(-1L);
-        }
 
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final String[] documentID = new String[1];
 // Set up the buttons
         builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                db.collection("driver")
-                    .whereEqualTo("Email", rideReq.getDriverUserName())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                //riderName.setText();
-                                if (goodReview[0]) {
-                                    Long good = (Long) document.get("good_reviews");
-                                    good = good + 1;
-                                    db.collection("driver").document(document.getId()).
-                                            update("good_reviews", good);
-                                }
-                                else{
-                                    Long bad = (Long) document.get("bad_reviews");
-                                    bad = bad + 1;
-                                    db.collection("driver").document(document.getId()).
-                                            update("bad_reviews", bad);
-                                }
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                    });
+                if (goodReview[0]) {
+                    alright.getActiveRequests().get(position).setRiderRating(1L);
+                }
+                else {
+                    alright.getActiveRequests().get(position).setRiderRating(-1L);
+                }
+                alright.updateRequest(position);
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
                 i.putExtra("cost", ride_cost);
+                i.putExtra("position", position);
                 startActivity(i);
             }
         });
@@ -274,6 +268,9 @@ public class EditRide extends AppCompatActivity {
     public void updateView(){
         getSupportActionBar().setTitle("Request");
         DataList = alright.getActiveRequests();
+        if (isFinished){
+            return;
+        }
         rideReq = DataList.get(position);
         String ride_distance = rideReq.getDistance();
         String ride_distance_short;
@@ -290,11 +287,20 @@ public class EditRide extends AppCompatActivity {
         }else {
             if (ride_cost.length() > 4 && index == 3) {
                 ride_cost_short = ride_cost.substring(0, 3);
-            } else if(ride_cost.length() > 4) {
+            } else if (ride_cost.length() > 4 && index > 3){
+                ride_cost_short = ride_cost.substring(0, index - 3) + "." + ride_cost.substring(index - 2, index) + "k";
+            }else if(ride_cost.length() > 4) {
                 ride_cost_short = ride_cost.substring(0, 4);
             }else {
                 ride_cost_short = ride_cost;
             }
+        }
+        if (isMapLoaded || isRouteShown){
+          LatLng startLatLang = new LatLng(rideReq.getStartPoint().getLatitude(), rideReq.getStartPoint().getLongitude());
+          LatLng endLatLang = new LatLng(rideReq.getEndPoint().getLatitude(), rideReq.getEndPoint().getLongitude());
+          mh.setStartLatLang(startLatLang);
+          mh.setEndLatLang(endLatLang);
+          mh.showMarkers();
         }
         from.setText(rideReq.getFrom());
         to.setText(rideReq.getTo());
@@ -308,59 +314,65 @@ public class EditRide extends AppCompatActivity {
         }
         rideIsAccepted = rideReq.isRideAccepted();
 
-        if (rideReq.isRideCompleted()) {
-            payButton.setText("Rate and Pay!");
-            payButton.setClickable(true);
-            payButton.setTextColor(Color.parseColor("#7C1C1C"));
-
-            //Todo: This is where QR is called.
-            payButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ratePayDialog();
-                }
-            });
-        }else if(!rideReq.isRideAccepted()){
+        addTip.setClickable(true);
+        if (!rideReq.isRideAccepted()){
             payButton.setText("Driver has not accepted");
-        }else{
-            payButton.setText("Waiting for ride completion");
+            payButton.setClickable(false);
+            viewProfile.setClickable(false);
+            delete.setVisibility(View.VISIBLE);
+            delete.setClickable(true);
         }
-
-        if (rideReq.isRideAccepted()) {
+        else
+        {
             viewProfile.setText("Driver Profile");
             viewProfile.setClickable(true);
-            viewProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), AcceptedDriver.class);
-                    //i.putExtra("mode", "driver");
-                    i.putExtra("ID", rideReq.getDriverUserName());
-                    startActivity(i);
-                }
-
-            });
-            if(!rideReq.isRideConfirmAccepted()) {
+            if (!rideReq.isRideConfirmAccepted()) {
                 String tempString = "Confirm the request";
                 SpannableString spanString = new SpannableString(tempString);
                 spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
                 payButton.setText(spanString);
                 payButton.setTextColor(Color.parseColor("#C82828"));
                 payButton.setClickable(true);
+                delete.setVisibility(View.VISIBLE);
+                delete.setClickable(true);
 
-                //Todo: This is where QR is called.
+                //This is where QR is called.
                 payButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         confirmRide();
                     }
                 });
-            }else{
-                delete.setText("Accepted");
+            }
+            else { //ride is accepted and confirmed
                 delete.setVisibility(View.INVISIBLE);
-                delete.setClickable(false);
-
+                payButton.setText("Waiting for ride completion");
+                payButton.setTextColor(Color.BLACK);
+                payButton.setClickable(false);
+                if (!rideReq.isRideCompleted()) {
+                    payButton.setText("Waiting for ride completion");
+                    payButton.setClickable(false);
+                }
+                else { //ride is accepted and confirmed and completed
+                    if (!rideReq.isRidePaid()) {
+                        payButton.setText("Rate and Pay!");
+                        payButton.setClickable(true);
+                        payButton.setTextColor(Color.parseColor("#7C1C1C"));
+                        //This is where QR is called.
+                        payButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ratePayDialog();
+                            }
+                        });
+                    }
+                    else { //ride is accepted and confirmed and completed and paid
+                        payButton.setText("Ride is pied!");
+                        payButton.setClickable(false);
+                        addTip.setClickable(false);
+                    }
+                }
             }
         }
-
     }
 }

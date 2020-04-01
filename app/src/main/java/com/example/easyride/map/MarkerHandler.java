@@ -41,10 +41,11 @@ public class MarkerHandler {
   private Marker endMarker = null;
   private LatLng startLatLang = null;
   private LatLng endLatLang = null;
-  private Place startPlace;
-  private Place endPlace;
+  private String startName;
+  private String endName;
   public GoogleMap mMap;
   private Route route;
+  private boolean hasCompleteRequest= false;
 
   public MarkerHandler() { // TODO: change this constructor
     mockLatLangs();
@@ -94,20 +95,17 @@ public class MarkerHandler {
     boolean S = showStartMarker();
     boolean E = showEndMarker();
     if (S && !E) {
+      hasCompleteRequest = false;
       animateCamera(startLatLang);
     } else if (!S && E) {
+      hasCompleteRequest = false;
       animateCamera(endLatLang);
     } else if (S && E) {
 //      LatLng midP = new LatLng((startLatLang.latitude + endLatLang.latitude) / 2,
 //          (startLatLang.longitude + endLatLang.longitude) / 2);
 //      animateCamera(midP, 10);
+      hasCompleteRequest = true;
 
-      LatLngBounds.Builder builder = new LatLngBounds.Builder();
-      builder.include(startMarker.getPosition());
-      builder.include(endMarker.getPosition());
-      LatLngBounds bounds = builder.build();
-      CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 3);
-      mMap.animateCamera(cu);
       // https://stackoverflow.com/questions/14828217/android-map-v2-zoom-to-show-all-the-markers
       showRoute();
     } else {
@@ -116,14 +114,22 @@ public class MarkerHandler {
     return true;
   }
 
-  public void setStartLatLang(LatLng startLatLang, Place place) {
+  public void setStartLatLang(LatLng startLatLang) {
     this.startLatLang = startLatLang;
-    this.startPlace = place;
+//    this.startPlace = place;
   }
 
-  public void setEndLatLang(LatLng endLatLang, Place place) {
+  public void setEndLatLang(LatLng endLatLang) {
     this.endLatLang = endLatLang;
-    this.endPlace = place;
+//    this.endPlace = place;
+  }
+
+  public void setStartName(String startName) {
+    this.startName = startName;
+  }
+
+  public void setEndName(String endName) {
+    this.endName = endName;
   }
 
   public LatLng getStartLatLang() {
@@ -171,11 +177,15 @@ public class MarkerHandler {
     return route.getPolylineOptions();
   }
 
-  public Place getStartPlace() {
-    return startPlace;
+  public String getStartName() {
+    return startName;
   }
 
-  public Place getEndPlace() {
-    return endPlace;
+  public String getEndName() {
+    return endName;
+  }
+
+  public boolean hasCompleteRequest() {
+    return hasCompleteRequest;
   }
 }

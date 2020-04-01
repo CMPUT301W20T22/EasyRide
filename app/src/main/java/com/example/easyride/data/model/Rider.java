@@ -73,11 +73,11 @@ public class Rider extends EasyRideUser implements DatabaseListener{
             activeRequests.clear();
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
               requestsID.add(document.getId());
-              activeRequests.add(document.toObject(Ride.class));
+              activeRequests.add( document.toObject(Ride.class));
               //Log.e("SIZE", user.getUserId());
               //Log.e("SIZE", Integer.toString(activeRequests.size()));
-              onDataLoaded();
             }
+            onDataLoaded();
           }
         });
 
@@ -137,12 +137,12 @@ public class Rider extends EasyRideUser implements DatabaseListener{
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
+
               for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                 requestsID.add(document.getId());
-                activeRequests.add(document.toObject(Ride.class));
+                activeRequests.add( document.toObject(Ride.class));
                 Log.e("user", currentRiderInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
-
               }
               onDataLoaded();
             } else {

@@ -1,5 +1,7 @@
 package com.example.easyride.ui.rider;
 
+import com.google.firebase.firestore.GeoPoint;
+
 // Ride class that stores important information on each Ride Request.
 public class Ride {
 
@@ -14,6 +16,8 @@ public class Ride {
     private boolean rideCompleted;
     private boolean ridePaid;
     private Long riderRating;
+    private GeoPoint startPoint;
+    private GeoPoint endPoint;
 
 //    public enum RiderRating{
 //        GOOD(1L),
@@ -30,7 +34,7 @@ public class Ride {
 //    }
 
     // CONSTRUCTOR
-    public Ride(String from, String to, String cost, String user, String distance) {
+    public Ride(String from, String to, String cost, String user, String distance, GeoPoint startPoint, GeoPoint endPoint) {
         this.from = from;
         this.to = to;
         this.cost = cost;
@@ -41,6 +45,8 @@ public class Ride {
         this.rideConfirmAccepted = false;
         this.ridePaid = false;
         this.riderRating = 0L;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
     }
     //TODO: Should we keep this constructor
     public Ride(){} 
@@ -130,5 +136,13 @@ public class Ride {
     public void setDistance(String distance) { this.distance = distance; }
 
     public void setRiderRating(Long riderRating) { this.riderRating = riderRating; }
+
+    public void setStartPoint(GeoPoint startPoint) { this.startPoint = startPoint; }
+
+    public void setEndPoint(GeoPoint endPoint) { this.endPoint = endPoint; }
+
+    public GeoPoint getStartPoint() { return this.startPoint;}
+
+    public GeoPoint getEndPoint() { return this.endPoint;}
 
 }
