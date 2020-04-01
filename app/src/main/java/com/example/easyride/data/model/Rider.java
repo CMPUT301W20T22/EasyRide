@@ -94,7 +94,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
   /**
    * Return old instance or create a new one.
    * @param user
-   * @return
+   * @return driver
    */
   public static Rider getInstance(EasyRideUser user){
     if(instance == null){
@@ -191,7 +191,7 @@ public class Rider extends EasyRideUser implements DatabaseListener{
   /**
    * Update the ride request information.
    * @param position
-   * @return
+   * @return boolean
    */
   public boolean updateRequest(int position){
     if (position >= activeRequests.size()) return false;

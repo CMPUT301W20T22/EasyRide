@@ -231,7 +231,7 @@ public  class  Route {
    * Mathod to calculate the distance between the 2 locations.
    * @param latLng1
    * @param latLng2
-   * @return
+   * @return double
    */
   public static double distance(LatLng latLng1, LatLng latLng2) {
     final int R = 6371; // Radius of the earth
@@ -251,7 +251,7 @@ public  class  Route {
   /**
    * Method to calculate the length of the Polyline
    * @param latLngs
-   * @return
+   * @return double
    */
   public static double lengthOfPolyline(List<LatLng> latLngs ){
     Double routeLength = 0.0;

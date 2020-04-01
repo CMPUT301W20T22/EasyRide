@@ -48,7 +48,7 @@ public class CustomList extends ArrayAdapter<Ride> {
      * @param position
      * @param convertView
      * @param parent
-     * @return
+     * @return View
      */
     @NonNull
     @Override

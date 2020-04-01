@@ -38,7 +38,7 @@ public class Driver extends EasyRideUser {
   /**
    * Return old instance or create a new one.
    * @param user
-   * @return
+   * @return driver
    */
   public static Driver getInstance(EasyRideUser user){
     if(instance == null){

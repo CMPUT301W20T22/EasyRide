@@ -35,7 +35,7 @@ public class SingleRide {
 
     /**
      * Return old instance or create a new one.
-     * @return
+     * @return SingleRide
      */
     public static SingleRide getInstance(){
         if(instance == null){

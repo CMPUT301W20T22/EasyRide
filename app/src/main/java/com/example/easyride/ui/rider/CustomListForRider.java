@@ -50,7 +50,7 @@ public class CustomListForRider extends ArrayAdapter<Ride> {
      * @param position
      * @param convertView
      * @param parent
-     * @return
+     * @return View
      */
     @SuppressLint("SetTextI18n")
     @NonNull

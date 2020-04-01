@@ -155,7 +155,7 @@ public class RiderHome extends AppCompatActivity {
    * Method to handle the Menu item onClick Event.
    * For each option, there will be a different result to it.
    * @param item
-   * @return
+   * @return boolean
    */
 
   @Override
