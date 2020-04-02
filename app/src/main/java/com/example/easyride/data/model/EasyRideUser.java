@@ -15,12 +15,9 @@ public class EasyRideUser {
     private String userId;
     private String password;
     private String displayName;
-    // private String Mode;
 
     public EasyRideUser(String userId) {
         this.userId = userId;
-        //this.Mode = Mode;
-       // this.displayName = displayName;
     }
 
     public String getPassword(){return password;}
@@ -32,10 +29,6 @@ public class EasyRideUser {
     public String getDisplayName() {
         return displayName;
     }
-
-    // public String isDriver() { return Mode; }
-
-    // public void setStatus(String isDriver) { this.Mode = isDriver; }
 
     public void setPassword(String password){this.password = password;}
 
