@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -184,6 +185,7 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
 
     private void acceptButtonSetting(){
         if(rideReq.isRideConfirmAccepted() && !rideReq.isRideCompleted()) {
+            Toast.makeText();
             accept_pay_button.setText("Press to complete the ride");
             accept_pay_button.setClickable(true);
             accept_pay_button.setOnClickListener(new View.OnClickListener() {

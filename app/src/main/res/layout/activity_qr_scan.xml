@@ -7,13 +7,13 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="208dp"
-        android:layout_height="47dp"
+        android:layout_width="276dp"
+        android:layout_height="160dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/sfdisplaybold"
+        android:gravity="center"
         android:text="QR Code Scanner"
         android:textSize="24sp"
-        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/qr_scan_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
