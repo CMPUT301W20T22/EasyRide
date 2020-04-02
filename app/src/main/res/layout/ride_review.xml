@@ -105,7 +105,8 @@
                 android:src="@drawable/ic_account_circle_black_24dp"
                 android:layout_width="24dp"
                 android:layout_height="40dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:id="@+id/riderIcon"/>
 
             <TextView
                 android:layout_width="0dp"

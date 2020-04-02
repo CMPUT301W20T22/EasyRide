@@ -1,16 +1,20 @@
 package com.example.easyride;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
@@ -20,6 +24,7 @@ import com.example.easyride.ui.driver.driver_home;
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.reflect.TypeParameter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -41,7 +46,8 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     private String mode;
     private DocumentReference docRef;
     private FirebaseFirestore db;
-    private TextView riderName, Email, Phone, Rating;
+    private TextView riderName, Email, Phone, Rating, balance;
+    private String balanceAmount, addedFunds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
+        balance = findViewById(R.id.balance);
 
 
 
@@ -82,7 +89,26 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
                     riderName.setText(doc.getString("Name"));
                     Email.setText("Email: " + doc.getString("Email"));
                     Phone.setText("Phone: " + doc.getString("Phone"));
+
+                    try{
+                        balanceAmount = doc.getString("Balance");
+                    }catch (Exception e){
+                        balanceAmount = "0";
+                    }
+                    if (balanceAmount == null){
+                        balanceAmount = "0";
+                    }
+                    String formattedBalance = formatBalance(balanceAmount);
+                    balance.setText("Balance: $" + formattedBalance);
                 }
+            }
+        });
+
+        Button addFunds = findViewById(R.id.add_balance);
+        addFunds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFundsDialog();
             }
         });
 
@@ -160,5 +186,65 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
         
         return super.onOptionsItemSelected(item);
+    }
+
+    private String formatBalance(String ride_cost){
+        String ride_cost_short;
+        int index = ride_cost.indexOf('.');
+        if (index == -1){
+            ride_cost_short = ride_cost;
+        }else {
+            if (ride_cost.length() > 4 && index == 3) {
+                ride_cost_short = ride_cost.substring(0, 3);
+            }else if (ride_cost.length() > 4 && index > 3) {
+                ride_cost_short = ride_cost.substring(0, index - 3) + "." + ride_cost.substring(index - 2, index) + "k";
+            } else if(ride_cost.length() > 4) {
+                ride_cost_short = ride_cost.substring(0, 4);
+            }else {
+                ride_cost_short = ride_cost;
+            }
+        }
+        return ride_cost_short;
+    }
+
+    private void addFundsDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Money");
+        // Set up the input
+        final EditText input = new EditText(this);
+
+        /* Specify the type of input expected; this, for example, sets the input as a password, and will mask the text*/
+        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        builder.setView(input);
+        /* Set up the buttons*/
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String Tip = input.getText().toString();
+                addedFunds = Double.toString((Double.valueOf(Tip) + Double.valueOf(balanceAmount)));
+                dialog.dismiss();
+                if (!addedFunds.equals("")) {
+                    //ride_cost_short = fareWithTip.substring(0, 4);
+                    String shortFunds = formatBalance(addedFunds);
+                    balance.setText("Balance: $" + shortFunds);
+                    updateBalance(addedFunds);
+                    //alright.getActiveRequests().get(position).setCost(fareWithTip);
+                    //alright.updateRequest(position);
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void updateBalance(String funds){
+        docRef.update("Balance", funds);
     }
 }

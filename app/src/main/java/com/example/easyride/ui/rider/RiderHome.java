@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Rider home. The first page you should see when you sign in as a rider.
@@ -38,9 +40,12 @@ public class RiderHome extends AppCompatActivity {
   public ListView LV;
   public ArrayAdapter<Ride> rideAdapter;
   public ArrayList<Ride> DataList;
+  private ArrayList<Ride> filteredDataList;
+  private HashMap<Integer, Integer> filteredToOriginal;
   private FirebaseUser user;
   private String userID;
   private Rider alright;
+  public static int maxRiderActiveRequests = 10;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,8 @@ public class RiderHome extends AppCompatActivity {
       Log.e("HEYYYY", user.getDisplayName());
     }
     alright.updateList();
-    DataList = alright.getActiveRequests();
+    updateList2();
+//    DataList = alright.getActiveRequests();
         /*new Thread(new Runnable() {
             public void run() {
                 FirebaseFirestore db;
@@ -88,8 +94,8 @@ public class RiderHome extends AppCompatActivity {
             }
         }).start();*/
 
-    rideAdapter = new CustomListForRider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
-    LV.setAdapter(rideAdapter);
+//    rideAdapter = new CustomListForRider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+//    LV.setAdapter(rideAdapter);
 
 
     // EDIT ITEM FROM ARRAY LIST
@@ -97,9 +103,8 @@ public class RiderHome extends AppCompatActivity {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent i = new Intent(view.getContext(), EditRide.class);
-        i.putExtra("position", position);
+        i.putExtra("position", filteredToOriginal.get(position));
         startActivity(i);
-
       }
     });
 
@@ -123,6 +128,10 @@ public class RiderHome extends AppCompatActivity {
     add_ride_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        if (alright.getActiveRequests().size() >= maxRiderActiveRequests){
+          Toast.makeText(RiderHome.this, "You cannot have more than one active request!", Toast.LENGTH_LONG).show();
+          return;
+        }
         Intent i = new Intent(v.getContext(), MapsActivity.class);
         startActivity(i);
       }
@@ -193,6 +202,22 @@ public class RiderHome extends AppCompatActivity {
     DataList = alright.getActiveRequests();
     // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
     rideAdapter = new CustomListForRider(this, DataList);
+
+    filteredDataList = new ArrayList<Ride>();
+    filteredToOriginal = new HashMap<Integer, Integer>();
+    Ride ride;
+    int j =0;
+    for (int i=0; i<DataList.size(); i++) {
+      ride = DataList.get(i);
+      if (! ride.isRidePaid()) {
+        filteredToOriginal.put(j, i);
+        filteredDataList.add(ride);
+        j++;
+      }
+    }
+/*
+    rideAdapter = new CustomListForRider(this, filteredDataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+*/
     LV.setAdapter(rideAdapter);
   }
 }

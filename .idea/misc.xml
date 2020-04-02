@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/doc/Javadoc" />
     <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
@@ -10,4 +11,7 @@
 =======
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 >>>>>>> b863113fc02b6bfc71799acbe3e7c079afa79e1c
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+>>>>>>> 7975cfcfc8fdd1379ebb9ca44acaff8d0e7f07fb
 </project>
