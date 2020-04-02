@@ -156,6 +156,7 @@
         android:layout_width="356dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/button"
         android:fontFamily="@font/sfdisplayregular"
         android:foregroundGravity="center"
