@@ -106,7 +106,8 @@
                 android:src="@drawable/ic_account_circle_black_24dp"
                 android:layout_width="24dp"
                 android:layout_height="40dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:id="@+id/riderIcon" />
 
             <TextView
                 android:layout_width="0dp"
@@ -128,8 +129,8 @@
         <fragment
             android:id="@+id/map_ride_review"
             class="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="350dp"
-            android:layout_height="182dp"/>
+            android:layout_width="359dp"
+            android:layout_height="278dp" />
 
         <Button
             android:id="@+id/accept_pay_button"
