@@ -11,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.easyride.R;
@@ -41,23 +42,28 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     boolean isUser;
     FirebaseFirestore db;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getSupportActionBar().setTitle("Log In");
-
-
         signUpbtn = findViewById(R.id.signup);
         loginBtn = findViewById(R.id.login);
         mEmail = findViewById(R.id.username);
         mPassword = findViewById(R.id.password);
+        progressBar = findViewById(R.id.loading);
 
         Intent intent = getIntent();
         Mode = intent.getStringExtra("mode");
         isUser = false;
+
+        if (Mode.equals("rider")) {
+            getSupportActionBar().setTitle("Log In as Rider");
+        }
+        else
+            getSupportActionBar().setTitle("Log In as Driver");
 
         // init database
         fAuth = FirebaseAuth.getInstance();
@@ -102,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                     mPassword.setError("Password Must Be >= 5 Characters");
                     return;
                 }
+
+                progressBar.setVisibility(View.VISIBLE);
 
 
                 // authenticate the user and log in the application based on the Status (Rider/Driver)
