@@ -10,25 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easyride.R;
 import com.example.easyride.ui.NotificationModel;
-import com.example.easyride.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
 import java.util.Objects;
 
 public class AcceptRequestActivity extends AppCompatActivity {
@@ -125,7 +116,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                startActivity(new Intent(getApplicationContext(), driver_home.class));
+                startActivity(new Intent(getApplicationContext(), DriverHome.class));
                 finish();
             }
         });

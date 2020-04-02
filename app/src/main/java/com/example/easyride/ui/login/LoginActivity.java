@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.ui.driver.driver_home;
+import com.example.easyride.ui.driver.DriverHome;
 import com.example.easyride.ui.rider.RiderHome;
 import com.example.easyride.ui.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         else if (isUser && Mode.equals("driver")) {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, driver_home.class);
+                                            Intent intent = new Intent(LoginActivity.this, DriverHome.class);
 
                                             intent.putExtra("Mode", Mode);
                                             intent.putExtra("ID", ID);

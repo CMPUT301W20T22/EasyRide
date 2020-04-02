@@ -1,6 +1,6 @@
 package com.example.easyride;
 
-import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.data.model.Ride;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

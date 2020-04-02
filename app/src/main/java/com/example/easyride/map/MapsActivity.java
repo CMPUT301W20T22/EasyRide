@@ -13,15 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.easyride.MainActivity;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.libraries.places.api.model.LocationBias;
-
 import com.google.android.libraries.places.api.model.Place.Field;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.data.model.Ride;
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,11 +38,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
