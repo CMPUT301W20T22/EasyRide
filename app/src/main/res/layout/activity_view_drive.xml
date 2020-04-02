@@ -8,12 +8,7 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Ride"
-        android:textSize="35sp" />
+
 
 
     <TextView
@@ -22,12 +17,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="PickUp Location"
+        android:fontFamily="@font/sfdisplayregular"
         android:gravity="center"
         android:textSize="25sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/sfdisplayregular"
         android:text="To:"
         android:textSize="20sp"
         android:layout_gravity="center">
@@ -37,22 +34,24 @@
         android:id="@+id/to_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/sfdisplayregular"
         android:ems="10"
         android:gravity="center"
         android:textSize="25sp"/>
+
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center"/>
-
+        android:layout_gravity="center"
+        android:layout_weight="1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cost:"
+        android:fontFamily="@font/sfdisplayregular"
         android:textSize="25sp"
         android:layout_gravity="center_horizontal"/>
 
@@ -60,6 +59,7 @@
         android:id="@+id/cost_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/sfdisplayregular"
         android:text="$$"
         android:textSize="25sp"
         android:layout_gravity="center"/>
@@ -68,13 +68,17 @@
         android:id="@+id/rider_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Rider Profile"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+
+        android:fontFamily="@font/sfdisplayregular"
+        android:text="Rider Profile" />
 
     <Button
         android:id="@+id/accept_pay_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:fontFamily="@font/sfdisplayregular"
         android:layout_gravity="center"
         android:text="Accept Ride" />
 

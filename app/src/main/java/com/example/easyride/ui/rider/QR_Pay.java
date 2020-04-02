@@ -96,6 +96,12 @@ public class QR_Pay extends AppCompatActivity {
         }
     }
 
+    private void finishAct(){
+        Intent i = new Intent(QR_Pay.this, RiderHome.class);
+        finish();
+        startActivity(i);
+    }
+
     private void rideFinished(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("YAY! The driver accepted your pay. Press ok to go back to home screen");
@@ -105,10 +111,8 @@ public class QR_Pay extends AppCompatActivity {
         builder.setPositiveButton("Return", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(QR_Pay.this, RiderHome.class);
                 dialog.dismiss();
-                startActivity(i);
-                finish();
+                finishAct();
             }
         });
         builder.show();
