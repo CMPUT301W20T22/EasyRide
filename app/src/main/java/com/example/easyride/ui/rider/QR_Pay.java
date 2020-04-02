@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.Rider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.BarcodeFormat;
@@ -106,6 +105,12 @@ public class QR_Pay extends AppCompatActivity {
         }
     }
 
+    private void finishAct(){
+        Intent i = new Intent(QR_Pay.this, RiderHome.class);
+        finish();
+        startActivity(i);
+    }
+
     private void rideFinished(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("YAY! The driver accepted your pay. Press ok to go back to home screen");
@@ -115,10 +120,8 @@ public class QR_Pay extends AppCompatActivity {
         builder.setPositiveButton("Return", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(QR_Pay.this, RiderHome.class);
                 dialog.dismiss();
-                startActivity(i);
-                finish();
+                finishAct();
             }
         });
         builder.show();

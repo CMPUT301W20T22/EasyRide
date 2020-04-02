@@ -2,6 +2,10 @@ package com.example.easyride.ui.driver;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,25 +14,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easyride.R;
+import com.example.easyride.data.model.Driver;
+import com.example.easyride.map.MarkerHandler;
 import com.example.easyride.ui.NotificationModel;
-import com.example.easyride.ui.login.LoginActivity;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
 import java.util.Objects;
 
 
@@ -47,6 +48,11 @@ public class AcceptRequestActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth fAuth;
     Button riderProfile, mAccept;
+    private boolean isMapLoaded = false;
+    private boolean isRouteShown = false;
+    private boolean isFinished;
+    private Driver driver;
+    MarkerHandler mh;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +72,12 @@ public class AcceptRequestActivity extends AppCompatActivity {
         // ActionBAr
         getSupportActionBar().setTitle("Ride Request Details");
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
+        Places.initialize(getApplicationContext(),getString(R.string.api_key));
+        Intent intent = getIntent();
+
         // Set up variable
         mFrom = getIntent().getStringExtra("pickUpLocation");
         mTo = getIntent().getStringExtra("destination");
@@ -83,25 +95,24 @@ public class AcceptRequestActivity extends AppCompatActivity {
         riderProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get user profile info
-
                 db.collection("rider").whereEqualTo("Email", mRider)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-                                user = doc.getString("Name");
-                                email = doc.getString("Email");
-                                Log.d("Document", doc.getId() + " => " + doc.getData());
-                                // Pass data to Profile Fragment
-                                RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
-                                dialog.show(getSupportFragmentManager(), "My Profile Fragment");
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                        user = doc.getString("Name");
+                                        email = doc.getString("Email");
+                                        phone = doc.getString("Phone");
+                                        Log.d("Document", doc.getId() + " => " + doc.getData());
+                                        // Pass data to Profile Fragment
+                                        RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, phone);
+                                        dialog.show(getSupportFragmentManager(), "My Profile Fragment");
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
             }
         });
 
@@ -134,9 +145,22 @@ public class AcceptRequestActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                startActivity(new Intent(getApplicationContext(), driver_home.class));
+                startActivity(new Intent(getApplicationContext(), DriverHome.class));
                 finish();
             }
         });
+    }
+    private void updateView() {
+        if (isFinished || !driver.isDataLoaded()){
+            return;
+        }
+        if (isMapLoaded && !isRouteShown){
+            LatLng startLatLang = new LatLng(rideReq.getStartPoint().getLatitude(), rideReq.getStartPoint().getLongitude());
+            LatLng endLatLang = new LatLng(rideReq.getEndPoint().getLatitude(), rideReq.getEndPoint().getLongitude());
+            mh.setStartLatLang(startLatLang);
+            mh.setEndLatLang(endLatLang);
+            mh.showMarkers();
+            isRouteShown = true;
+        }
     }
 }

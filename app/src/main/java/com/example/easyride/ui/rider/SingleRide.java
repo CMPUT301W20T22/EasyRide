@@ -1,6 +1,7 @@
 
 package com.example.easyride.ui.rider;
 
+import com.example.easyride.data.model.Ride;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 

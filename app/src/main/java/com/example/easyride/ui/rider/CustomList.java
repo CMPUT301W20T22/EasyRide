@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.easyride.R;
-import com.example.easyride.ui.rider.Ride;
+import com.example.easyride.data.model.Ride;
 
 import java.util.ArrayList;
-
-import io.opencensus.stats.Measurement;
 
 
 /**

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
 import com.example.easyride.user_profile;
@@ -37,14 +38,13 @@ import java.util.HashMap;
 
 public class RiderHome extends AppCompatActivity {
 
-  public ListView LV;
+  private ListView LV;
   public ArrayAdapter<Ride> rideAdapter;
   public ArrayList<Ride> DataList;
-  private ArrayList<Ride> filteredDataList;
   private HashMap<Integer, Integer> filteredToOriginal;
   private FirebaseUser user;
   private String userID;
-  private Rider alright;
+  private Rider rider;
   public static int maxRiderActiveRequests = 10;
 
   @Override
@@ -66,37 +66,17 @@ public class RiderHome extends AppCompatActivity {
     // assert user != null;
     userID = user.getEmail();
 //        Rider alright = Rider.getInstance(new EasyRideUser(userID));
-    alright = new Rider(new EasyRideUser(userID)) {
+    rider = new Rider(new EasyRideUser(userID)) {
       @Override
       public void onDataLoaded() {
-        updateList2();
+        refresh();
       }
     };
-    EasyRideUser user = alright.getCurrentRiderInfo();
+    EasyRideUser user = rider.getCurrentRiderInfo();
     if (user.getDisplayName() != null) {
       Log.e("HEYYYY", user.getDisplayName());
     }
-    alright.updateList();
-    updateList2();
-//    DataList = alright.getActiveRequests();
-        /*new Thread(new Runnable() {
-            public void run() {
-                FirebaseFirestore db;
-                db = FirebaseFirestore.getInstance();
-                // a potentially time consuming task
-                Rider alright = Rider.getInstance(new EasyRideUser("man@man.ca"));
-                EasyRideUser user = alright.getCurrentRiderInfo();
-                Task<QuerySnapshot> hi = db.collection("RideRequest")
-                        .whereEqualTo("user", user.getUserId())
-                        .get();
-                Log.e("rider_home", Boolean.toString(hi.isSuccessful()));
-
-            }
-        }).start();*/
-
-//    rideAdapter = new CustomListForRider(this, DataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
-//    LV.setAdapter(rideAdapter);
-
+    rider.updateList();
 
     // EDIT ITEM FROM ARRAY LIST
     LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -108,27 +88,12 @@ public class RiderHome extends AppCompatActivity {
       }
     });
 
-
-        /*// DELETE ITEM ON LONG CLICK.
-        LV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DataList.remove(position);
-                rideAdapter.notifyDataSetChanged();
-                SingleRide instance = SingleRide.getInstance();
-                instance.removeAt(position);
-                Toast.makeText(RiderHome.this, "Item Deleted", Toast.LENGTH_LONG).show();
-
-                return true;
-            }
-        });
-        */
     // onClickListener for FloatingActionButton
     FloatingActionButton add_ride_button = findViewById(R.id.add_ride_button);
     add_ride_button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (alright.getActiveRequests().size() >= maxRiderActiveRequests){
+        if (rider.getActiveRequests().size() >= maxRiderActiveRequests){
           Toast.makeText(RiderHome.this, "You cannot have more than one active request!", Toast.LENGTH_LONG).show();
           return;
         }
@@ -145,6 +110,7 @@ public class RiderHome extends AppCompatActivity {
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
+    rider.updateList();
   }
 
 
@@ -195,15 +161,10 @@ public class RiderHome extends AppCompatActivity {
     return true;
   }
 
-  /**
-   * Update the List
-   */
-  public void updateList2() {
-    DataList = alright.getActiveRequests();
-    // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
-    rideAdapter = new CustomListForRider(this, DataList);
 
-    filteredDataList = new ArrayList<Ride>();
+  public void refresh() {
+    DataList = rider.getActiveRequests();
+    ArrayList<Ride> filteredDataList = new ArrayList<Ride>();
     filteredToOriginal = new HashMap<Integer, Integer>();
     Ride ride;
     int j =0;

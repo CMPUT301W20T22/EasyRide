@@ -2,6 +2,10 @@ package com.example.easyride.ui.driver;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +67,27 @@ public class RiderProfileFragment extends DialogFragment {
         Phone = view.findViewById(R.id.riderPhone);
         mActionOk = view.findViewById(R.id.Ok);
 
+
+        String emailLink = "mailto:" + mEmail;
+        String phoneLink = "tel:" + mPhone;
+
+        int emailLen = mEmail.length();
+        int phoneLen = mPhone.length();
+
+        SpannableString riderSpanEmail = new SpannableString(mEmail);
+        riderSpanEmail.setSpan(new URLSpan(emailLink), 0, emailLen, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString riderSpanPhone = new SpannableString(mPhone);
+        riderSpanPhone.setSpan(new URLSpan(phoneLink), 0, phoneLen, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
         getDialog().setTitle("Rider Profile");
 
         User.setText(mUser);
-        Email.setText(mEmail);
-        Phone.setText("");
+        Email.setText(riderSpanEmail);
+        Phone.setText(riderSpanPhone);
+
+        Email.setMovementMethod(LinkMovementMethod.getInstance());
+        Phone.setMovementMethod(LinkMovementMethod.getInstance());
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,18 +16,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.easyride.R;
-import com.example.easyride.data.model.EasyRideUser;
-import com.example.easyride.data.model.Rider;
-import com.example.easyride.ui.login.LoginActivity;
-import com.example.easyride.ui.driver.driver_home;
+
+import com.example.easyride.ui.driver.DriverHome;
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.common.reflect.TypeParameter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -176,7 +171,7 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (mode.equals("driver")) {
-            startActivity(new Intent(this, driver_home.class));
+            startActivity(new Intent(this, DriverHome.class));
             finish();
         }
 

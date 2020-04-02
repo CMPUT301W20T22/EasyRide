@@ -90,7 +90,7 @@
         <activity android:name=".ui.rider.EditRide"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.driver.driver_home"
+        <activity android:name=".ui.driver.DriverHome"
             android:launchMode="singleTask"/>
 
         <activity android:name=".ui.rider.QR_Pay"
@@ -108,14 +108,14 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.easyride.ui.driver.driver_home" />
+                android:value="com.example.easyride.ui.driver.DriverHome" />
         </activity>
 
         <activity android:name=".ui.rider.AcceptedDriver"
             android:parentActivityName=".ui.rider.EditRide"/>
 
         <activity
-            android:name=".ui.driver.ride_review"
+            android:name=".ui.driver.RideReview"
             android:theme="@style/CustomTheme" />
 
         <activity
