@@ -67,6 +67,8 @@ public class CustomListForRider extends ArrayAdapter<Ride> {
         }else {
             if (ride_cost.length() > 4 && index == 3) {
                 ride_cost_short = ride_cost.substring(0, 3);
+            }else if (ride_cost.length() > 4 && index > 3) {
+                ride_cost_short = ride_cost.substring(0, index - 3) + "." + ride_cost.substring(index - 2, index) + "k";
             } else if(ride_cost.length() > 4) {
                 ride_cost_short = ride_cost.substring(0, 4);
             }else {
@@ -76,7 +78,7 @@ public class CustomListForRider extends ArrayAdapter<Ride> {
 
         cost.setText("$" + ride_cost_short);
 
-        if(ride.isRideAccepted() && ride.isRideConfirmAccepted()) {
+        if(ride.isRideAccepted() && ride.isRideConfirmAccepted() && !ride.isRideCompleted()) {
             status.setText("Accepted");
             status.setTextColor(Color.GREEN);
         }else if (ride.isRideAccepted() && !ride.isRideConfirmAccepted()){
