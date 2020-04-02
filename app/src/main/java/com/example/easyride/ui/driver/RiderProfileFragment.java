@@ -65,7 +65,7 @@ public class RiderProfileFragment extends DialogFragment {
 
         User.setText(mUser);
         Email.setText(mEmail);
-        Phone.setText("");
+        Phone.setText(mPhone);
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
