@@ -2,55 +2,34 @@ package com.example.easyride.ui.rider;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.example.easyride.R;
 import com.example.easyride.data.model.EasyRideUser;
+import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.Rider;
-import com.example.easyride.map.MapsActivity;
 import com.example.easyride.map.MarkerHandler;
-import com.example.easyride.ui.NotificationModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-
-import static android.view.View.GONE;
-import static com.android.volley.VolleyLog.TAG;
 
 // Handles viewing of a ride request. Don't need to be able to edit the request
 public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
@@ -61,7 +40,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
     private String fareWithTip;
     private String ride_cost;
     private Ride rideReq;
-    private Rider alright;
+    private Rider rider;
     private int position;
     private boolean rideIsAccepted = true;
     private boolean isFinished = false;
@@ -94,7 +73,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewEditRide);
         mapFragment.getMapAsync(this);
         Places.initialize(getApplicationContext(),getString(R.string.api_key));
-        alright = new Rider(new EasyRideUser(userID)) {
+        rider = new Rider(new EasyRideUser(userID)) {
             @Override
             public void onDataLoaded() {
                 updateView();
@@ -122,7 +101,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 isFinished = true;
-                alright.removeAt(position);
+                rider.removeAt(position);
                 goBack();
             }
         });
@@ -150,8 +129,8 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                alright.getActiveRequests().get(position).setRideConfirmAccepted(true);
-                alright.updateRequest(position);
+                rider.getActiveRequests().get(position).setRideConfirmAccepted(true);
+                rider.updateRequest(position);
                 dialog.dismiss();
             }
         });
@@ -184,8 +163,8 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
                 if (!fareWithTip.equals("")) {
                     //ride_cost_short = fareWithTip.substring(0, 4);
                     cost.setText(fareWithTip);
-                    alright.getActiveRequests().get(position).setCost(fareWithTip);
-                    alright.updateRequest(position);
+                    rider.getActiveRequests().get(position).setCost(fareWithTip);
+                    rider.updateRequest(position);
                 }
             }
         });
@@ -205,7 +184,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         mh = new MarkerHandler(googleMap, getString(R.string.api_key));
       }
       isMapLoaded = true;
-      alright.updateList();
+      rider.updateList();
     }
     private void ratePayDialog(){
         boolean[] review = new boolean[1];
@@ -226,12 +205,12 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (goodReview[0]) {
-                    alright.getActiveRequests().get(position).setRiderRating(1L);
+                    rider.getActiveRequests().get(position).setRiderRating(1L);
                 }
                 else {
-                    alright.getActiveRequests().get(position).setRiderRating(-1L);
+                    rider.getActiveRequests().get(position).setRiderRating(-1L);
                 }
-                alright.updateRequest(position);
+                rider.updateRequest(position);
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
                 i.putExtra("cost", ride_cost);
                 i.putExtra("position", position);
@@ -247,8 +226,8 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.show();
     }
     public void updateView(){
-        DataList = alright.getActiveRequests();
-        if (isFinished || !alright.isDataLoaded()){
+        DataList = rider.getActiveRequests();
+        if (isFinished || !rider.isDataLoaded()){
             return;
         }
         getSupportActionBar().setTitle("Request");

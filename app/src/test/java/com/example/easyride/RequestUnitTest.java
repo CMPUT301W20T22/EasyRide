@@ -1,7 +1,7 @@
 package com.example.easyride;
 
 import com.example.easyride.ui.driver.RideRequest;
-import com.example.easyride.ui.rider.Ride;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

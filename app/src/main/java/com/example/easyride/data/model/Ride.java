@@ -1,4 +1,4 @@
-package com.example.easyride.ui.rider;
+package com.example.easyride.data.model;
 
 import com.google.firebase.firestore.GeoPoint;
 
