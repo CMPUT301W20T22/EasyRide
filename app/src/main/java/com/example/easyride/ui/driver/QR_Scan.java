@@ -140,10 +140,11 @@ public class QR_Scan extends AppCompatActivity {
                                 if (balanceAmount == null){
                                     balanceAmount = "0";
                                 }
+                                id = document.getId();
                                 addedFunds = Double.toString((Double.valueOf(cost) + Double.valueOf(balanceAmount)));
                                 if (!addedFunds.equals("")) {
                                     //ride_cost_short = fareWithTip.substring(0, 4);
-                                    id = document.getId();
+
                                     //alright.getActiveRequests().get(position).setCost(fareWithTip);
                                     //alright.updateRequest(position);
                                 }
