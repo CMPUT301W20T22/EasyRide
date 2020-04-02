@@ -2,6 +2,9 @@ package com.example.easyride.ui.driver;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -65,25 +68,24 @@ public class AcceptRequestActivity extends AppCompatActivity {
         riderProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get user profile info
-
                 db.collection("rider").whereEqualTo("Email", mRider)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-                                user = doc.getString("Name");
-                                email = doc.getString("Email");
-                                Log.d("Document", doc.getId() + " => " + doc.getData());
-                                // Pass data to Profile Fragment
-                                RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, null);
-                                dialog.show(getSupportFragmentManager(), "My Profile Fragment");
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                        user = doc.getString("Name");
+                                        email = doc.getString("Email");
+                                        phone = doc.getString("Phone");
+                                        Log.d("Document", doc.getId() + " => " + doc.getData());
+                                        // Pass data to Profile Fragment
+                                        RiderProfileFragment dialog = RiderProfileFragment.newInstance(user, email, phone);
+                                        dialog.show(getSupportFragmentManager(), "My Profile Fragment");
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
             }
         });
 
