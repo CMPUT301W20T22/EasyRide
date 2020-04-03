@@ -130,40 +130,42 @@
             android:id="@+id/map_ride_review"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="350dp"
-            android:layout_height="250dp"/>
+            android:layout_height="300dp"/>
+        <Button
+            android:id="@+id/accept_pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="Accept Payment" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <Button
-                android:id="@+id/accept_pay_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
-                android:gravity="center"
-                android:text="Accept Payment" />
-            <Button
-                android:id="@+id/rider_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rider Profile"
-                android:layout_gravity="center"/>
 
-            <Button
-                android:id="@+id/accept_ride_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Accept Ride" />
+<!--            <Button-->
+<!--                android:id="@+id/rider_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Rider Profile"-->
+<!--                android:layout_gravity="center"/>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/accept_ride_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="Accept Ride" />-->
 
         </LinearLayout>
-        <Button
-            android:id="@+id/confirm_completed_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Confirm Completed" />
+<!--        <Button-->
+<!--            android:id="@+id/confirm_completed_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="Confirm Completed" />-->
 
     </LinearLayout>
 

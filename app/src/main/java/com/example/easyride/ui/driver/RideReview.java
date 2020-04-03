@@ -97,12 +97,6 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         };
         driverUserDB = new UserDB(UserType.DRIVER, userID);
 
-//        driverUserDB = new UserDB(UserType.DRIVER, userID) {
-//            @Override
-//            public void userDataLoaded(){;}
-//
-//        };
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +104,6 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
                 finish();
             }
         });
-
 
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +116,6 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
                 dialog.show(getSupportFragmentManager(), "My Profile Fragment");
             }
         });
-
     }
 
     private void updateView() {

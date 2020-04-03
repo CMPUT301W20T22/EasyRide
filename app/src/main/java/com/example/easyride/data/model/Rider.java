@@ -20,9 +20,9 @@ import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
 
-interface DatabaseListener {
-  void onDataLoaded();
-}
+//interface DatabaseListener {
+//  void onDataLoaded();
+//}
 
 /**
  * Rider class that captures user information for logged in users retrieved from LoginRepository
@@ -32,7 +32,8 @@ interface DatabaseListener {
  * @see EasyRideUser
  */
 
-public class Rider extends EasyRideUser implements DatabaseListener {
+//public class Rider extends EasyRideUser implements DatabaseListener {
+public class Rider extends EasyRideUser {
   private static Rider instance;
   private EasyRideUser currentRiderInfo;
   private ArrayList<Ride> activeRequests;
