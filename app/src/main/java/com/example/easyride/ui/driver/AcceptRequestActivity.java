@@ -48,11 +48,11 @@ public class AcceptRequestActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth fAuth;
     Button riderProfile, mAccept;
-    private boolean isMapLoaded = false;
+    /*private boolean isMapLoaded = false;
     private boolean isRouteShown = false;
     private boolean isFinished;
     private Driver driver;
-    MarkerHandler mh;
+    MarkerHandler mh;*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,7 +150,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateView() {
+/*    private void updateView() {
         if (isFinished || !driver.isDataLoaded()){
             return;
         }
@@ -162,5 +162,5 @@ public class AcceptRequestActivity extends AppCompatActivity {
             mh.showMarkers();
             isRouteShown = true;
         }
-    }
+    }*/
 }

@@ -1,8 +1,10 @@
 package com.example.easyride.ui.driver;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -61,6 +63,7 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
     private boolean isFinished;
     private ArrayList<Ride> DataList;
     private FirebaseFirestore db;
+    private boolean connected;
 
 
     @Override
@@ -250,15 +253,31 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
             mh.showMarkers();
             isRouteShown = true;
         }
-        acceptButtonSetting();
+
+        connected = isNetworkConnected();
+
+        if (connected) {
+            acceptButtonSetting();
+        }
+        else {
+            Toast.makeText(RideReview.this,
+                    "You are in Offline Mode right now! You can't accept payment at the moment!", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if (! isMapLoaded){
+        if (!isMapLoaded){
             mh = new MarkerHandler(googleMap, getString(R.string.api_key));
         }
         isMapLoaded = true;
         driver.updateList();
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

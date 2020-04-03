@@ -1,6 +1,8 @@
 package com.example.easyride.ui.driver;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,7 +57,7 @@ public class DriverHome extends AppCompatActivity {
 //    private List<RideRequest> rideRequestList = new ArrayList<>();
 //    private FirebaseAuth fAuth;
 //    private FirebaseFirestoreSettings settings;
-    private boolean offLine = false;
+    private boolean connected = false;
 
 
     @Override
@@ -115,10 +117,11 @@ public class DriverHome extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!offLine) {
+                connected = isNetworkConnected();
+                if (connected) {
                     Intent intent = new Intent(DriverHome.this, SearchRequestActivity.class);
                     startActivity(intent);
-//                    finish();
+                    // finish();
                 } else {
                     Toast.makeText(DriverHome.this,
                         "You are in Offline Mode right now! You can't search for Request at the moment!", Toast.LENGTH_SHORT)
@@ -219,6 +222,12 @@ public class DriverHome extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void refresh() {
