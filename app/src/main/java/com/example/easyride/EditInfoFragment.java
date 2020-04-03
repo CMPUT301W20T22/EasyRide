@@ -68,7 +68,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
 
                 // Update info and handle errors
                 if ( PhoneValid && PasswordValid) {
-                    mListener.updateInfo(mPhone, mPassword);
+                    mListener.updateInfo("",mPhone, mPassword);
                 }
                 //else if (!EmailValid){
                 //    Toast.makeText(getActivity(), "The Email Address you entered is not in the correct format! Please update it again",
@@ -106,7 +106,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
     }
 
     public interface myListener {
-        void updateInfo(String phone, String password);
+        void updateInfo(String name, String phone, String password);
     }
 }
 

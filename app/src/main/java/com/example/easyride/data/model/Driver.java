@@ -49,7 +49,7 @@ public class Driver extends EasyRideUser {
     requestsID = new ArrayList<>();
     activeRequests = new ArrayList<Ride>();
 
-    Query q = db.collection("RideRequest").whereEqualTo("driverUserName", user.getUserId());
+    Query q = db.collection("RideRequest").whereEqualTo("ridePaid", false);
 
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
       @Override
@@ -82,7 +82,7 @@ public class Driver extends EasyRideUser {
 
     Log.e("SIZE", Integer.toString(activeRequests.size()));
     db.collection("RideRequest")
-        .whereEqualTo("driverUserName", currentDriverInfo.getUserId())
+        .whereEqualTo("ridePaid", false)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
           @Override

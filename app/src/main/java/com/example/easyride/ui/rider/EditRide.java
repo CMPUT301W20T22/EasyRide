@@ -47,6 +47,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
     private boolean isMapLoaded = false;
     private boolean isRouteShown = false;
     MarkerHandler mh;
+
   @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

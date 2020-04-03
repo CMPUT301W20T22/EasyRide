@@ -47,9 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getSupportActionBar().setTitle("Log In");
-
-
         signUpbtn = findViewById(R.id.signup);
         loginBtn = findViewById(R.id.login);
         mEmail = findViewById(R.id.username);
@@ -57,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Mode = intent.getStringExtra("mode");
+        getSupportActionBar().setTitle(Mode + " Log In");
+
         isUser = false;
 
         // init database
@@ -71,9 +70,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                intent.putExtra("Mode", Mode);
+                intent.putExtra("mode", Mode);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -126,11 +124,12 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
 
                                         DocumentSnapshot document = task.getResult();
-
-
-                                        assert document != null;
+                                        if (document==null) throw new AssertionError("Object cannot be null");
                                         Map<String, Object> data = document.getData();
-                                        assert data != null;
+                                        if (data==null) {
+                                            Toast.makeText(LoginActivity.this, "No such " + Mode + " user exists!", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
                                         String userEmail = (String) data.get("Email");
                                         String displayname = (String) data.get("Name");
                                         //String password = (String) data.get("Password: ");
@@ -171,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                                             //assert user != null;
                                             //userID = user.getEmail();
                                             Rider alright = Rider.getInstance(user);
-                                            intent.putExtra("Mode", Mode);
+                                            intent.putExtra("mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
                                             finish();
@@ -181,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Welcome back driver!", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(LoginActivity.this, DriverHome.class);
 
-                                            intent.putExtra("Mode", Mode);
+                                            intent.putExtra("mode", Mode);
                                             intent.putExtra("ID", ID);
                                             startActivity(intent);
                                             finish();
@@ -207,4 +206,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Mode = intent.getStringExtra("mode");
+        isUser = false;
+    }
+
 }

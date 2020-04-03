@@ -15,18 +15,17 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class QR_Scan extends AppCompatActivity {
-    private Button qr_scan_button;
-    private String cost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
-        qr_scan_button = (Button)findViewById(R.id.qr_scan_button);
-        final Activity activity = this;
+        Button qr_scan_button = (Button) findViewById(R.id.qr_scan_button);
+         Activity activity = this;
         qr_scan_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator =  new IntentIntegrator(activity);
+                IntentIntegrator integrator =  new IntentIntegrator(QR_Scan.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("Scan the QR code from Rider");
                 integrator.setCameraId(0);
@@ -46,10 +45,8 @@ public class QR_Scan extends AppCompatActivity {
         }
         else{
             Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-            cost = result.getContents();
+            String cost = result.getContents();
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

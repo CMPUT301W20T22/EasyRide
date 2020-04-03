@@ -10,9 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.easyride.MainActivity;
 import com.example.easyride.R;
 import com.example.easyride.data.model.Driver;
@@ -32,8 +30,6 @@ import java.util.HashMap;
 // Handles the driver home screen to display and navigate between active requests, as well as
 // allowing users to select and accept a new ride request.
 
-
-
 public class DriverHome extends AppCompatActivity {
 
     private ListView LV;
@@ -42,21 +38,9 @@ public class DriverHome extends AppCompatActivity {
     private FirebaseUser user;
     private String userID;
     private ArrayList<Ride> DataList;
-    public static int maxRiderActiveRequests = 10;
+    public static int maxDriverActiveRequests = 10;
     private Driver driver;
-
-
-
-//    private static final String TAG = "FireLog";
-//    private RecyclerView mRequestList;
-//    private RideRequestListAdapter rideRequestListAdapter;
-//    private RecyclerView.LayoutManager layoutManager;
-//    private FirebaseFirestore db;
-//    private List<RideRequest> rideRequestList = new ArrayList<>();
-//    private FirebaseAuth fAuth;
-//    private FirebaseFirestoreSettings settings;
     private boolean offLine = false;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,30 +71,6 @@ public class DriverHome extends AppCompatActivity {
             }
         });
 
-        // set recycler view properties
-//        mRequestList.setHasFixedSize(true);
-//        layoutManager = new LinearLayoutManager(this);
-//        mRequestList.setLayoutManager(layoutManager);
-
-//        rideRequestListAdapter = new RideRequestListAdapter(rideRequestList);
-
-        // set OnclickListener for RecyclerView
-        // Passing RideRequest to ride_review activity
-        // https://stackoverflow.com/questions/768969/passing-a-bundle-on-startactivity
-//        rideRequestListAdapter.setOnClickLisnter(new RideRequestListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                RideRequest ride = rideRequestList.get(position);
-//                Intent intent = new Intent(getApplicationContext(), ride_review.class);
-//                intent.putExtra("pickUpLocation", ride.getPickupPoint());
-//                intent.putExtra("destination", ride.getTargetPoint());
-//                intent.putExtra("fare", ride.getCost());
-//                intent.putExtra("rider", ride.getRiderUserName());
-//                startActivity(intent);
-//                Log.d(TAG, "Item Click on item " + position);
-//            }
-//        });
-
         // Set OnclickListener for Search Btn
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,9 +86,6 @@ public class DriverHome extends AppCompatActivity {
                 }
             }
         });
-
-        // show data in Recycler View
-//        showData();
     }
 
     @Override
@@ -136,53 +93,6 @@ public class DriverHome extends AppCompatActivity {
         super.onNewIntent(intent);
         driver.updateList();
     }
-
-//    private void showData() {
-//
-//
-//        // Get the data by geoLocation
-//        // geoLocation is based on the cost of the trip, the closer the trip is the cheaper the cost
-//        db.collection("RideRequest").whereEqualTo("rideAccepted", true)
-//        .whereEqualTo("driverUserName", fAuth.getCurrentUser().getEmail())
-//        .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot querySnapshot,
-//                                @Nullable FirebaseFirestoreException e) {
-//                if (e != null) {
-//                    Log.w(TAG, "Listen error", e);
-//                    return;
-//                }
-//
-//                for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
-//                    if (doc.getType() == DocumentChange.Type.ADDED) {
-//                        RideRequest rideRequest = new RideRequest(doc.getDocument().getId(),
-//                                doc.getDocument().getString("user"),
-//                                doc.getDocument().getString("from"),
-//                                doc.getDocument().getString("to"),
-//                                doc.getDocument().getString("cost"),
-//                                true,
-//                                false);
-//                        rideRequestList.add(rideRequest);
-//                    }
-//                        // Set Adapter
-//                        mRequestList.setAdapter(rideRequestListAdapter);
-//                }
-//
-//                String source = querySnapshot.getMetadata().isFromCache() ?
-//                            "local cache" : "server";
-//
-//                // Check to see if the application is in offline mode or not
-//                // https://stackoverflow.com/questions/49068084/about-firestore-is-there-some-flag-i-can-check-if-the-data-is-on-off-line-data
-//                if (source.equals("local cache")) {
-//                    offLine = true;
-//                }
-//                else {
-//                    offLine = false;
-//                }
-//                Log.d(TAG, "Data fetched from " + source);
-//            }
-//        });
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -201,6 +111,7 @@ public class DriverHome extends AppCompatActivity {
                 String ID = user.getUid();
                 i.putExtra("mode", "driver");
                 i.putExtra("ID", ID);
+                i.putExtra("email",user.getEmail());
                 startActivity(i);
                 break;
             }
@@ -229,6 +140,8 @@ public class DriverHome extends AppCompatActivity {
         int j =0;
         for (int i=0; i<DataList.size(); i++) {
             ride = DataList.get(i);
+            if (ride.getDriverUserName()==null )
+                continue;
             if (! ride.isRidePaid() && ride.getDriverUserName().equals(userID) ) {
                 filteredToOriginal.put(j, i);
                 filteredDataList.add(ride);

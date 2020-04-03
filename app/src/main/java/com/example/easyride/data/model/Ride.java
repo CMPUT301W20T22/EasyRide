@@ -92,7 +92,7 @@ public class Ride {
         this.rideCompleted = rideCompleted;
     }
 
-    private void setRideAccepted(boolean rideAccepted) {
+    public void setRideAccepted(boolean rideAccepted) {
         this.rideAccepted = rideAccepted;
     }
 
