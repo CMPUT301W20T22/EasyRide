@@ -23,6 +23,7 @@ import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.UserDB;
 import com.example.easyride.data.model.UserType;
 import com.example.easyride.map.MarkerHandler;
+import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -46,12 +47,13 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
   private Ride rideReq;
   private Driver driver;
   private int position;
-  private boolean isFinished;
+  private boolean isFinished = false;
   private ArrayList<Ride> DataList;
   private ImageView profileImage;
   private UserDB driverUserDB;
   private UserDB riderUserDB;
   private String docID;
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -107,13 +109,23 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
       }
     });
   }
-
+  private void goBack(){
+    Intent i = new Intent(getApplicationContext(), DriverHome.class);
+    startActivity(i);
+    finish();
+  }
   private void updateView() {
     DataList = driver.getActiveRequests();
     if (isFinished || !driver.isDataLoaded()) {
       return;
     }
 //    rideReq = DataList.get(position);
+    if ( ! driver.containsDocID(docID) ){
+      isFinished = false;
+      Toast.makeText(this, "Ride request is deleted!", Toast.LENGTH_LONG).show();
+      goBack();
+      return;
+    }
     rideReq = driver.getActiveRequest(docID);
     riderUserDB = new UserDB(UserType.RIDER, rideReq.getUser());
     // Set up variables

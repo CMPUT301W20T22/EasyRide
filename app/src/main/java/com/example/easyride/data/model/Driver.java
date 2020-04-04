@@ -156,4 +156,8 @@ public class Driver extends EasyRideUser {
     return dataLoaded;
   }
 
+  public boolean containsDocID (String docID){
+    return map.containsKey(docID);
+  }
+
 }
