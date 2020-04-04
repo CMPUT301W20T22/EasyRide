@@ -138,6 +138,7 @@ public class Driver extends EasyRideUser {
   public boolean updateRequest(Ride updatedRequest) {
     String documentID =  updatedRequest.getID();
     DocumentReference rideRequestRef = db.collection("RideRequest").document(documentID);
+    rideRequestRef.update("driverUserName", updatedRequest.getDriverUserName());
     rideRequestRef.update("rideAccepted", updatedRequest.isRideAccepted());
     rideRequestRef.update("rideCompleted", updatedRequest.isRideCompleted());
     rideRequestRef.update("ridePaid", updatedRequest.isRidePaid());

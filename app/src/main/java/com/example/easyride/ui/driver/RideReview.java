@@ -163,10 +163,9 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
       accept_pay_button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//          driver.getActiveRequests().get(position).setRideAccepted(true);
-//          driver.updateRequest(position);
-      rideReq.setRideAccepted(true);
-      driver.updateRequest(rideReq);
+        rideReq.setRideAccepted(true);
+        rideReq.setDriverUserName(driverUserDB.getEmail());
+        driver.updateRequest(rideReq);
         }
       });
     } else {
