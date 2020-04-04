@@ -1,5 +1,6 @@
 package com.example.easyride.ui.driver;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -190,12 +191,13 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
           if (!rideReq.isRidePaid()) {
             accept_pay_button.setText("Get Money");
             accept_pay_button.setClickable(true);
+            final Activity activity = this;
             accept_pay_button.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
 //                                Intent i = new Intent(RideReview.this, QR_Scan.class);
 //                                startActivity(i);
-                IntentIntegrator integrator = new IntentIntegrator(RideReview.this);
+                IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("Scan the QR code from Rider");
                 integrator.setCameraId(0);
@@ -247,9 +249,8 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         driverUserDB.updateReviews(rating);
         driverUserDB.push();
 //        UserDB riderUser = new UserDB(UserType.RIDER, driver.getActiveRequests().get(position).getUser());
-        UserDB riderUser = new UserDB(UserType.RIDER, rideReq.getUser());
-        riderUser.decreaseBalance(Double.valueOf(cost));
-        riderUser.push();
+        riderUserDB.decreaseBalance(Double.valueOf(cost));
+        riderUserDB.push();
       } else
         Toast.makeText(this, "Payment was not successful", Toast.LENGTH_LONG).show();
     }
