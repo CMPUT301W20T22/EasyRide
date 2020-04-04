@@ -127,11 +127,29 @@ public class Driver extends EasyRideUser {
     instance = null;
   }
 
+  /**
+   * return the list of active requesst
+   * @return ArrayList<Ride>
+   */
   public ArrayList<Ride> getActiveRequests() {
     return activeRequests;
   }
+
+  /**
+   * Return the info of current driver
+   * @return EasyRideUser
+   */
   public EasyRideUser getCurrentDriverInfo(){ return currentDriverInfo; }
+
+  /**
+   * Called when the data is updated. Using this, we can have live UI automatically update
+   */
   public void onDataLoaded() { }
+
+  /**
+   * Method to check if the data of the driver is loaded
+   * @return
+   */
   public boolean isDataLoaded() {
     return dataLoaded;
   }

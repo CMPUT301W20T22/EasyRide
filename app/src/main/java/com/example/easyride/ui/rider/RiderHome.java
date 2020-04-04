@@ -104,7 +104,7 @@ public class RiderHome extends AppCompatActivity {
   }
 
   /**
-   * ??
+   * Update the list when new intent is called
    * @param intent
    */
   @Override
@@ -112,7 +112,6 @@ public class RiderHome extends AppCompatActivity {
     super.onNewIntent(intent);
     rider.updateList();
   }
-
 
   /**
    * Create option Menu for RiderHome.
@@ -161,7 +160,9 @@ public class RiderHome extends AppCompatActivity {
     return true;
   }
 
-
+  /**
+   * Method to refresh the list whenever a ride is finished.
+   */
   public void refresh() {
     DataList = rider.getActiveRequests();
     ArrayList<Ride> filteredDataList = new ArrayList<Ride>();

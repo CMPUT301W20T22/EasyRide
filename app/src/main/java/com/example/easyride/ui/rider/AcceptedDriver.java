@@ -1,7 +1,5 @@
 package com.example.easyride.ui.rider;
 
-import android.annotation.SuppressLint;
-import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -9,8 +7,6 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +27,7 @@ import static com.android.volley.VolleyLog.TAG;
 
 
 /**
- * ??
+ * Activity to show the profile of the driver who accepts the ride.
  * @author T22
  * @version 1.0
  */
@@ -122,6 +118,11 @@ public class AcceptedDriver extends AppCompatActivity {
         //editButton.setVisibility(View.INVISIBLE);
 
     }
+
+    /**
+     * Method to show the view of the activity
+     * @param document
+     */
 
     private void updateView(DocumentSnapshot document){
         String name = document.getString("Name") + "'s Profile";

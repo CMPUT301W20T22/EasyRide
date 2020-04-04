@@ -83,20 +83,8 @@ public class QR_Pay extends AppCompatActivity {
 
 
     /**
-     * https://stackoverflow.com/questions/39959747/how-to-convert-string-into-image-android-studio
-    **/
-    public Bitmap StringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-
+     * Update the status of the ride when it's finished.
+     */
     private void loadRide(){
         DataList = alright.getActiveRequests();
         rideReq = DataList.get(position);
@@ -105,12 +93,18 @@ public class QR_Pay extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to handle finishing activity.
+     */
     private void finishAct(){
         Intent i = new Intent(QR_Pay.this, RiderHome.class);
         finish();
         startActivity(i);
     }
 
+    /**
+     * Show the dialog after the driver is paid
+     */
     private void rideFinished(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("YAY! The driver accepted your pay. Press ok to go back to home screen");

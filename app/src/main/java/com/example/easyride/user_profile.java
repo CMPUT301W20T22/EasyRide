@@ -183,6 +183,11 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method to format the String balance.
+     * @param ride_cost
+     * @return String
+     */
     private String formatBalance(String ride_cost){
         String ride_cost_short;
         int index = ride_cost.indexOf('.');
@@ -202,6 +207,9 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         return ride_cost_short;
     }
 
+    /**
+     * Method to handle adding funds to the ride.
+     */
     private void addFundsDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Money");
@@ -239,6 +247,10 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         builder.show();
     }
 
+    /**
+     * Method to update the balance.
+     * @param funds
+     */
     private void updateBalance(String funds){
         docRef.update("Balance", funds);
     }

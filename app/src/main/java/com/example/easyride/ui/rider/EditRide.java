@@ -124,7 +124,7 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     /**
-     * Go back to previous activity.
+     * Method to support go back navigation to previous activity.
      */
     private void goBack(){
         Intent i = new Intent(getApplicationContext(), RiderHome.class);
@@ -222,7 +222,11 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.show();
     }
 
-
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
       if (! isMapLoaded){
@@ -245,14 +249,14 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
 //      Location location = locationManager.getLastKnownLocation(provider);
 
 
-    /**
-     * Set up rating dialog for rider and allow the rider to pay the driver.
-     */
-
 //      updateView();
 
       rider.updateList();
     }
+
+    /**
+     * Set up rating dialog for rider and allow the rider to pay the driver.
+     */
     private void ratePayDialog(){
         boolean[] review = new boolean[1];
         review[0] = true;

@@ -30,11 +30,13 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// DRIVER HOME. THE FIRST PAGE YOU SHOULD SEE WHEN YOU SIGN IN AS A DRIVER.
-// Handles the driver home screen to display and navigate between active requests, as well as
-// allowing users to select and accept a new ride request.
-
-
+/**
+ * Driver Home, the first page you should see when you sign in as a driver.
+ * Handles the driver home screen to display and navigate between active requests, as well as
+ * allowing users to select and accept a new ride request.
+ * @author T22
+ * @version 1.0
+ */
 
 public class DriverHome extends AppCompatActivity {
 
@@ -134,6 +136,10 @@ public class DriverHome extends AppCompatActivity {
 //        showData();
     }
 
+    /**
+     * Update the list when new intent is called
+     * @param intent
+     */
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -187,6 +193,11 @@ public class DriverHome extends AppCompatActivity {
 //        });
 //    }
 
+    /**
+     * Create option Menu for DriverHome.
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -196,6 +207,12 @@ public class DriverHome extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Method to handle the Menu item onClick Event.
+     * For each option, there will be a different result to it.
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -224,12 +241,21 @@ public class DriverHome extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method to check if there is any connection to the network
+     * @return boolean
+     */
+    // Answer: https://stackoverflow.com/a/9570292
+    // Author: https://stackoverflow.com/users/975292/seshu-vinay
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
+    /**
+     * Method to refresh the list whenever a ride is finished.
+     */
     public void refresh() {
         DataList = driver.getActiveRequests();
         ArrayList<Ride> filteredDataList = new ArrayList<Ride>();

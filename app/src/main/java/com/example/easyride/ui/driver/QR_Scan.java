@@ -113,6 +113,9 @@ public class QR_Scan extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Method to check for the ride and update the status after the payment is processed.
+     */
     private void loadRide(){
         DataList = driver.getActiveRequests();
         rideReq = DataList.get(position);
@@ -121,11 +124,17 @@ public class QR_Scan extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to update the balance of the driver.
+     */
     private void updateBalance(){
         DocumentReference doc = FirebaseFirestore.getInstance().collection("driver").document(id);
         doc.update("Balance", addedFunds);
     }
 
+    /**
+     * Method to update the rating of the driver.
+     */
     private void updateRating(){
         DocumentReference doc = FirebaseFirestore.getInstance().collection("driver").document(id);
         Long rating = rideReq.getRiderRating();
@@ -136,6 +145,9 @@ public class QR_Scan extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to get the driver info.
+     */
     private void getDriverProfile(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("driver")
@@ -175,6 +187,9 @@ public class QR_Scan extends AppCompatActivity {
 
     }
 
+    /**
+     * Show the dialog after the driver is paid.
+     */
     private void rideFinished(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("YAY! QRBucks has been added to your account");

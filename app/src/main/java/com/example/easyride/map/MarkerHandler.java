@@ -190,9 +190,18 @@ public class MarkerHandler {
   public void animateCamera(LatLng latLng) {
     animateCamera(latLng, 17);
   }
+
+  /**
+   * Method to show the route on the Map
+   */
   public void showRoute(){
         route.showOnMap(startLatLang, endLatLang);
   }
+
+  /**
+   * Method to return the distance of the route
+   * @return double
+   */
   public double getRouteDistance(){
     return route.getDistance();
   }
@@ -201,14 +210,27 @@ public class MarkerHandler {
     return route.getPolylineOptions();
   }
 
+  /**
+   * Method to return the start location
+   * @return String
+   */
   public String getStartName() {
     return startName;
   }
 
+
+  /**
+   * Method to return the destination
+   * @return String
+   */
   public String getEndName() {
     return endName;
   }
 
+  /**
+   * Method to check if the request is completed
+   * @return boolean
+   */
   public boolean hasCompleteRequest() {
     return hasCompleteRequest;
   }

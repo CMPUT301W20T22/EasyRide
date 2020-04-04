@@ -85,9 +85,6 @@ public class Rider extends EasyRideUser implements DatabaseListener {
    * @param user
    * @return driver
    */
-
-
-  //return old instance or create a new one
   public static Rider getInstance(EasyRideUser user) {
     if (instance == null) {
       instance = new Rider(user);
@@ -169,8 +166,9 @@ public class Rider extends EasyRideUser implements DatabaseListener {
    */
   public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
 
+
   /**
-   * Update the list and handle the UI whenever there is an update in the database.
+   * Called when the data is updated. Using this, we can have live UI automatically update
    */
   public void onDataLoaded() {}
 
@@ -190,6 +188,10 @@ public class Rider extends EasyRideUser implements DatabaseListener {
     return true;
   }
 
+  /**
+   * Check if the data is loaded
+   * @return boolean
+   */
   public boolean isDataLoaded() {
     return dataLoaded;
   }

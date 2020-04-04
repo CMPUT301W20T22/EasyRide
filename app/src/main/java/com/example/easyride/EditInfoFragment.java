@@ -112,7 +112,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
     }
 
     /**
-     * Interface created to handle updating the new information to database
+     * Listener interface created to handle updating the new information to database
      */
     public interface myListener {
         void updateInfo(String phone, String password);

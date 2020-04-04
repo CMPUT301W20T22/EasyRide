@@ -47,6 +47,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * When the driver want to check for the details of the Ride, this activity is called.
+ * The driver should be able to accept the payment when the ride is completed inside this activity.
+ * @author T22
+ * @version 1.0
+ */
 public class RideReview extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView pickUp, Destination, Fare, rider;
@@ -168,6 +174,9 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
+    /**
+     * Method to show the dialog when the ride is completed
+     */
     private void rideCompleteDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -185,6 +194,9 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         builder.show();
     }
 
+    /**
+     * Method to handle the accept payment button.
+     */
     private void acceptButtonSetting(){
         if(rideReq.isRideConfirmAccepted() && !rideReq.isRideCompleted()) {
             // Toast.makeText();
@@ -217,6 +229,9 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         }
     }
 
+    /**
+     * Method the show the details of the ride request.
+     */
     private void updateView() {
         DataList = driver.getActiveRequests();
         if (isFinished || !driver.isDataLoaded()){
@@ -266,6 +281,11 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         }
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (!isMapLoaded){
@@ -275,6 +295,13 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         driver.updateList();
     }
 
+
+    /**
+     * Method to check if there is any connection to the network
+     * @return boolean
+     */
+    // Answer: https://stackoverflow.com/a/9570292
+    // Author: https://stackoverflow.com/users/975292/seshu-vinay
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
