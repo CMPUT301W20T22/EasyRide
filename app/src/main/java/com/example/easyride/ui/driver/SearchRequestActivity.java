@@ -100,8 +100,9 @@ public class SearchRequestActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(view.getContext(), RideReview.class);
-                String docid = sortedDataList.get(position).getID();
-                i.putExtra("position", filteredToOriginal.get(position));
+//                String docid = sortedDataList.get(position).getID();
+                String docid = rideAdapter.getItem(position).getID();
+//                i.putExtra("position", filteredToOriginal.get(position));
                 i.putExtra("docID", docid);
                 i.putExtra("mode", "search");
                 startActivity(i);

@@ -53,6 +53,7 @@ public class Rider extends EasyRideUser {
 
     requestsID = new ArrayList<>();
     activeRequests = new ArrayList<Ride>();
+    map = new HashMap<String, Integer>();
 
     Query q = db.collection("RideRequest").whereEqualTo("user", currentRiderInfo.getUserId());
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -64,6 +65,7 @@ public class Rider extends EasyRideUser {
         }
         requestsID.clear();
         activeRequests.clear();
+        map.clear();
         int i = 0;
         String docId;
         map = new HashMap<String, Integer>();
@@ -106,6 +108,7 @@ public class Rider extends EasyRideUser {
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
+              map.clear();
               int i = 0;
               String docId;
               map = new HashMap<String, Integer>();
