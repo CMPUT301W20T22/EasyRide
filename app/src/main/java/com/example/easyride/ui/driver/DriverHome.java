@@ -151,7 +151,7 @@ public class DriverHome extends AppCompatActivity {
                 j++;
             }
         }
-        rideAdapter = new CustomListForRider(this, filteredDataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
+        rideAdapter = new CustomListForDriver(this, filteredDataList); // Invokes the constructor from CustomList class and passes the data for it to be displayed in each row of the list view.
         LV.setAdapter(rideAdapter);
     }
 }

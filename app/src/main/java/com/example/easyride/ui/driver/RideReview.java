@@ -23,7 +23,6 @@ import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.UserDB;
 import com.example.easyride.data.model.UserType;
 import com.example.easyride.map.MarkerHandler;
-import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import static com.android.volley.VolleyLog.TAG;
 
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
@@ -209,6 +212,27 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         balanceAmount = userDB.getBalance().toString();
         String formattedBalance = formatBalance(balanceAmount);
         balance.setText("Balance: $" + formattedBalance);
+        Rating.setText("");
+        if (userDB.getUserType() == UserType.DRIVER) {
+            try {
+                int good = userDB.getGoodReviews();
+                int bad = userDB.getBadReviews();
+                int rate;
+                if (good == 0 && bad == 0)
+                    throw new Exception("Rating is 0");
+                else
+                    rate = good / (good + bad) * 100;
+
+                String rateS = String.valueOf(rate);
+                String reviw = " reveiws!";
+                if ((good + bad) == 1)
+                    reviw = " reveiw!";
+                Rating.setText("Rate: " + rateS + "% based on " + Integer.toString(good + bad) + reviw);
+            } catch (Exception e) {
+                Log.e(TAG, "Error getting Ratings: ", e);
+                Rating.setText("Rating: Driver has not been rated yet");
+            }
+        }
         if (balanceAmount == null){
             balanceAmount = "0";
         }

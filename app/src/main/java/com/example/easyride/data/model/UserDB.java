@@ -154,4 +154,7 @@ public class UserDB {
         setBadReviews(getBadReviews() + 1);
     }
   }
+  public UserType getUserType() {
+    return userType;
+  }
 }

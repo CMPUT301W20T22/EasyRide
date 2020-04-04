@@ -50,6 +50,7 @@ public class Driver extends EasyRideUser {
 
     requestsID = new ArrayList<>();
     activeRequests = new ArrayList<Ride>();
+    map = new HashMap<String, Integer>();
 
     Query q = db.collection("RideRequest").whereEqualTo("ridePaid", false);
 
@@ -62,6 +63,7 @@ public class Driver extends EasyRideUser {
         }
         requestsID.clear();
         activeRequests.clear();
+        map.clear();
         int i = 0;
         String docId;
         map = new HashMap<String, Integer>();
@@ -100,6 +102,7 @@ public class Driver extends EasyRideUser {
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
+              map.clear();
               int i = 0;
               String docId;
               map = new HashMap<String, Integer>();
@@ -110,7 +113,7 @@ public class Driver extends EasyRideUser {
                 activeRequests.add(ride);
                 map.put(docId, i);
                 requestsID.add(document.getId());
-                activeRequests.add(document.toObject(Ride.class));
+//                activeRequests.add(document.toObject(Ride.class));
                 Log.e("user", currentDriverInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
               }
