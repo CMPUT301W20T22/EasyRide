@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.firestore.GeoPoint;
 
 import org.json.JSONObject;
 
@@ -235,11 +236,32 @@ public  class  Route {
   }
 
 
-  // Author https://stackoverflow.com/users/502162/david-george
-  // https://stackoverflow.com/a/16794680
+  /**
+   * Method to return the latitude and longitude of the geo point.
+   * @param geoPoint
+   * @return LatLng
+   */
+
+  public static LatLng geoPointToLatLng(GeoPoint geoPoint){
+    return new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+  }
 
   /**
-   * Mathod to calculate the distance between the 2 locations.
+   * Method to handle calculating the distance between 2 geo points
+   * @param geoPoint1
+   * @param geoPoint2
+   * @return double
+   */
+  public static double distance(GeoPoint geoPoint1, GeoPoint geoPoint2){
+
+    return distance(geoPointToLatLng(geoPoint1), geoPointToLatLng(geoPoint2));
+
+  }
+
+  // Author https://stackoverflow.com/users/502162/david-george
+  // https://stackoverflow.com/a/16794680
+  /**
+   * Method to calculate the distance between the 2 locations.
    * @param latLng1
    * @param latLng2
    * @return double

@@ -96,9 +96,6 @@
         <activity android:name=".ui.rider.QR_Pay"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.driver.QR_Scan"
-            android:launchMode="singleTask"/>
-
         <activity android:name=".user_profile"
             android:launchMode="singleTask"/>
 
@@ -117,10 +114,6 @@
         <activity
             android:name=".ui.driver.RideReview"
             android:theme="@style/CustomTheme" />
-
-        <activity
-            android:name=".ui.driver.AcceptRequestActivity"
-            android:parentActivityName=".ui.driver.SearchRequestActivity" />
 
     </application>
 </manifest>

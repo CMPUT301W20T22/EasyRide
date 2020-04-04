@@ -8,11 +8,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.util.Log;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.easyride.R;
+import com.example.easyride.data.model.UserType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
+import com.example.easyride.data.model.UserDB;
 import static com.android.volley.VolleyLog.TAG;
 
 
@@ -34,103 +33,44 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class AcceptedDriver extends AppCompatActivity {
 
-
-    private String userID;
-    private DocumentReference docRef;
-    private FirebaseFirestore db;
+    private String userEmail;
     private TextView riderName, email, Phone, Rating;
-
+    private UserDB driverUserDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accepted_driver); // I DON'T KNOW WHY THIS IS RED, BUT IT WORKS SO IDK.
         Intent intent = getIntent();
-        userID = intent.getStringExtra("ID");
-        //mode = intent.getStringExtra("mode");
-        Log.e("Driver ID:" , userID);
-        // init database
-        db = FirebaseFirestore.getInstance();
-        docRef = db.collection("driver").document(userID);
+        onNewIntent(intent);
+        userEmail = intent.getStringExtra("ID");
         riderName = findViewById(R.id.user_name);
         email = findViewById(R.id.driver_email);
         Phone = findViewById(R.id.driver_ph);
         Rating = findViewById(R.id.driver_rating);
-        db.collection("driver")
-                .whereEqualTo("Email", userID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                updateView(document);
-                                //riderName.setText();
-                                riderName.setText(document.getString("Name") + "'s Profile");
-                                email.setText("Email: " + document.getString("Email"));
-                                Phone.setText("Phone: " + document.getString("Phone"));
-                                try {
-                                    int good = (int) document.get("good_reviews");
-                                    int bad = (int) document.get("bad_reviews");
-                                    int rate = (good/bad)*100;
-                                    if (rate == 0){
-                                        throw new Exception("Rating is 0");
-                                    }
-                                    String rateS = String.valueOf(rate);
-                                    Rating.setText("Rate: " + rateS + "%");
-                                } catch (Exception e){
-                                    Log.e(TAG, "Error getting Ratings: ", e);
-                                    Rating.setText("Rating: Driver has not been rated yet");
-                                }
-
-
-                                //Log.e("SIZE", user.getUserId());
-                                //Log.e("SIZE", Integer.toString(activeRequests.size()));
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-
-
-        // TextView assign
-
-/*
-        // Getting the info from database
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint("SetTextI18n")
+        driverUserDB = new UserDB(UserType.DRIVER, userEmail){
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    assert doc != null;
-                    riderName.setText(doc.getString("Name: "));
-                    Email.setText("Email: " + doc.getString("Email: "));
-                    Phone.setText("Phone: " + doc.getString("Phone: "));
-                }
+            public void userDataLoaded() {
+                updateView();
             }
-        });*/
-
-        //Button editButton = findViewById(R.id.edit_contact_button);
-
-        //editButton.setVisibility(View.INVISIBLE);
-
+        };
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        userEmail = intent.getStringExtra("ID");
+    }
     /**
      * Method to show the view of the activity
-     * @param document
      */
-
-    private void updateView(DocumentSnapshot document){
-        String name = document.getString("Name") + "'s Profile";
-        String riderEmail = "Email: " + document.getString("Email");
-        String riderPhone = "Phone: " + document.getString("Phone");
-
-        String emailLink = "mailto:" + document.getString("Email");
-        String phoneLink = "tel:" + document.getString("Phone");
+    private void updateView(){
+        driverUserDB.getEmail();
+        String name = driverUserDB.getName() + "'s Profile";
+        String riderEmail = "Email: " + driverUserDB.getEmail();
+        String riderPhone = "Phone: " + driverUserDB.getPhone();
+        String emailLink = "mailto:" + driverUserDB.getEmail();
+        String phoneLink = "tel:" + driverUserDB.getPhone();
 
         int emailLen = riderEmail.length();
         int phoneLen = riderPhone.length();
@@ -148,14 +88,19 @@ public class AcceptedDriver extends AppCompatActivity {
         Phone.setMovementMethod(LinkMovementMethod.getInstance());
 
         try{
-            int good = (int) document.get("good_reviews");
-            int bad = (int) document.get("bad_reviews");
-            int rate = (good/bad)*100;
-            if (rate == 0){
+            int good = driverUserDB.getGoodReviews();
+            int bad = driverUserDB.getBadReviews();
+            int rate;
+            if (good==0 && bad==0)
                 throw new Exception("Rating is 0");
-            }
+            else
+                rate = good/(good+bad)*100;
+
             String rateS = String.valueOf(rate);
-            Rating.setText("Rate: " + rateS + "%");
+            String reviw = " reveiws!";
+            if ((good+bad)==1)
+                reviw =  " reveiw!";
+            Rating.setText("Rate: " + rateS + "% based on " + Integer.toString(good + bad) + reviw);
         }catch (Exception e){
             Log.e(TAG, "Error getting Ratings: ", e);
             Rating.setText("Rating: Driver has not been rated yet");

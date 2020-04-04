@@ -33,9 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -56,8 +54,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextInputEditText start_location_edittext, end_location_edittext, location_edittext;
     private FloatingActionButton sendRequestButton;
     private boolean isMapLoaded = false;
-    private LatLng latLng;
-    private FirebaseFirestore db;
+//    private LatLng latLng;
+//    private FirebaseFirestore db;
     private FirebaseAuth fAuth;
     private FirebaseUser user;
 
@@ -66,8 +64,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        db = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
 

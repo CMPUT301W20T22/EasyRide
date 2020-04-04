@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.easyride.map.MapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,13 +17,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
 
-interface DatabaseListener {
-  void onDataLoaded();
-}
+//interface DatabaseListener {
+//  void onDataLoaded();
+//}
 
 /**
  * Rider class that captures user information for logged in users retrieved from LoginRepository
@@ -32,13 +35,15 @@ interface DatabaseListener {
  * @see EasyRideUser
  */
 
-public class Rider extends EasyRideUser implements DatabaseListener {
+//public class Rider extends EasyRideUser implements DatabaseListener {
+public class Rider extends EasyRideUser {
   private static Rider instance;
   private EasyRideUser currentRiderInfo;
   private ArrayList<Ride> activeRequests;
   private ArrayList<String> requestsID;
   private FirebaseFirestore db;
   private boolean dataLoaded = false;
+  private HashMap<String, Integer> map;
 
   /**
    * Class constructor
@@ -51,33 +56,37 @@ public class Rider extends EasyRideUser implements DatabaseListener {
     Log.e("HEYYYY", "IM HERE");
 
     requestsID = new ArrayList<>();
-    activeRequests= new ArrayList<Ride>();
+
+    activeRequests = new ArrayList<Ride>();
+    map = new HashMap<String, Integer>();
 
     Query q = db.collection("RideRequest").whereEqualTo("user", currentRiderInfo.getUserId());
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
-          @Override
-          public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-            if (e != null) {
-              Log.w(TAG, "Listen failed.", e);
-              return;
-            }
-            requestsID.clear();
-            activeRequests.clear();
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-              requestsID.add(document.getId());
-              activeRequests.add( document.toObject(Ride.class));
-              //Log.e("SIZE", user.getUserId());
-              //Log.e("SIZE", Integer.toString(activeRequests.size()));
-            }
-            onDataLoaded();
-          }
-        });
-
-
-    currentRiderInfo = user;
-    //updateList();
-
-    //TODO: add activeRequests
+      @Override
+      public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+        if (e != null) {
+          Log.w(TAG, "Listen failed.", e);
+          return;
+        }
+        requestsID.clear();
+        activeRequests.clear();
+        map.clear();
+        int i = 0;
+        String docId;
+        map = new HashMap<String, Integer>();
+        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+          docId = document.getId();
+          requestsID.add(docId);
+          Ride ride = document.toObject(Ride.class);
+          ride.setID(docId);
+          activeRequests.add(ride);
+          map.put(docId, i);
+          i++;
+        }
+        onDataLoaded();
+        dataLoaded = true;
+      }
+    });
   }
 
   /**
@@ -115,10 +124,17 @@ public class Rider extends EasyRideUser implements DatabaseListener {
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
-
+              map.clear();
+              int i = 0;
+              String docId;
+              map = new HashMap<String, Integer>();
               for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                requestsID.add(document.getId());
-                activeRequests.add(document.toObject(Ride.class));
+                docId = document.getId();
+                Ride ride = document.toObject(Ride.class);
+                ride.setID(docId);
+                activeRequests.add(ride);
+                map.put(docId, i);
+                i++;
                 Log.e("user", currentRiderInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
               }
@@ -139,7 +155,16 @@ public class Rider extends EasyRideUser implements DatabaseListener {
   public void addRide(Ride rideInsert){
     DocumentReference newCityRef = db.collection("RideRequest").document();
     newCityRef.set(rideInsert);
-    instance.getActiveRequests().add(rideInsert);
+    instance.activeRequests.add(rideInsert);
+  }
+
+  /**
+   *
+   * @param pos
+   * @return Ride
+   */
+  public Ride getActiveRequest(int pos) {
+    return activeRequests.get(pos);
   }
 
   /**
@@ -151,21 +176,45 @@ public class Rider extends EasyRideUser implements DatabaseListener {
   }
 
   /**
+   * Get the active request with specific driver.
+   * @param docID
+   * @return Ride
+   */
+  public Ride getActiveRequest(String docID) {
+    return activeRequests.get(map.get(docID));
+  }
+
+
+  /**
    * Remove the ride request.
    * @param position
    */
-  public void removeAt(int position){
+  public void removeAt(int position) {
     String documentID = requestsID.get(position);
     db.collection("RideRequest").document(documentID).delete();
     activeRequests.remove(position);
+    //TODO remove record from map
+  }
+
+  /**
+   * Remove the ride request with specific document ID.
+   * @param documentID
+   */
+
+  public void removeAt(String documentID) {
+    activeRequests.remove(map.get(documentID));
+    map.remove(documentID);
+    db.collection("RideRequest").document(documentID).delete();
   }
 
   /**
    * Get the current rider info.
    * @return EasyRideUser
    */
-  public EasyRideUser getCurrentRiderInfo(){return currentRiderInfo;}
 
+  public EasyRideUser getCurrentRiderInfo() {
+    return currentRiderInfo;
+  }
 
   /**
    * Called when the data is updated. Using this, we can have live UI automatically update
@@ -179,8 +228,18 @@ public class Rider extends EasyRideUser implements DatabaseListener {
    */
   public boolean updateRequest(int position){
     if (position >= activeRequests.size()) return false;
-    String documentID = requestsID.get(position);
-    Ride updatedRequest = getActiveRequests().get(position);
+//    String documentID = requestsID.get(position);
+    Ride updatedRequest = activeRequests.get(position);
+    return updateRequest(updatedRequest);
+  }
+
+  /**
+   * Update the request information.
+   * @param updatedRequest
+   * @return boolean
+   */
+  public boolean updateRequest(Ride updatedRequest) {
+    String documentID =  updatedRequest.getID();
     DocumentReference rideRequestRef = db.collection("RideRequest").document(documentID);
     rideRequestRef.update("cost", updatedRequest.getCost());
     rideRequestRef.update("rideConfirmAccepted", updatedRequest.isRideConfirmAccepted());

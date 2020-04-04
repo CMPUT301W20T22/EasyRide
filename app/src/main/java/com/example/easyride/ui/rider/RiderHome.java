@@ -19,6 +19,7 @@ import com.example.easyride.data.model.EasyRideUser;
 import com.example.easyride.data.model.Ride;
 import com.example.easyride.data.model.Rider;
 import com.example.easyride.map.MapsActivity;
+import com.example.easyride.map.Route;
 import com.example.easyride.user_profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -43,8 +45,9 @@ public class RiderHome extends AppCompatActivity {
   public ArrayList<Ride> DataList;
   private HashMap<Integer, Integer> filteredToOriginal;
   private FirebaseUser user;
-  private String userID;
+  private String riderEmail;
   private Rider rider;
+  private ArrayList<Ride> filteredDataList;
   public static int maxRiderActiveRequests = 10;
 
   @Override
@@ -64,9 +67,9 @@ public class RiderHome extends AppCompatActivity {
     //DataList.add(new Ride("testFrom", "testTo", "10", "USER")); // Added test item.
     user = FirebaseAuth.getInstance().getCurrentUser();
     // assert user != null;
-    userID = user.getEmail();
+    riderEmail = user.getEmail();
 //        Rider alright = Rider.getInstance(new EasyRideUser(userID));
-    rider = new Rider(new EasyRideUser(userID)) {
+    rider = new Rider(new EasyRideUser(riderEmail)) {
       @Override
       public void onDataLoaded() {
         refresh();
@@ -82,8 +85,10 @@ public class RiderHome extends AppCompatActivity {
     LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String docID = filteredDataList.get(position).getID();
         Intent i = new Intent(view.getContext(), EditRide.class);
         i.putExtra("position", filteredToOriginal.get(position));
+        i.putExtra("docID", docID);
         startActivity(i);
       }
     });
@@ -139,7 +144,7 @@ public class RiderHome extends AppCompatActivity {
         Intent i = new Intent(RiderHome.this, user_profile.class);
         String ID = user.getUid();
         i.putExtra("mode", "rider");
-        i.putExtra("ID", ID);
+        i.putExtra("email", riderEmail);
         startActivity(i);
         break;
       }
@@ -165,7 +170,7 @@ public class RiderHome extends AppCompatActivity {
    */
   public void refresh() {
     DataList = rider.getActiveRequests();
-    ArrayList<Ride> filteredDataList = new ArrayList<Ride>();
+    filteredDataList = new ArrayList<Ride>();
     filteredToOriginal = new HashMap<Integer, Integer>();
     Ride ride;
     int j =0;

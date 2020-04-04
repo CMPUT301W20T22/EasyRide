@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 // https://stackoverflow.com/questions/13257038/custom-layout-for-dialogfragment-oncreateview-vs-oncreatedialog/15602648
 public class EditInfoFragment extends AppCompatDialogFragment {
-
     // widgets
     private EditText newEmail, newPhone, newPassword;
 
@@ -71,8 +69,8 @@ public class EditInfoFragment extends AppCompatDialogFragment {
                 }
 
                 // Update info and handle errors
-                if ( PhoneValid && PasswordValid) {
-                    mListener.updateInfo(mPhone, mPassword);
+                if (PhoneValid && PasswordValid) {
+                    mListener.updateInfo("", mPhone, mPassword);
                 }
 
                 //else if (!EmailValid){
@@ -80,28 +78,27 @@ public class EditInfoFragment extends AppCompatDialogFragment {
                 //            Toast.LENGTH_SHORT).show();
                 //}
 
-                else if (!PhoneValid){
+                else if (!PhoneValid) {
                     Toast.makeText(getActivity(), "The Phone Number you entered is not in the correct format! Please update it again",
                             Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getActivity(), "The Password is too short, please update it again!",
                             Toast.LENGTH_SHORT).show();
                 }
             }
-            })
-            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dismiss();
+        })
+        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismiss();
             }
         });
-
         return builder.create();
     }
 
+
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach (@NonNull Context context){
         super.onAttach(context);
 
         try {
@@ -115,7 +112,7 @@ public class EditInfoFragment extends AppCompatDialogFragment {
      * Listener interface created to handle updating the new information to database
      */
     public interface myListener {
-        void updateInfo(String phone, String password);
+        void updateInfo(String name, String phone, String password);
     }
 }
 

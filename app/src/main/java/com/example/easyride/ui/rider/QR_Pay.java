@@ -93,14 +93,6 @@ public class QR_Pay extends AppCompatActivity {
         }
     }
 
-    /**
-     * Method to handle finishing activity.
-     */
-    private void finishAct(){
-        Intent i = new Intent(QR_Pay.this, RiderHome.class);
-        finish();
-        startActivity(i);
-    }
 
     /**
      * Show the dialog after the driver is paid
@@ -114,8 +106,10 @@ public class QR_Pay extends AppCompatActivity {
         builder.setPositiveButton("Return", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(QR_Pay.this, RiderHome.class);
                 dialog.dismiss();
-                finishAct();
+                startActivity(i);
+                finish();
             }
         });
         builder.show();
