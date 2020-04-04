@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.firestore.GeoPoint;
 
 import org.json.JSONObject;
 
@@ -206,8 +207,19 @@ public  class  Route {
       return data;
     }
 
-    // Author https://stackoverflow.com/users/502162/david-george
-    // https://stackoverflow.com/a/16794680
+
+  public static LatLng geoPointToLatLng(GeoPoint geoPoint){
+    return new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+  }
+
+  public static double distance(GeoPoint geoPoint1, GeoPoint geoPoint2){
+
+    return distance(geoPointToLatLng(geoPoint1), geoPointToLatLng(geoPoint2));
+
+  }
+
+  // Author https://stackoverflow.com/users/502162/david-george
+  // https://stackoverflow.com/a/16794680
   public static double distance(LatLng latLng1, LatLng latLng2) {
     final int R = 6371; // Radius of the earth
     double latDistance = Math.toRadians(latLng2.latitude - latLng1.latitude);

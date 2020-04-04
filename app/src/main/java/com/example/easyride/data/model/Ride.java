@@ -5,6 +5,7 @@ import com.google.firebase.firestore.GeoPoint;
 // Ride class that stores important information on each Ride Request.
 public class Ride {
 
+    private String ID;
     private String from;
     private String to;
     private String cost;
@@ -92,7 +93,7 @@ public class Ride {
         this.rideCompleted = rideCompleted;
     }
 
-    private void setRideAccepted(boolean rideAccepted) {
+    public void setRideAccepted(boolean rideAccepted) {
         this.rideAccepted = rideAccepted;
     }
 
@@ -144,5 +145,9 @@ public class Ride {
     public GeoPoint getStartPoint() { return this.startPoint;}
 
     public GeoPoint getEndPoint() { return this.endPoint;}
+
+    public String getID() { return ID; }
+
+    public void setID(String ID) { this.ID = ID; }
 
 }

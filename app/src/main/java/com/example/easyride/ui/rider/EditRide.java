@@ -34,7 +34,6 @@ import java.util.ArrayList;
 // Handles viewing of a ride request. Don't need to be able to edit the request
 public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
 
-    public ArrayList<Ride> DataList;
     private TextView from, to, cost, distance;
     private Button payButton, delete, viewProfile, addTip, back;
     private String fareWithTip;
@@ -46,7 +45,9 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
     private boolean isFinished = false;
     private boolean isMapLoaded = false;
     private boolean isRouteShown = false;
+    private String docID;
     MarkerHandler mh;
+
   @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,8 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         viewProfile.setClickable(false);
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
+        docID = intent.getStringExtra("docID");
+
         String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -101,7 +104,8 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 isFinished = true;
-                rider.removeAt(position);
+//                rider.removeAt(position);
+                rider.removeAt(docID);
                 goBack();
             }
         });
@@ -129,8 +133,10 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                rider.getActiveRequests().get(position).setRideConfirmAccepted(true);
-                rider.updateRequest(position);
+//                rider.getActiveRequests().get(position).setRideConfirmAccepted(true);
+                rider.getActiveRequest(docID).setRideConfirmAccepted(true);
+//                rider.updateRequest(position);
+                rider.updateRequest(rider.getActiveRequest(docID));
                 dialog.dismiss();
             }
         });
@@ -163,8 +169,12 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
                 if (!fareWithTip.equals("")) {
                     //ride_cost_short = fareWithTip.substring(0, 4);
                     cost.setText(fareWithTip);
-                    rider.getActiveRequests().get(position).setCost(fareWithTip);
-                    rider.updateRequest(position);
+
+//                    rider.getActiveRequests().get(position).setCost(fareWithTip);
+//                    rider.updateRequest(position);
+                    Ride rideRq = rider.getActiveRequest(docID);
+                    rideRq.setCost(fareWithTip);
+                    rider.updateRequest(rideRq);
                 }
             }
         });
@@ -204,16 +214,21 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.setPositiveButton("Pay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Ride rideRq = rider.getActiveRequest(docID);
                 if (goodReview[0]) {
-                    rider.getActiveRequests().get(position).setRiderRating(1L);
+//                    rider.getActiveRequests().get(position).setRiderRating(1L);
+                    rideRq.setRiderRating(1L);
                 }
                 else {
-                    rider.getActiveRequests().get(position).setRiderRating(-1L);
+//                    rider.getActiveRequests().get(position).setRiderRating(-1L);
+                    rideRq.setRiderRating(-1L);
                 }
-                rider.updateRequest(position);
+                rider.updateRequest(rideRq);
+//                rider.updateRequest(position);
                 Intent i = new Intent(getApplicationContext(), QR_Pay.class);
                 i.putExtra("cost", ride_cost);
-                i.putExtra("position", position);
+//                i.putExtra("position", position);
+                i.putExtra("docID", docID);
                 startActivity(i);
             }
         });
@@ -226,12 +241,13 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         builder.show();
     }
     public void updateView(){
-        DataList = rider.getActiveRequests();
+        getSupportActionBar().setTitle("Request");
+//        DataList = rider.getActiveRequests();
         if (isFinished || !rider.isDataLoaded()){
             return;
         }
-        getSupportActionBar().setTitle("Request");
-        rideReq = DataList.get(position);
+//        rideReq = DataList.get(position);
+        rideReq = rider.getActiveRequest(docID);
         String ride_distance = rideReq.getDistance();
         String ride_distance_short;
         if (ride_distance.length() > 4) {

@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="399dp"
+        android:layout_width="370dp"
         android:layout_height="202dp"
         android:layout_marginTop="1dp"
         android:orientation="vertical"
@@ -142,7 +142,7 @@
     <fragment
         android:id="@+id/map_ride_review"
         class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="390dp"
+        android:layout_width="370dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/accept_pay_button"

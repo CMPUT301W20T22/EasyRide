@@ -12,9 +12,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/searchToolBar"
         android:theme="@style/ThemeOverlay.AppCompat.Light"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchList"
+    <ListView
+        android:id="@+id/search_list"
         android:layout_width="match_parent"
         android:layout_height="675dp"
         android:layout_alignParentStart="true"
@@ -23,8 +22,20 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="56dp"
         android:layout_marginBottom="0dp">
+    </ListView>
 
-    </androidx.recyclerview.widget.RecyclerView>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/searchList1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="675dp"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginTop="56dp"-->
+<!--        android:layout_marginBottom="0dp">-->
+
+<!--    </androidx.recyclerview.widget.RecyclerView>-->
 
 
 </RelativeLayout>
