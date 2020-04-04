@@ -163,6 +163,7 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
         accept_pay_button.setText("Ride is not confirmed!");
         accept_pay_button.setClickable(false);
       } else { //ride is accepted and confirmed
+        Toast.makeText(this, "Ride is confirmed by rider!", Toast.LENGTH_LONG).show();
         if (!rideReq.isRideCompleted()) {
           accept_pay_button.setText("Make ride complete");
           accept_pay_button.setClickable(true);
