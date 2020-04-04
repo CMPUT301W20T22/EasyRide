@@ -45,7 +45,7 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
   private boolean isRouteShown = false;
   private Ride rideReq;
   private Driver driver;
-  private int position;
+//  private int position;
   private boolean isFinished = false;
   private ArrayList<Ride> DataList;
   private ImageView profileImage;
@@ -76,7 +76,7 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
     mapFragment.getMapAsync(this);
     Places.initialize(getApplicationContext(), getString(R.string.api_key));
     Intent intent = getIntent();
-    position = intent.getIntExtra("position", 0);
+//    position = intent.getIntExtra("position", 0);
     docID = intent.getStringExtra("docID");
 
     String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -222,7 +222,12 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
     isMapLoaded = true;
     driver.updateList();
   }
-
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    docID = intent.getStringExtra("docID");
+    updateView();
+  }
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);

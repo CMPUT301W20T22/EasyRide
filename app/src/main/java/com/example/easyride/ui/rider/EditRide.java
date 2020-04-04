@@ -240,6 +240,14 @@ public class EditRide extends AppCompatActivity implements OnMapReadyCallback {
         });
         builder.show();
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        docID = intent.getStringExtra("docID");
+        updateView();
+    }
+
     public void updateView(){
         getSupportActionBar().setTitle("Request");
 //        DataList = rider.getActiveRequests();

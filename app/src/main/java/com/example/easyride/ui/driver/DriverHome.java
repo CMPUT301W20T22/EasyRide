@@ -66,9 +66,9 @@ public class DriverHome extends AppCompatActivity {
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String docID = filteredDataList.get(position).getID();
+                String docID = rideAdapter.getItem(position).getID();
                 Intent i = new Intent(view.getContext(), RideReview.class);
-                i.putExtra("position", filteredToOriginal.get(position));
+//                i.putExtra("position", filteredToOriginal.get(position));
                 i.putExtra("docID", docID);
                 startActivity(i);
             }

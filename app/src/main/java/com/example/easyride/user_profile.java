@@ -104,6 +104,14 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
             }
         });
     }
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    userID = intent.getStringExtra("ID");
+    userEmail = intent.getStringExtra("email");
+    mode = intent.getStringExtra("mode");
+    updateView();
+  }
 
     @SuppressLint("SetTextI18n")
     @Override
