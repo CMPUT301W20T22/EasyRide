@@ -185,7 +185,8 @@ public class RideReview extends AppCompatActivity implements OnMapReadyCallback 
 
     private void acceptButtonSetting(){
         if(rideReq.isRideConfirmAccepted() && !rideReq.isRideCompleted()) {
-            Toast.makeText();
+            String message = "You may commence thy ride" +"!";
+            Toast.makeText(RideReview.this, message, Toast.LENGTH_LONG).show();
             accept_pay_button.setText("Press to complete the ride");
             accept_pay_button.setClickable(true);
             accept_pay_button.setOnClickListener(new View.OnClickListener() {
