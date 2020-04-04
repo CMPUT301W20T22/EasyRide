@@ -148,7 +148,7 @@ public class Driver extends EasyRideUser {
 
   /**
    * Method to check if the data of the driver is loaded
-   * @return
+   * @return boolean
    */
   public boolean isDataLoaded() {
     return dataLoaded;
