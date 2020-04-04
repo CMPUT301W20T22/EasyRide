@@ -116,6 +116,7 @@ public class Driver extends EasyRideUser {
 //                activeRequests.add(document.toObject(Ride.class));
                 Log.e("user", currentDriverInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
+                i++;
               }
               onDataLoaded();
               dataLoaded = true;
