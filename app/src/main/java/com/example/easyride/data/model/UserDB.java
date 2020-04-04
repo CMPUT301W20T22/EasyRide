@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.easyride.ui.driver.RiderProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,7 +22,7 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class UserDB {
 
-  private  UserType userType;
+  private UserType userType;
   private String email;
   private FirebaseFirestore db;
   private Double balance;
@@ -52,8 +51,8 @@ public class UserDB {
     fetch();
   }
 
-  public void fetch(){
-    db.collection( userType.getType() ).whereEqualTo("Email", email)
+  public void fetch() {
+    db.collection(userType.getType()).whereEqualTo("Email", email)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
           @Override
@@ -66,7 +65,7 @@ public class UserDB {
 //              email = doc.getString("Email");
                 userId = doc.getId();
                 balance = Double.parseDouble(data.get("Balance").toString());
-                if (userType==UserType.DRIVER){
+                if (userType == UserType.DRIVER) {
                   Integer.parseInt(data.get("good_reviews").toString());
                   goodReviews = Integer.parseInt(data.get("good_reviews").toString());
                   badReviews = Integer.parseInt(data.get("bad_reviews").toString());
@@ -79,17 +78,17 @@ public class UserDB {
         });
   }
 
-  public void push(){
+  public void push() {
     DocumentReference rideRequestRef = db.collection(userType.getType()).document(userId);
     Task<Void> updateTask;
-    if (userType==UserType.RIDER)
+    if (userType == UserType.RIDER)
       updateTask = rideRequestRef.update("Balance", Double.toString(balance),
-          "Phone", phone, "Name", name );
+          "Phone", phone, "Name", name);
     else
       updateTask = rideRequestRef.update("Balance", Double.toString(balance),
           "Phone", phone, "Name", name,
           "good_reviews", Integer.toString(goodReviews),
-          "bad_reviews", Integer.toString(badReviews) );
+          "bad_reviews", Integer.toString(badReviews));
   }
 
   public void userDataLoaded() {
@@ -140,19 +139,19 @@ public class UserDB {
   }
 
   public void increaseBalance(Double valueOf) {
-    setBalance( valueOf + getBalance() );
+    setBalance(valueOf + getBalance());
   }
 
   public void decreaseBalance(Double valueOf) {
-    setBalance( getBalance() -  valueOf );
+    setBalance(getBalance() - valueOf);
   }
 
   public void updateReviews(Long rating) {
-    if (userType==UserType.DRIVER){
+    if (userType == UserType.DRIVER) {
       if (rating > 0)
-          setGoodReviews(getGoodReviews() + 1 );
+        setGoodReviews(getGoodReviews() + 1);
       else
-        setBadReviews(getBadReviews() + 1 );
+        setBadReviews(getBadReviews() + 1);
     }
   }
 }

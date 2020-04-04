@@ -41,6 +41,7 @@ public class DriverHome extends AppCompatActivity {
     public static int maxDriverActiveRequests = 10;
     private Driver driver;
     private boolean offLine = false;
+    private ArrayList<Ride> filteredDataList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,10 @@ public class DriverHome extends AppCompatActivity {
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String docID = filteredDataList.get(position).getID();
                 Intent i = new Intent(view.getContext(), RideReview.class);
                 i.putExtra("position", filteredToOriginal.get(position));
+                i.putExtra("docID", docID);
                 startActivity(i);
             }
         });
@@ -134,7 +137,7 @@ public class DriverHome extends AppCompatActivity {
 
     public void refresh() {
         DataList = driver.getActiveRequests();
-        ArrayList<Ride> filteredDataList = new ArrayList<Ride>();
+        filteredDataList = new ArrayList<Ride>();
         filteredToOriginal = new HashMap<Integer, Integer>();
         Ride ride;
         int j =0;

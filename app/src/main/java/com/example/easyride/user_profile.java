@@ -111,8 +111,12 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         if (!phone.equals("")) {
             Phone.setText("Phone: " + phone);
             userDB.setPhone(phone);
+            userDB.push();
         }
-
+        if (!name.equals("")){
+            userDB.setName(name);
+            userDB.push();
+        }
         if (!password.equals("")) {
             user.updatePassword(password);
         }

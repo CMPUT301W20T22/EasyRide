@@ -11,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.easyride.R;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     boolean isUser;
     FirebaseFirestore db;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 intent.putExtra("mode", Mode);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -101,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-
+                progressBar = findViewById(R.id.loading);
+                progressBar.setVisibility(View.VISIBLE);
                 // authenticate the user and log in the application based on the Status (Rider/Driver)
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -121,8 +125,8 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     if (task.isSuccessful()) {
-
                                         DocumentSnapshot document = task.getResult();
                                         if (document==null) throw new AssertionError("Object cannot be null");
                                         Map<String, Object> data = document.getData();

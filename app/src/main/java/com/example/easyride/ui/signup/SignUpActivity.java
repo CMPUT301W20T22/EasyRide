@@ -151,7 +151,11 @@ public class SignUpActivity extends AppCompatActivity {
                             data.put("Email", Email);
                             data.put("Name", FullName);
                             data.put("Phone", Phone);
-
+                            data.put("Balance","300");
+                            if (Mode.equals("driver")){
+                                data.put("good_reviews","0");
+                                data.put("bad_reviews","0");
+                            }
                             db.collection(Mode).document(ID)
                                     .set(data)
                                     .addOnFailureListener(new OnFailureListener() {

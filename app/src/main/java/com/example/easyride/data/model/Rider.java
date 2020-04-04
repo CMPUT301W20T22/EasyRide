@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.easyride.map.MapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,6 +17,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -40,6 +43,7 @@ public class Rider extends EasyRideUser {
   private ArrayList<String> requestsID;
   private FirebaseFirestore db;
   private boolean dataLoaded = false;
+  private HashMap<String, Integer> map;
 
   public Rider(final EasyRideUser user) {
     super(user.getUserId());
@@ -60,9 +64,17 @@ public class Rider extends EasyRideUser {
         }
         requestsID.clear();
         activeRequests.clear();
+        int i = 0;
+        String docId;
+        map = new HashMap<String, Integer>();
         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-          requestsID.add(document.getId());
-          activeRequests.add(document.toObject(Ride.class));
+          docId = document.getId();
+          requestsID.add(docId);
+          Ride ride = document.toObject(Ride.class);
+          ride.setID(docId);
+          activeRequests.add(ride);
+          map.put(docId, i);
+          i++;
         }
         onDataLoaded();
         dataLoaded = true;
@@ -94,10 +106,16 @@ public class Rider extends EasyRideUser {
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
-
+              int i = 0;
+              String docId;
+              map = new HashMap<String, Integer>();
               for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                requestsID.add(document.getId());
-                activeRequests.add(document.toObject(Ride.class));
+                docId = document.getId();
+                Ride ride = document.toObject(Ride.class);
+                ride.setID(docId);
+                activeRequests.add(ride);
+                map.put(docId, i);
+                i++;
                 Log.e("user", currentRiderInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
               }
@@ -113,18 +131,32 @@ public class Rider extends EasyRideUser {
   public void addRide(Ride rideInsert) {
     DocumentReference newCityRef = db.collection("RideRequest").document();
     newCityRef.set(rideInsert);
-    instance.getActiveRequests().add(rideInsert);
+    instance.activeRequests.add(rideInsert);
   }
 
-  public ArrayList<Ride> getActiveRequests() {
-    return activeRequests;
+  public Ride getActiveRequest(int pos) {
+    return activeRequests.get(pos);
   }
+
+  public Ride getActiveRequest(String docID) {
+    return activeRequests.get(map.get(docID));
+  }
+
+  public ArrayList<Ride> getActiveRequests() {return activeRequests; }
 
   public void removeAt(int position) {
     String documentID = requestsID.get(position);
     db.collection("RideRequest").document(documentID).delete();
     activeRequests.remove(position);
+    //TODO remove record from map
   }
+
+  public void removeAt(String documentID) {
+    activeRequests.remove(map.get(documentID));
+    map.remove(documentID);
+    db.collection("RideRequest").document(documentID).delete();
+  }
+
 
   public EasyRideUser getCurrentRiderInfo() {
     return currentRiderInfo;
@@ -135,8 +167,13 @@ public class Rider extends EasyRideUser {
 
   public boolean updateRequest(int position) {
     if (position >= activeRequests.size()) return false;
-    String documentID = requestsID.get(position);
-    Ride updatedRequest = getActiveRequests().get(position);
+//    String documentID = requestsID.get(position);
+    Ride updatedRequest = activeRequests.get(position);
+    return updateRequest(updatedRequest);
+  }
+
+  public boolean updateRequest(Ride updatedRequest) {
+    String documentID =  updatedRequest.getID();
     DocumentReference rideRequestRef = db.collection("RideRequest").document(documentID);
     rideRequestRef.update("cost", updatedRequest.getCost());
     rideRequestRef.update("rideConfirmAccepted", updatedRequest.isRideConfirmAccepted());
