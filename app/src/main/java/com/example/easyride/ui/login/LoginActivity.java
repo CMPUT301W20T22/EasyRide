@@ -53,12 +53,19 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login);
         mEmail = findViewById(R.id.username);
         mPassword = findViewById(R.id.password);
+        progressBar = findViewById(R.id.loading);
 
         Intent intent = getIntent();
         Mode = intent.getStringExtra("mode");
         getSupportActionBar().setTitle(Mode + " Log In");
 
         isUser = false;
+
+        if (Mode.equals("rider")) {
+            getSupportActionBar().setTitle("Log In as Rider");
+        }
+        else
+            getSupportActionBar().setTitle("Log In as Driver");
 
         // init database
         fAuth = FirebaseAuth.getInstance();
@@ -106,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 progressBar = findViewById(R.id.loading);
                 progressBar.setVisibility(View.VISIBLE);
+
                 // authenticate the user and log in the application based on the Status (Rider/Driver)
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
