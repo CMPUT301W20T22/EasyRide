@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.easyride.ui.driver.RideRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,6 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -37,6 +37,8 @@ public class Driver extends EasyRideUser {
   private ArrayList<String> requestsID;
   private FirebaseFirestore db;
   private boolean dataLoaded = false;
+  private HashMap<String, Integer> map;
+
 
 
   public Driver(final EasyRideUser user){
@@ -48,8 +50,9 @@ public class Driver extends EasyRideUser {
 
     requestsID = new ArrayList<>();
     activeRequests = new ArrayList<Ride>();
+    map = new HashMap<String, Integer>();
 
-    Query q = db.collection("RideRequest").whereEqualTo("driverUserName", user.getUserId());
+    Query q = db.collection("RideRequest").whereEqualTo("ridePaid", false);
 
     q.addSnapshotListener(new EventListener<QuerySnapshot>() {
       @Override
@@ -60,9 +63,18 @@ public class Driver extends EasyRideUser {
         }
         requestsID.clear();
         activeRequests.clear();
+        map.clear();
+        int i = 0;
+        String docId;
+        map = new HashMap<String, Integer>();
         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-          requestsID.add(document.getId());
-          activeRequests.add(document.toObject(Ride.class));
+          docId = document.getId();
+          Ride ride = document.toObject(Ride.class);
+          ride.setID(docId);
+          activeRequests.add(ride);
+          map.put(docId, i);
+          map.put(docId, i);
+          i++;
         }
         onDataLoaded();
         dataLoaded = true;
@@ -82,7 +94,7 @@ public class Driver extends EasyRideUser {
 
     Log.e("SIZE", Integer.toString(activeRequests.size()));
     db.collection("RideRequest")
-        .whereEqualTo("driverUserName", currentDriverInfo.getUserId())
+        .whereEqualTo("ridePaid", false)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
           @Override
@@ -90,12 +102,21 @@ public class Driver extends EasyRideUser {
             if (task.isSuccessful()) {
               activeRequests.clear();
               requestsID.clear();
-
+              map.clear();
+              int i = 0;
+              String docId;
+              map = new HashMap<String, Integer>();
               for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                docId = document.getId();
+                Ride ride = document.toObject(Ride.class);
+                ride.setID(docId);
+                activeRequests.add(ride);
+                map.put(docId, i);
                 requestsID.add(document.getId());
-                activeRequests.add(document.toObject(Ride.class));
+//                activeRequests.add(document.toObject(Ride.class));
                 Log.e("user", currentDriverInfo.getUserId());
                 Log.e("SIZE", Integer.toString(activeRequests.size()));
+                i++;
               }
               onDataLoaded();
               dataLoaded = true;
@@ -106,11 +127,18 @@ public class Driver extends EasyRideUser {
         });
   }
 
+
   public boolean updateRequest(int position) {
     if (position >= activeRequests.size()) return false;
-    String documentID = requestsID.get(position);
-    Ride updatedRequest = getActiveRequests().get(position);
+//    String documentID = requestsID.get(position);
+    Ride updatedRequest = activeRequests.get(position);
+    return updateRequest(updatedRequest);
+  }
+
+  public boolean updateRequest(Ride updatedRequest) {
+    String documentID =  updatedRequest.getID();
     DocumentReference rideRequestRef = db.collection("RideRequest").document(documentID);
+    rideRequestRef.update("driverUserName", updatedRequest.getDriverUserName());
     rideRequestRef.update("rideAccepted", updatedRequest.isRideAccepted());
     rideRequestRef.update("rideCompleted", updatedRequest.isRideCompleted());
     rideRequestRef.update("ridePaid", updatedRequest.isRidePaid());
@@ -121,6 +149,9 @@ public class Driver extends EasyRideUser {
     instance = null;
   }
 
+  public Ride getActiveRequest(String docID) {
+    return activeRequests.get(map.get(docID));
+  }
   public ArrayList<Ride> getActiveRequests() {
     return activeRequests;
   }
@@ -128,6 +159,10 @@ public class Driver extends EasyRideUser {
   public void onDataLoaded() { }
   public boolean isDataLoaded() {
     return dataLoaded;
+  }
+
+  public boolean containsDocID (String docID){
+    return map.containsKey(docID);
   }
 
 }

@@ -52,15 +52,14 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBtn = findViewById(R.id.signUpBtn);
 
         Intent intent = getIntent();
-        Mode = intent.getStringExtra("Mode");
-
+        Mode = intent.getStringExtra("mode");
 
         // ActionBar
         toolbar = findViewById(R.id.actionBar);
         // Add Support ActionBar
         // https://stackoverflow.com/questions/31311612/how-to-catch-navigation-icon-click-on-toolbar-from-fragment
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Sign Up");
+        getSupportActionBar().setTitle(Mode.toUpperCase() + " Sign Up" );
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,30 +85,40 @@ public class SignUpActivity extends AppCompatActivity {
                 final String Password = mPassword.getText().toString().trim();
                 final String Phone = mPhone.getText().toString().trim();
 
-                if (TextUtils.isEmpty(Email) || !(Patterns.EMAIL_ADDRESS.matcher(Email).matches())) {
-                    mEmail.setError("Please enter the correct format");
-                    mEmail.requestFocus();
-                    return;
-                }
+                boolean validInput = true;
 
                 if (TextUtils.isEmpty(FullName)) {
                     mFullName.setError("Name is Required");
-                    mFullName.requestFocus();
-                    return;
+                    if ( validInput )
+                        mFullName.requestFocus();
+                    validInput = false;
                 }
 
+                if (TextUtils.isEmpty(Email) || !(Patterns.EMAIL_ADDRESS.matcher(Email).matches())) {
+                    if (TextUtils.isEmpty(Email) )
+                    mEmail.setError("Please enter the Email address");
+                    else
+                        mEmail.setError("Please enter the correct format");
+                    if ( validInput )
+                        mEmail.requestFocus();
+                    validInput = false;
+                }
 
                 if (TextUtils.isEmpty(Phone) || Phone.length() != 10) {
-                    mPhone.setError("Phone number is required");
-                    mPhone.requestFocus();
-                    return;
+                    mPhone.setError("A 10-digit phone number is required");
+                    if ( validInput )
+                        mPhone.requestFocus();
+                    validInput = false;
                 }
 
                 if (Password.length() < 5) {
-                    mPassword.setError("Password Must Be >= 5 Characters");
-                    mPassword.requestFocus();
-                    return;
+                    mPassword.setError("Password must at least has 5 characters");
+                    if ( validInput )
+                        mPassword.requestFocus();
+                    validInput = false;
                 }
+
+                if ( ! validInput ){ return; }
 
                 progressBar.setVisibility(View.VISIBLE);
 
@@ -142,7 +151,11 @@ public class SignUpActivity extends AppCompatActivity {
                             data.put("Email", Email);
                             data.put("Name", FullName);
                             data.put("Phone", Phone);
-
+                            data.put("Balance","300");
+                            if (Mode.equals("driver")){
+                                data.put("good_reviews","0");
+                                data.put("bad_reviews","0");
+                            }
                             db.collection(Mode).document(ID)
                                     .set(data)
                                     .addOnFailureListener(new OnFailureListener() {
@@ -167,6 +180,13 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Mode = intent.getStringExtra("mode");
+        getSupportActionBar().setTitle(Mode.toUpperCase() + " Sign Up" );
     }
 
 }

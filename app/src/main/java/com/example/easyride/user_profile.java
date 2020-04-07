@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.easyride.data.model.UserDB;
+import com.example.easyride.data.model.UserType;
 import com.example.easyride.ui.driver.DriverHome;
 import com.example.easyride.ui.rider.RiderHome;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,18 +30,22 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import static com.android.volley.VolleyLog.TAG;
+
 // User profile screen that handles Name, Contact info, and rating.
 // Should be able to edit contact info
 
 public class user_profile extends AppCompatActivity  implements EditInfoFragment.myListener{
 
-    private String userID;
+    private String userID, userEmail;
     private String mode;
     private DocumentReference docRef;
     private FirebaseFirestore db;
     private TextView riderName, Email, Phone, Rating, balance;
     private String balanceAmount, addedFunds;
+    private UserDB userDB;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,52 +54,34 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("ID");
+        userEmail = intent.getStringExtra("email");
         mode = intent.getStringExtra("mode");
-
-        if (mode.equals("rider")){
-            findViewById(R.id.rating).setVisibility(View.INVISIBLE);
-        }else{
-            Rating = findViewById(R.id.rating);
-            //TODO PLease display the rating for driver
-        }
-
-        // init database
-        db = FirebaseFirestore.getInstance();
-        docRef = db.collection(mode).document(userID);
-
+        Rating = findViewById(R.id.rating);
         // TextView assign
         riderName = findViewById(R.id.user_name);
         Email = findViewById(R.id.email);
         Phone = findViewById(R.id.ph);
         balance = findViewById(R.id.balance);
 
-
-
-        // Getting the info from database
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    assert doc != null;
-                    riderName.setText(doc.getString("Name"));
-                    Email.setText("Email: " + doc.getString("Email"));
-                    Phone.setText("Phone: " + doc.getString("Phone"));
-
-                    try{
-                        balanceAmount = doc.getString("Balance");
-                    }catch (Exception e){
-                        balanceAmount = "0";
-                    }
-                    if (balanceAmount == null){
-                        balanceAmount = "0";
-                    }
-                    String formattedBalance = formatBalance(balanceAmount);
-                    balance.setText("Balance: $" + formattedBalance);
+        if (mode.equals("rider")){
+            userDB = new UserDB(UserType.RIDER, userEmail){
+                @Override
+                public void userDataLoaded(){
+                    updateView();
                 }
-            }
-        });
+            };
+            Rating.setVisibility(View.INVISIBLE);
+        }else{
+            userDB = new UserDB(UserType.DRIVER, userEmail){
+                @Override
+                public void userDataLoaded(){
+                    updateView();
+                }
+            };
+            Rating.setVisibility(View.VISIBLE);
+            //TODO PLease display the rating for driver
+        }
+
 
         Button addFunds = findViewById(R.id.add_balance);
         addFunds.setOnClickListener(new View.OnClickListener() {
@@ -115,25 +104,30 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
             }
         });
     }
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    userID = intent.getStringExtra("ID");
+    userEmail = intent.getStringExtra("email");
+    mode = intent.getStringExtra("mode");
+    updateView();
+  }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void updateInfo(String phone, String password) {
+    public void updateInfo(String name, String phone, String password) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // Update the information to database
-
-       /* if (!email.equals("")) {
-            Email.setText("Email: " + email);
-            docRef.update("Email", email);
-            user.updateEmail(email);
-        }*/
 
         if (!phone.equals("")) {
             Phone.setText("Phone: " + phone);
-            docRef.update("Phone", phone);
+            userDB.setPhone(phone);
+            userDB.push();
         }
-
+        if (!name.equals("")){
+            userDB.setName(name);
+            userDB.push();
+        }
         if (!password.equals("")) {
             user.updatePassword(password);
         }
@@ -165,6 +159,42 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    private void addFundsDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Money");
+        // Set up the input
+        final EditText input = new EditText(this);
+
+        /* Specify the type of input expected; this, for example, sets the input as a password, and will mask the text*/
+        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        builder.setView(input);
+        /* Set up the buttons*/
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String Tip = input.getText().toString();
+                if (!Tip.equals("")) {
+                    userDB.increaseBalance(Double.valueOf(Tip));
+                    userDB.push();
+                    balance.setText("Balance: $" + formatBalance(userDB.getBalance().toString()));
+                }
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
     private String formatBalance(String ride_cost){
         String ride_cost_short;
         int index = ride_cost.indexOf('.');
@@ -183,45 +213,36 @@ public class user_profile extends AppCompatActivity  implements EditInfoFragment
         }
         return ride_cost_short;
     }
+    public void updateView(){
+        riderName.setText(userDB.getName());
+        Email.setText("Email: " + userDB.getEmail());
+        Phone.setText("Phone: " + userDB.getPhone());
+        balanceAmount = userDB.getBalance().toString();
+        String formattedBalance = formatBalance(balanceAmount);
+        balance.setText("Balance: $" + formattedBalance);
+        Rating.setText("");
+        if (userDB.getUserType() == UserType.DRIVER) {
+            try {
+                int good = userDB.getGoodReviews();
+                int bad = userDB.getBadReviews();
+                int rate;
+                if (good == 0 && bad == 0)
+                    throw new Exception("Rating is 0");
+                else
+                    rate = good / (good + bad) * 100;
 
-    private void addFundsDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Money");
-        // Set up the input
-        final EditText input = new EditText(this);
-
-        /* Specify the type of input expected; this, for example, sets the input as a password, and will mask the text*/
-        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
-        builder.setView(input);
-        /* Set up the buttons*/
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String Tip = input.getText().toString();
-                addedFunds = Double.toString((Double.valueOf(Tip) + Double.valueOf(balanceAmount)));
-                dialog.dismiss();
-                if (!addedFunds.equals("")) {
-                    //ride_cost_short = fareWithTip.substring(0, 4);
-                    String shortFunds = formatBalance(addedFunds);
-                    balance.setText("Balance: $" + shortFunds);
-                    updateBalance(addedFunds);
-                    //alright.getActiveRequests().get(position).setCost(fareWithTip);
-                    //alright.updateRequest(position);
-                }
+                String rateS = String.valueOf(rate);
+                String reviw = " reveiws!";
+                if ((good + bad) == 1)
+                    reviw = " reveiw!";
+                Rating.setText("Rate: " + rateS + "% based on " + Integer.toString(good + bad) + reviw);
+            } catch (Exception e) {
+                Log.e(TAG, "Error getting Ratings: ", e);
+                Rating.setText("Rating: Driver has not been rated yet");
             }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-    }
-
-    private void updateBalance(String funds){
-        docRef.update("Balance", funds);
+        }
+        if (balanceAmount == null){
+            balanceAmount = "0";
+        }
     }
 }
