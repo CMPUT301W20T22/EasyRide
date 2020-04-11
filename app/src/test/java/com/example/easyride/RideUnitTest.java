@@ -1,17 +1,16 @@
 package com.example.easyride;
 
 import com.example.easyride.data.model.Ride;
-import org.junit.jupiter.api.Test;
+import com.google.firebase.firestore.GeoPoint;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class RideUnitTest {
 
     private Ride TestRide() {
-        return new Ride("origin", "destination", "1", "test_user", "10");
+        return new Ride("origin", "destination", "1", "test_user", "10", null, null);
     }
 
     /**
